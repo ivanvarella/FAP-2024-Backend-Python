@@ -1,0 +1,29 @@
+{
+  "aliquotas": [
+    {
+      "faixa": "Até R$ 2.259,20",
+      "aliquota": 0,
+      "deducao": 0
+    },
+    {
+      "faixa": "De R$ 2.259,21 até R$ 2.826,65",
+      "aliquota": 0.075,
+      "deducao": 169.44
+    },
+    {
+      "faixa": "De R$ 2.826,66 até R$ 3.751,05",
+      "aliquota": 0.15,
+      "deducao": 381.44
+    },
+    {
+      "faixa": "De R$ 3.751,06 até R$ 4.664,68",
+      "aliquota": 0.225,
+      "deducao": 662.77
+    },
+    {
+      "faixa": "Acima de R$ 4.664,68",
+      "aliquota": 0.275,
+      "deducao": 896.0
+    }
+  ]
+}
