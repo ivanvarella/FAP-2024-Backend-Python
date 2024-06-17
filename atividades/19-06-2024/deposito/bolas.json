@@ -1,0 +1,36 @@
+{
+  "Bolas": [
+    {
+      "nome": "Bola de Basquete Adulto",
+      "diametro": 24
+    },
+    {
+      "nome": "Bola de Basquete Infantil",
+      "diametro": 22
+    },
+    {
+      "nome": "Bola de Futebol Oficial",
+      "diametro": 22
+    },
+    {
+      "nome": "Bola de V\u00f4lei",
+      "diametro": 21
+    },
+    {
+      "nome": "Bola de Handball",
+      "diametro": 19
+    },
+    {
+      "nome": "Bola de Futebol de Sal\u00e3o",
+      "diametro": 20
+    },
+    {
+      "nome": "Bola de fogo",
+      "diametro": 300.0
+    },
+    {
+      "nome": "Bola de boliche",
+      "diametro": 38.0
+    }
+  ]
+}
