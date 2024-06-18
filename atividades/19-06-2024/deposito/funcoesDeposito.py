@@ -51,3 +51,45 @@ def calcMaxBolas(diametro, depositoVolume):
   depositoVolumeCm3 = m3Tocm3(depositoVolume)
   maxBolas = depositoVolumeCm3 // volumeBolaCubo
   return maxBolas
+
+# Função de validação de entradas - deve retornar True ou False
+# Valor da variável "tipo" deve ser: "string", "int", "float", "intFloat" ou "bool"
+def isValid(entrada, tipo):
+
+
+  # Configura o tipo esperado para validação da entrada
+  if tipo == "string":
+    tipoInside = "string"
+  elif tipo == "int":
+    tipoInside = 10
+  elif tipo == "float":
+    tipoInside = 0.5
+  elif tipo == "bool":
+    tipoInside = True
+  elif tipo == "intFloat":
+    tipoInside = 10.5
+  else:
+    tipoInside = "Parâmetro tipo da função não esperado"
+
+  # Verificação:
+  if tipo == "intFloat":
+    # Se aceitar for int ou float
+    if (type(entrada) == type(10)) or (type(entrada) == type(0.5)):
+      return True
+    else:
+      return False
+  # O restante das verificações (não verifica o intFloat mais)
+  else:
+    if type(entrada) == type(tipoInside):
+      return True
+    else:
+      return False
+
+
+
+'''
+teste = False
+result = isValid(teste, "bool")
+
+print(f"Valor entrada: {teste} / Tipo entrada: {type(teste)} - Resultado retornado função: {result}")
+'''
