@@ -31,6 +31,10 @@
     {
       "nome": "Bola de boliche",
       "diametro": 38.0
+    },
+    {
+      "nome": "BolaTeste",
+      "diametro": 15.0
     }
   ]
 }
