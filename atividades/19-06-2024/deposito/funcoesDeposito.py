@@ -36,3 +36,18 @@ def calcVolumeDeposito(depositoAltura, depositoLargura, depositoProfundidade):
 # Dado o raio, calcula o volume de uma bola
 def calcVolumeBola(raio):
   return (4/3) * math.pi * (raio ** 3)
+
+# Conversão m3 -> cm3
+def m3Tocm3(volumeM3):
+    return volumeM3 * 1000000
+
+# Conversão cm3 -> m3
+def cm3Tom3(volumeCm3):
+    return volumeCm3 / 1000000
+
+# Calcula o máximo de bolas que cabem no depósito - aproximadamente: diametro = altura e largura do cubo
+def calcMaxBolas(diametro, depositoVolume):
+  volumeBolaCubo = diametro ** 3
+  depositoVolumeCm3 = m3Tocm3(depositoVolume)
+  maxBolas = depositoVolumeCm3 // volumeBolaCubo
+  return maxBolas

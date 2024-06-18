@@ -15,9 +15,9 @@ depositoProfundidade = float(input("Digite a profundidade do depósito (m): "))
 # Cáculo volume depósito
 depositoVolume = funcoesDeposito.calcVolumeDeposito(depositoAltura, depositoLargura, depositoProfundidade)
 
-print("\n________________________________________________")
-print(f"\nO volume do depósito é de {depositoVolume} m³")
-print("________________________________________________\n")
+print("\n______________________________________________________")
+print(f"\nO volume do depósito desejado é de {depositoVolume} m³.")
+print("______________________________________________________\n")
 
 
 # Carregar o JSON em um objeto Python
@@ -45,6 +45,13 @@ if int(bolaSelec) == -1:
     novoDiametro = round(novoDiametro, 2)
     # Cadastra a nova bola no JSON
     funcoesDeposito.cadastrarBola(novoNome, novoDiametro)
+    raio = novoDiametro / 2
+    volumeBola = round(funcoesDeposito.calcVolumeBola(raio), 2)
+    # Calcular o número máximo de bolas que cabem, exibir o resultado e finalizar o programa
+    numMaxBolasDeposito = funcoesDeposito.calcMaxBolas(novoDiametro, depositoVolume)
+    print("\n--------------------------------------------------- Resultado ---------------------------------------------------")
+    print(f"\nO máximo de bolas ({novoNome} - Diâmetro: {novoDiametro}cm - Volume: {volumeBola}cm³) que cabem no depósito ({depositoVolume}m³) é de {int(numMaxBolasDeposito)} bolas.\n")
+    print("-----------------------------------------------------------------------------------------------------------------\n\n")
 # Usa a bola pré-cadastrada
 else:
     while True:
@@ -55,8 +62,11 @@ else:
           raio = diametro / 2
           volumeBola = round(funcoesDeposito.calcVolumeBola(raio), 2)
           print(f"\nBola selecionada: {nome} - Diâmetro: {diametro}cm - Volume: {volumeBola}cm³")
-          print("Calculando máx bolas.... Exibindo.... Fim do programa!")
           # Calcular o número máximo de bolas que cabem, exibir o resultado e finalizar o programa
+          numMaxBolasDeposito = funcoesDeposito.calcMaxBolas(diametro, depositoVolume)
+          print("\n--------------------------------------------------- Resultado ---------------------------------------------------")
+          print(f"\nO máximo de bolas ({nome} - Diâmetro: {diametro}cm - Volume: {volumeBola}cm³) que cabem no depósito ({depositoVolume}m³) é de {int(numMaxBolasDeposito)} bolas.\n")
+          print("-----------------------------------------------------------------------------------------------------------------\n\n")
           break
       else:
           print("Código inválido")
@@ -68,8 +78,8 @@ print("\n++++  FIM DO PROGRAMA  ++++\n")
 
 '''
 ## Falta:
-1- Função calcular o máximo de bolas que cabem no depósito
-2- Exição das informações: máximo de bolas que cabem, dados do depósito e da bola escolhida ou armazenada no Json
+1- Função calcular o máximo de bolas que cabem no depósito - Ok
+2- Exição das informações: máximo de bolas que cabem, dados do depósito e da bola escolhida ou armazenada no Json - Ok
 3- Validação dos dados inseridos (ex: diâmetro, etc), tentar usar funções de validação para separar o código deixando mais limpo e fácil de entender
 4- Teste do programa
 
