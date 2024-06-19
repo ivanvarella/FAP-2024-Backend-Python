@@ -55,8 +55,6 @@ def calcMaxBolas(diametro, depositoVolume):
 # Função de validação de entradas - deve retornar True ou False
 # Valor da variável "tipo" deve ser: "string", "int", "float", "intFloat" ou "bool"
 def isValid(entrada, tipo):
-
-
   # Configura o tipo esperado para validação da entrada
   if tipo == "string":
     tipoInside = "string"
