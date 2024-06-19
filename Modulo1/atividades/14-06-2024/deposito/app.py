@@ -120,3 +120,17 @@ else:
           bolaSelec = input("Digite o código da bola: ")
 
 print("\n++++  FIM DO PROGRAMA  ++++\n")
+
+
+
+'''
+Refacture:
+1- Verificação: 
+i = 123
+print(isinstance(i, int))
+
+ou
+
+print(isinstance(i, (float, str, set, dict)))
+
+'''
