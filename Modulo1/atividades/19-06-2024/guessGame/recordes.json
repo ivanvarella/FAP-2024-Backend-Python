@@ -1,0 +1,16 @@
+{
+  "Recordes": [
+    {
+      "nome": "Jogador1",
+      "tentativas": 3,
+      "tempo": "00:02:15",
+      "data": "2024-06-20"
+    },
+    {
+      "nome": "Jogador2",
+      "tentativas": 5,
+      "tempo": "00:03:45",
+      "data": "2024-06-19"
+    }
+  ]
+}
