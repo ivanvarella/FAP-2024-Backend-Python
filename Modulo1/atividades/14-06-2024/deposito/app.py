@@ -9,44 +9,13 @@ print("\n++++  Cálculo da capacidade de um depósito  ++++\n\n")
 
 # Entrada dados do depósito
 # Altura
-while True:
-  depositoAltura = input("Digite a altura do depósito (m): ")
-  if depositoAltura == "":
-    print("O campo não pode ser vazio!")
-  else:
-    depositoAltura = float(depositoAltura)
-    isValid = funcoesDeposito.isValid(depositoAltura, "intFloat")
-    if isValid:
-      break
-    else:
-      print("O campo deve ser um valor numérico!")
-      continue
+depositoAltura, erroTipoAlturaDep, erroVazioAlturaDep, erroMsgAlturaDep = funcoesDeposito.isValidInput("Digite a altura do depósito (m): ", "float")
+
 # Largura
-while True:
-  depositoLargura = input("Digite a largura do depósito (m): ")
-  if depositoLargura == "":
-    print("O campo não pode ser vazio!")
-  else:
-    depositoLargura = float(depositoLargura)
-    isValid = funcoesDeposito.isValid(depositoLargura, "intFloat")
-    if isValid:
-      break
-    else:
-      print("O campo deve ser um valor numérico!")
-      continue
+depositoLargura, erroTipoLarguraDep, erroVazioLarguraDep, erroMsgLarguraDep = funcoesDeposito.isValidInput("Digite a largura do depósito (m): ", "float")
+
 # Profundidade
-while True:
-  depositoProfundidade = input("Digite a largura do depósito (m): ")
-  if depositoProfundidade == "":
-    print("O campo não pode ser vazio!")
-  else:
-    depositoProfundidade = float(depositoProfundidade)
-    isValid = funcoesDeposito.isValid(depositoProfundidade, "intFloat")
-    if isValid:
-      break
-    else:
-      print("O campo deve ser um valor numérico!")
-      continue
+depositoProfundidade, erroTipoProfundidadeDep, erroVazioProfundidadeDep, erroMsgProfundidadeDep = funcoesDeposito.isValidInput("Digite a profundidade do depósito (m): ", "float")
 
 # Cáculo volume depósito
 depositoVolume = funcoesDeposito.calcVolumeDeposito(depositoAltura, depositoLargura, depositoProfundidade)
@@ -120,17 +89,3 @@ else:
           bolaSelec = input("Digite o código da bola: ")
 
 print("\n++++  FIM DO PROGRAMA  ++++\n")
-
-
-
-'''
-Refacture:
-1- Verificação: 
-i = 123
-print(isinstance(i, int))
-
-ou
-
-print(isinstance(i, (float, str, set, dict)))
-
-'''
