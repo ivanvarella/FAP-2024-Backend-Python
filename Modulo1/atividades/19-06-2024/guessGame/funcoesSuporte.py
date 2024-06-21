@@ -20,10 +20,18 @@ def exibirMenu():
     print("# Cod[1]: Mostrar recordes      #")
     print("# Cod[2]: Iniciar jogo          #")
     print("# Cod[3]: Sair                  #")
+    print("# Cod[4]: About                 #")
     print("#################################\n")
 
     codUser = input("Digite o código:")
 
+    if codUser == "4":
+        print("\nApesar de já estar funcional, os seguintes pontos estão pendentes e em andamento:")
+        print("1 - Função para gravar recordes Json - atenção para o formato da data e de tempo (caso decida inserir também)")
+        print("2- Formulário com os dados do usuário para gravar no Json - Opção para gravar ou não")
+        print("2 - Função para ler recordes Json e exibir - Ok")
+        print("3 - Melhorar a lógica do jogo quando está aproximando do valor a ser encontrado\n")
+        break
     if codUser == "3":
         print("\nObrigado por jogar!\n\n")
         break
@@ -61,9 +69,11 @@ def trataDataTime(dataHora):
   
 # Função para mostrar os recordes
 def mostraRecordes():
-    with open(caminho, "r") as file:
-        recordes = json.load(file)
-    print("\n\n###### Recordes ######")
+    with open(caminho, "r", encoding='utf-8') as file:
+      recordes = json.load(file)
+    print("\n\n######################")
+    print("###### Recordes ######")
+    print("######################\n")
     for recorde in recordes['Recordes']:
       nome = recorde['nome']
       tentativas = recorde['tentativas']
@@ -122,4 +132,4 @@ novoRecorde = {
     "hora": "15:30"
 }
 
-adicionaRecorde(novoRecorde)
+#adicionaRecorde(novoRecorde)
