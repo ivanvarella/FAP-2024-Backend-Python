@@ -20,7 +20,7 @@ def cadastrarBola(novoNome, novoDiametro):
 
   # Adiciona a bola ao Json
   with open(file, 'w') as f:
-    json.dump(data, f, indent=2) 
+    json.dump(data, f, indent=2)
 
 # Carrega os dados do Json
 def carregaDadosJson(file):
