@@ -20,7 +20,9 @@ while True:
     if codUser == "3":
         print("\nObrigado por jogar!\n\n")
     elif codUser == "1":
-        funcoesSuporte.mostraRecordes()
+        # Falta fazer essa parte
+        # funcoesSuporte.mostraRecordes()
+        print("Em breve estará disponível!")
     elif codUser == "2":
         break
     else:
