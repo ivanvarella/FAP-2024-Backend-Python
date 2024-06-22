@@ -3,9 +3,13 @@
 
 print("\n++++  Cálculo IRPF  ++++\n\n")
 
+import os
 import json
 
-file = 'aliquotas.json'
+nomeArquivo = 'aliquotas.json'
+caminhoRelativo = os.getcwd() + "/Modulo1/atividades/10-06-2024/irpf/" + nomeArquivo
+file = caminhoRelativo
+
 
 def readJson(file):
   with open(file, 'r') as f:
