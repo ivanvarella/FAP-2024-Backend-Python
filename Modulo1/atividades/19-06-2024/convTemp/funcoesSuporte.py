@@ -132,27 +132,6 @@ def exibeConversao(msgConversao, tempConversao, tempConvertida, escala1, escala2
 '''
 Exemplos interessantes:
 
-
-import re
-
-def get_temperature_input():
-    while True:
-        user_input = input("Digite a temperatura com a escala (ex: 100C, 1800K, 32F): ").strip()
-        match = re.match(r"^(-?\d+(\.\d+)?)([CFKcfk])$", user_input)
-        
-        if match:
-            value = float(match.group(1))
-            scale = match.group(3).upper()
-            return value, scale
-        else:
-            print("Entrada inválida! Certifique-se de usar um número seguido de 'C', 'F' ou 'K'. Ex: 100C, 1800K, 32F.")
-
-# Exemplo de uso
-valor, escala = get_temperature_input()
-print(f"Valor: {valor}, Escala: {escala}")
-
-
-
 Expressão regulares:
 
 Contexto
