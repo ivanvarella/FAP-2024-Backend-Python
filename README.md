@@ -1,5 +1,7 @@
 # Repositório do Curso FAP (Formação Acelerada em Programação)
 
+[![Logo do Projeto Softex FAP]([https://github.com/usuario/repositorio/raw/main/images/logo.png](https://github.com/ivanvarella/FAP-2024-Backend-Python/blob/main/SoftexFAP_IMG.png))]([https://github.com/usuario/repositorio](https://fap.softexrecife.org.br/))
+
 Repositório para armazenamento e compartilhamento de projetos, atividades e treinamentos relacionados ao curso FAP, promovido pela Softex em parceria com o Ministério da Ciência, Tecnologia e Inovação e a Universidade Federal do Rio Grande do Norte.
 
 ## Descrição
