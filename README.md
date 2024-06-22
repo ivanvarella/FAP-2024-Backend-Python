@@ -1,12 +1,13 @@
 # Repositório do Curso FAP (Formação Acelerada em Programação)
 
-[![Logo do Projeto Softex FAP]([https://github.com/usuario/repositorio/raw/main/images/logo.png](https://github.com/ivanvarella/FAP-2024-Backend-Python/blob/main/SoftexFAP_IMG.png))]([https://github.com/usuario/repositorio](https://fap.softexrecife.org.br/))
+[![Logo do Projeto Softex FAP](https://github.com/ivanvarella/FAP-2024-Backend-Python/blob/main/SoftexFAP_IMG.png)](https://fap.softexrecife.org.br/)
 
 Repositório para armazenamento e compartilhamento de projetos, atividades e treinamentos relacionados ao curso FAP, promovido pela Softex em parceria com o Ministério da Ciência, Tecnologia e Inovação e a Universidade Federal do Rio Grande do Norte.
 
 ## Descrição
 
 O curso FAP possui uma carga horária de 200 horas e abrange as seguintes áreas de conhecimento e tecnologias:
+
 - Back-End com Python
 - Lógica de Programação com Python
 - Python e Orientação a Objetos
@@ -16,6 +17,7 @@ O curso FAP possui uma carga horária de 200 horas e abrange as seguintes áreas
 - Django
 
 ## Estrutura do Repositório
+
 - `/projetos`: Contém os projetos desenvolvidos durante o curso.
 - `/atividades`: Contém as atividades práticas e exercícios.
 - `/treinamentos`: Materiais de treinamento e workshops.
@@ -23,6 +25,7 @@ O curso FAP possui uma carga horária de 200 horas e abrange as seguintes áreas
 ## Instalação
 
 Para clonar este repositório e acessar o conteúdo:
+
 ```bash
 git clone https://github.com/seu-usuario/curso-fap.git
 cd curso-fap
@@ -32,6 +35,7 @@ Uso
 Para explorar os projetos e atividades, navegue até os diretórios correspondentes. Cada projeto possui seu próprio README com instruções específicas de uso e execução.
 
 Contribuição
+
 - Para contribuir com o repositório:
 - Faça um fork do projeto.
 - Crie uma branch para sua feature (git checkout -b feature/MinhaFeature).
@@ -47,9 +51,7 @@ Softex
 Ministério da Ciência, Tecnologia e Inovação
 Universidade Federal do Rio Grande do Norte
 
-
 =====================================
-
 
 # FAP Course Repository (Accelerated Training in Programming)
 
@@ -58,6 +60,7 @@ Repository for storing and sharing projects, activities, and training related to
 ## Description
 
 The FAP course has a workload of 200 hours and covers the following areas of knowledge and technologies:
+
 - Back-End with Python
 - Python Programming Logic
 - Python and Object Orientation
@@ -67,6 +70,7 @@ The FAP course has a workload of 200 hours and covers the following areas of kno
 - Django
 
 # Repository Structure
+
 - `/projetos`: Contains projects developed during the course.
 - `/atividades`: Contains practical activities and exercises.
 - `/treinamentos`: Training materials and workshops.
@@ -74,6 +78,7 @@ The FAP course has a workload of 200 hours and covers the following areas of kno
 ## Installation
 
 To clone this repository and access the content:
+
 ```bash
 git clone https://github.com/seu-usuario/curso-fap.git
 cd curso-fap
@@ -84,6 +89,7 @@ To explore the projects and activities, navigate to the corresponding directorie
 
 Contribution
 To contribute to the repository:
+
 - Fork the project.
 - Create a branch for your feature (git checkout -b feature/MyFeature).
 - Commit your changes (git commit -am 'Added my feature').
