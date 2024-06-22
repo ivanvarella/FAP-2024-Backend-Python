@@ -3,7 +3,8 @@ import os
 import math
 
 # Caminho do diretório atual
-caminho = os.getcwd() + "/FAP-2024-Backend-Python/Modulo1/atividades/14-06-2024/deposito/"
+caminho = os.getcwd() + "/Modulo1/atividades/14-06-2024/deposito/"
+
 
 # Função para adicionar nova bola ao Json
 def cadastrarBola(novoNome, novoDiametro):
@@ -25,6 +26,7 @@ def cadastrarBola(novoNome, novoDiametro):
 # Carrega os dados do Json
 def carregaDadosJson(file):
   file = caminho + file
+  print(f"File dentro carregaJson: {file}")
   with open(file, 'r') as f:
     data = json.load(f)
   return data
@@ -55,7 +57,7 @@ def calcMaxBolas(diametro, depositoVolume):
 # Função para validação de entradas input
 # - msg: mensagem mostrada no input
 # - tipoEsperado: "string", "int", "float", "intFloat" - "intFloat" podendo receber int ou float
-# - aceitaVazio: padrão False (não aceitando valors vazios), caso aceite, declarar na chamada da função como True
+# - aceitaVazio: padrão False (não aceitando valores vazios), caso aceite, declarar na chamada da função como True
 # - Retorno da função: valor, erroTipo, erroVazio, msgErro
 def isValidInput(msg, tipoEsperado, aceitaVazio = False):
   # Inicialização dos erros:
