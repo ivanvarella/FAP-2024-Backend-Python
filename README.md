@@ -27,8 +27,8 @@ O curso FAP possui uma carga horária de 200 horas e abrange as seguintes áreas
 Para clonar este repositório e acessar o conteúdo:
 
 ```bash
-git clone https://github.com/seu-usuario/curso-fap.git
-cd curso-fap
+git clone git clone https://github.com/ivanvarella/FAP-2024-Backend-Python.git
+cd cd FAP-2024-Backend-Python
 ```
 
 Uso
@@ -80,8 +80,8 @@ The FAP course has a workload of 200 hours and covers the following areas of kno
 To clone this repository and access the content:
 
 ```bash
-git clone https://github.com/seu-usuario/curso-fap.git
-cd curso-fap
+git clone git clone https://github.com/ivanvarella/FAP-2024-Backend-Python.git
+cd cd FAP-2024-Backend-Python
 ```
 
 Usage
