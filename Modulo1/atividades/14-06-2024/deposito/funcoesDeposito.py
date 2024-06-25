@@ -3,8 +3,7 @@ import os
 import math
 
 # Caminho do diretório atual
-caminho = os.getcwd() + "/Modulo1/atividades/14-06-2024/deposito/"
-
+caminho = os.getcwd() + "/"
 
 # Função para adicionar nova bola ao Json
 def cadastrarBola(novoNome, novoDiametro):
