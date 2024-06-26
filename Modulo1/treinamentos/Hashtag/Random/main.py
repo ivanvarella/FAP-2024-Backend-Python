@@ -1,4 +1,5 @@
-# geração de valores aleatórios
+# Exemplos de utilização da biblioteca random
+# Geração de valores aleatórios
 
 import random
 
