@@ -29,6 +29,16 @@
       "presencas": 15,
       "telefone": "5555-1111",
       "email": "pedro.santos@email.com"
+    },
+    {
+      "id": 4,
+      "nome": "Godofredo Silva",
+      "curso": "Letras",
+      "matricula": 123456789,
+      "presencas": 75,
+      "telefone": "22558899774455",
+      "email": "gogo@gmail.com",
+      "notas": [9.9, 10.0, 8.7]
     }
   ]
 }

@@ -25,15 +25,18 @@ while True:
 
 
 # Faltando fazer:
-# 1 - Tratar entrada notas, é uma lista de int, atualmente está entrando como notas individuais, fazer que seja possível entrar: 8.5, 7.3, 9
+# - 1 - Tratar entrada notas, é uma lista de int, atualmente está entrando como notas individuais, fazer que seja possível entrar: 8.5, 7.3, 9
 # e realizar o tratamento para separar as notas e adicionar ou atualizar no Json
-
+#
+# Aprimoramentos:
+# 1- Função isValid:
+#   - Receber listas e realizar validações
+#   - Receber int ou float com range limitado, por exemplo: validar se número está entre 1 e 10, muito útil para o caso de opções a fins
+#   - Como o retorno da função está ficando muito extenso, alterar o retorno para retornar uma lista com todos os retornos juntos
 
 
 
 # Dados atividade:
-
-
 # Json backup teste:
 # {
 #   "Alunos": [
