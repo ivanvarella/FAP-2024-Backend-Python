@@ -1,0 +1,34 @@
+{
+  "Alunos": [
+    {
+      "id": 1,
+      "nome": "João da Silva",
+      "curso": "Ciência da Computação",
+      "matricula": 2023001,
+      "notas": [8.5, 7.0, 9.0],
+      "presencas": 18,
+      "telefone": "1234-5678",
+      "email": "joao.silva@email.com"
+    },
+    {
+      "id": 2,
+      "nome": "Maria Oliveira",
+      "curso": "Engenharia Civil",
+      "matricula": 2023002,
+      "notas": [9.5, 8.0, 10.0],
+      "presencas": 20,
+      "telefone": "9876-5432",
+      "email": "maria.oliveira@email.com"
+    },
+    {
+      "id": 3,
+      "nome": "Pedro Santos",
+      "curso": "Administração",
+      "matricula": 2023003,
+      "notas": [6.0, 7.5, 8.5],
+      "presencas": 15,
+      "telefone": "5555-1111",
+      "email": "pedro.santos@email.com"
+    }
+  ]
+}
