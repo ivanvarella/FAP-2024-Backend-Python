@@ -12,6 +12,7 @@ def exibirMenuPrincipal():
     print("#   Cod[1]: Cadastrar Aluno    #")
     print("#   Cod[2]: Listar Alunos      #")
     print("#   Cod[3]: Sair               #")
+    print("#                              #")
     print("#   Cod[4]: Sobre              #")
     print("#                              #")
     print("################################\n")
@@ -43,48 +44,75 @@ def exibirMenuAlterarExcluir():
 
 # Função Sair:
 def sair():
-    print("\n\nObrigado por usar o Sistema de Cadastro de Alunos!\n\n")
+    print("\n\n#########################################################")
+    print("#  Obrigado por usar o Sistema de Cadastro de Alunos    #")
+    print("#########################################################\n\n")
 
 # Função listar alunos cadastrados
 def listarAlunos():
-    dados = readAlunos("alunos.json")
-    alunos = dados.get("Alunos", [])  # get(): Pega valores da chave 'Alunos' no dicionário, caso não exista a chave, retorna vazio
-    
-    # Se não tiver alunos
-    if len(alunos) == 0:
-        print("\n\nNenhum aluno cadastrado.\n\n")
-        return
-    
-    # Mostrando alunos cadastrados
-    print("\n\n############# Lista de Alunos #############")
-    print(f"Total de alunos cadastrados: {len(alunos)}")
-    for aluno in alunos:
-        print(f"\nID: {aluno['id']}")
-        print(f'Nome: {aluno["nome"]}')
-        print(f'Curso: {aluno["curso"]}')
-        print(f'Matrícula: {aluno["matricula"]}')
-        print(f'Notas: {", ".join(map(str, aluno["notas"]))}')  # ', '.join(...): Une strings em única string, separando por ', '.
-        print(f'Presenças: {aluno["presencas"]}')
-        print(f'Telefone: {aluno["telefone"]}')
-        print(f'Email: {aluno["email"]}')
-        print("-" * 30)
-    
-    # Opção alterar ou excluir aluno:
-    exibirMenuAlterarExcluir()
-    opcaoMenuAlterarExcluir, erroTipoOpcaoMenuAlterarExcluir, erroVazioOpcaoMenuAlterarExcluir, erroMsgOpcaoMenuAlterarExcluir = isValidInput("Digite a opção desejada: ", "int")
-    # Controla os opções do Menu Alterar / Excluir aluno
-    if opcaoMenuAlterarExcluir == 3:
-       return opcaoMenuAlterarExcluir
-    elif opcaoMenuAlterarExcluir == 1:
-        #alterarAluno()
-        print("\nAlterar Aluno: Ainda não implementado!\n")
-    elif opcaoMenuAlterarExcluir == 2:
-        #excluirAluno()
-        print("\nExcluir Aluno: Ainda não implementado!\n")
-    else:
-        print("\nOpção inválida!\n")
-       
+  dados = readAlunos("alunos.json")
+  alunos = dados.get("Alunos", [])  # get(): Pega valores da chave 'Alunos' no dicionário, caso não exista a chave, retorna vazio
+  
+  # Se não tiver alunos
+  if len(alunos) == 0:
+      print("\n\nNenhum aluno cadastrado.\n\n")
+      return
+  
+  # Mostrando alunos cadastrados
+  print("\n\n############# Lista de Alunos #############")
+  print(f"Total de alunos cadastrados: {len(alunos)}")
+  for aluno in alunos:
+      print(f"\nID: {aluno['id']}")
+      print(f'Nome: {aluno["nome"]}')
+      print(f'Curso: {aluno["curso"]}')
+      print(f'Matrícula: {aluno["matricula"]}')
+      print(f'Notas: {", ".join(map(str, aluno["notas"]))}')  # ', '.join(...): Une strings em única string, separando por ', '.
+      print(f'Presenças: {aluno["presencas"]}')
+      print(f'Telefone: {aluno["telefone"]}')
+      print(f'Email: {aluno["email"]}')
+      print("-" * 30)
+  
+  # Opção alterar ou excluir aluno:
+  exibirMenuAlterarExcluir()
+  opcaoMenuAlterarExcluir, erroTipoOpcaoMenuAlterarExcluir, erroVazioOpcaoMenuAlterarExcluir, erroMsgOpcaoMenuAlterarExcluir = isValidInput("Digite a opção desejada: ", "int")
+  # Controla os opções do Menu Alterar / Excluir aluno
+  if opcaoMenuAlterarExcluir == 3:
+      return opcaoMenuAlterarExcluir
+  elif opcaoMenuAlterarExcluir == 1:
+      alterarAluno()
+  elif opcaoMenuAlterarExcluir == 2:
+      excluirAluno()
+  else:
+      print("\nOpção inválida!\n")
 
+
+# Função excluir aluno (dentro do Listar Alunos):
+def excluirAluno():
+  idAlunoExcluir, erroTipoIdAlunoExcluir, erroVazioIdAlunoExcluir, erroMsgIdAlunoExcluir = isValidInput("Digite o id do aluno a ser excluido: ", "int")
+  deleteAluno(idAlunoExcluir, "alunos.json")
+
+# Função alterar aluno (dentro do Listar Alunos):
+def alterarAluno():
+  idAlunoAlterar, erroTipoIdAlunoAlterar, erroVazioIdAlunoAlterar, erroMsgIdAlunoAlterar = isValidInput("Digite o id do aluno a ser alterado: ", "int")
+  # Pega os novos dados do aluno (menos id e matrícula que não mudam em relação ao aluno)
+  novosDados = obterNovosDadosAluno()
+  updateAluno(idAlunoAlterar, novosDados, "alunos.json")
+
+# Função para "pegar" os novos dados do aluno a ser atualizado
+def obterNovosDadosAluno():
+  novosDados = {}
+
+  novosDados['nome'], erroTipoNovoNome, erroVazioNovoNome, erroMsgNovoNome = isValidInput("Digite o novo nome do aluno: ", "string")
+  novosDados['curso'], erroTipoNovoCurso, erroVazioNovoCurso, erroMsgNovoCurso = isValidInput("Digite o novo curso do aluno: ", "string")
+  #novosDados['matricula'], erroTipoNovaMatricula, erroVazioNovaMatricula, erroMsgNovaMatricula = isValidInput("Digite a nova matrícula do aluno: ", "int")
+  novosDados['presencas'], erroTipoNovasPresencas, erroVaziasNovasPresencas, erroMsgNovasPresencas = isValidInput("Digite o novo número de presenças do aluno: ", "int")
+  novosDados['telefone'], erroTipoNovoTelefone, erroVazioNovoTelefone, erroMsgNovoTelefone = isValidInput("Digite o novo telefone do aluno: ", "string")
+  novosDados['email'], erroTipoNovoEmail, erroVazioNovoEmail, erroMsgNovoEmail = isValidInput("Digite o novo email do aluno: ", "string")
+  
+  # Entrada das notas do aluno:
+  novosDados['notas'] = trataNotasAluno() # Exemplo de retorno: [9.5, 6.5, 8.2]
+
+  return novosDados
 
 # Função exibir tela de cadastro novo aluno:
 def telaCadastroAluno():
@@ -119,9 +147,11 @@ def trataNotasAluno():
     notas.append(nota)
   return notas
 
-
-
-
+# Futuros aprimoramentos:
+# 1- Função isValid:
+#   - Receber listas e realizar validações
+#   - Receber int ou float com range limitado, por exemplo: validar se número está entre 1 e 10, muito útil para o caso de opções a fins
+#   - Como o retorno da função está ficando muito extenso, alterar o retorno para retornar uma lista com todos os retornos juntos
 # Função para validação de entradas input
 # - msg: mensagem mostrada no input
 # - tipoEsperado: "string", "int", "float", "intFloat" - "intFloat" podendo receber int ou float
@@ -178,9 +208,10 @@ def isValidInput(msg, tipoEsperado, aceitaVazio = False):
 
   return valor, erroTipo, erroVazio, erroMsg
 
-# -------------------------- CRUD Json ----------------------------------
+# ############################ CRUD Json ############################
 #Funções CRUD (Create, Read, Update, Delete):
 
+# ---------------------------------------------------------------------------
 # Função Create - Funcionando corretamente:
 def createAluno(novoAluno, arquivoJson):
   # Caminho do arquivo JSON
@@ -212,6 +243,8 @@ def createAluno(novoAluno, arquivoJson):
   with open(caminhoCompleto, 'w', encoding='utf-8') as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
 
+# ---------------------------------------------------------------------------
+
 # Função Read - Funcionanado corretamente:
 def readAlunos(arquivoJson):
   # Caminho do arquivo JSON
@@ -223,12 +256,71 @@ def readAlunos(arquivoJson):
       data = json.load(f)
   
   return data
+# ---------------------------------------------------------------------------
 
+# Função Update - Falta testar:
+# Fluxo: Read data -> Encontra o aluno pelo id -> Atualiza o aluno no dicionário obtino no Read
+# -> Salvar o novo Json com o aluno atualizado (todo o Json é gravado).
+def updateAluno(alunoId, novosDados, arquivoJson):
+  data = readAlunos(arquivoJson)
+  if "Alunos" not in data:
+    print("Nenhum aluno cadastrado no sistema.")
+    return
+  alunoEncontrado = False
+  for i, aluno in enumerate(data["Alunos"]):
+    if aluno["id"] == alunoId:
+      alunoEncontrado = True
+      data["Alunos"][i].update(novosDados) # método update: atualiza dados dicionário
+      break
+  if alunoEncontrado:
+    # Caminho do arquivo JSON
+    global caminho  # Declarar que vamos usar a variável global 'caminho'
+    caminhoCompleto = os.path.join(caminho, arquivoJson)
 
+    with open(caminhoCompleto, "w", encoding="utf-8") as f:
+      json.dump(data, f, indent=2, ensure_ascii=False)
+    print(f"Aluno com ID {alunoId} atualizado com sucesso.")
+  else:
+    print(f"Aluno com ID {alunoId} não encontrado.")
 
-  # Função Update - Falta Fazer:
+# ---------------------------------------------------------------------------
+# Função Delete - Funcionando corretamente:
+# Fluxo: Read data -> Encontra o aluno pelo id -> Apaga aluno no dicionário obtino no Read
+# -> Salvar o novo Json com o aluno excluído.
+# Função para deletar aluno pelo ID
+def deleteAluno(alunoId, arquivoJson):
+  # Carregar dados do arquivo JSON
+  data = readAlunos(arquivoJson)
 
-  # Função Delete - Falta Fazer:
+  # Se o Json vazio, inicializa-o como objeto 'Alunos'
+  if "Alunos" not in data:
+    print("Nenhum aluno cadastrado no sistema.")
+    return
 
+  # Encontrar o aluno pelo ID e remover do dicionário carregado previamente (data)
+  alunoEncontrado = False
+  # Pega valor-chave (i, aluno), onde i = index e aluno = dicionário com os dados de cada aluno
+  for i, aluno in enumerate(data["Alunos"]):
+    if aluno["id"] == alunoId:
+      alunoEncontrado = True
+      # Pega os dados do aluno antes de deletar para poder mostrar na tela
+      nomeAlunoDeletado = data["Alunos"][i]["nome"]
+      matriculaAlunoDeletado = data["Alunos"][i]["matricula"]
+      idAlunoDeletado = data["Alunos"][i]["id"]
+      # Deleção de um único aluno via index
+      del data["Alunos"][i] 
+      break # Encontrou -> interrompe o for
 
+  if alunoEncontrado:
+    # Caminho do arquivo JSON
+    global caminho  # Declarar que vamos usar a variável global 'caminho'
+    caminhoCompleto = os.path.join(caminho, arquivoJson)
+
+    # Escreve de volta no JSON, o arquivo completo com todos os alunos, menos o aluno deletado
+    with open(caminhoCompleto, "w", encoding="utf-8") as f:
+      json.dump(data, f, indent=2, ensure_ascii=False)
+    print(f"O Aluno {nomeAlunoDeletado} (Id: {idAlunoDeletado} / Matrícula: {matriculaAlunoDeletado}) foi deletado com sucesso.")
+  else:
+    print(f"Aluno com ID {alunoId} não encontrado.")
   # ---------------------------------------------------------------------------
+  
