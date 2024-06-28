@@ -1,3 +1,6 @@
+##### FAP Backend Python - Turma 17 ####
+##### Ivan Varella ####
+
 import funcoesSuporte
 
 
@@ -21,9 +24,6 @@ while True:
 
 
 
-
-
-
 # Faltando fazer:
 # - 1 - Tratar entrada notas, é uma lista de int, atualmente está entrando como notas individuais, fazer que seja possível entrar: 8.5, 7.3, 9
 # e realizar o tratamento para separar as notas e adicionar ou atualizar no Json
@@ -36,7 +36,6 @@ while True:
 
 
 
-# Dados atividade:
 # Json backup teste:
 # {
 #   "Alunos": [
