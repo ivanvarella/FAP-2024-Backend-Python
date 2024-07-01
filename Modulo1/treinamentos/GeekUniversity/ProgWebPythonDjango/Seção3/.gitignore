@@ -1,2 +1,9 @@
 # .gitignore
+
+# Arquivos gerencia do projeto django1:
+manage.py
+django1/__init__.py
+django1/asgi.py
 django1/settings.py
+django1/urls.py
+django1/wsgi.py
