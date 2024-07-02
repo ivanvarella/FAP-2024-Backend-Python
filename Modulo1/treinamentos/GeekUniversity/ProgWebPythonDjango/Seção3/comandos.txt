@@ -56,6 +56,45 @@ Após ativar, você verá o nome do ambiente virtual no início do prompt do ter
     sh
     source venv/bin/activate
 	
+  9. Criar uma nova aplicação dentro de um projeto Django:  Cada aplicação dentro de um projeto Django é utilizada para modularizar e organizar o código, dando propósitos diferentes para cada aplicação.
+	Exemplo de aplicações dentro de um projeto: sistema de autenticação, um blog, uma loja, etc.
+	Estrutura de um Projeto Django
+	Um projeto Django pode conter várias aplicações, e a estrutura básica de um projeto Django pode parecer assim:
+	
+    meu_projeto/
+        manage.py
+        meu_projeto/
+            __init__.py
+            settings.py
+            urls.py
+            wsgi.py
+        app1/
+        app2/
+        ...
+	Comando para criação de uma nova aplicação dentro do projeto Django:
+	
+    sh
+    django-admin startapp nomeAplicacao
+	
+	A estrutura básica de uma nova aplicação Django criada com este comando será:
+	
+    meu_projeto/
+        manage.py
+        meu_projeto/
+            __init__.py
+            settings.py
+            urls.py
+            wsgi.py
+        nomeAplicacao/
+            __init__.py
+            admin.py
+            apps.py
+            migrations/
+                __init__.py
+            models.py
+            tests.py
+          views.py
+
 Usar um ambiente virtual ajuda a evitar conflitos de dependências e mantém seu ambiente de desenvolvimento limpo e organizado.
 
 # Comando para gerar as dependências atuais usadas:
