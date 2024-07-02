@@ -1,0 +1,69 @@
+# Criação de ambiente virtual e criação de projeto Django dentro desse ambiente:
+
+Utilizando o VS Code:
+
+Aqui está um guia básico para criar e usar um ambiente virtual com Django:
+  1. Instalar o virtualenv: Se ainda não tiver o virtualenv instalado, você pode instalá-lo usando pip:
+
+    sh
+    pip install virtualenv
+	
+	2. Criar um Ambiente Virtual: Navegue até o diretório (importante) onde deseja criar o ambiente virtual e execute:
+
+    sh
+    virtualenv venv
+
+Aqui, venv é o nome do ambiente virtual. Você pode nomeá-lo como preferir.
+	3. Ativar o Ambiente Virtual:
+		○ No Windows:
+
+      sh
+      venv\Scripts\activate
+		
+		○ No macOS/Linux:
+
+      sh
+      source venv/bin/activate
+
+Após ativar, você verá o nome do ambiente virtual no início do prompt do terminal, indicando que o ambiente está ativo.
+		
+	4. Instalar o Django: Com o ambiente virtual ativo, você pode instalar o Django:
+
+    sh
+    pip install django
+	
+	5. Criar um Projeto Django: Depois de instalar o Django, você pode criar um novo projeto Django:
+
+    sh
+    django-admin startproject myproject
+	
+	Ou
+	
+	  django-admin startproject myproject .
+	
+	Substitua myproject pelo nome do seu projeto. O ponto na segunda opção, faz com que a criação do projeto seja no mesmo diretório, 
+  reduz o número de sub diretórios: dentro do diretório principal ficam -> manage.py + pasta projeto com seus respectivos arquivos.
+
+	6. Trabalhar no Projeto: Com o ambiente virtual ativo, você pode trabalhar no seu projeto Django. Todos os pacotes instalados (como Django e suas dependências) estarão contidos dentro desse ambiente virtual.
+
+	7. Desativar o Ambiente Virtual: Quando terminar de trabalhar, você pode desativar o ambiente virtual com o comando:
+
+    sh
+    Deactivate
+  
+  8. Para voltar a trabalhar no projeto basta ativa-lo novamente com o mesmo comando de ativação, dentro do diretório do projeto execute:
+
+    sh
+    source venv/bin/activate
+	
+Usar um ambiente virtual ajuda a evitar conflitos de dependências e mantém seu ambiente de desenvolvimento limpo e organizado.
+
+# Comando para gerar as dependências atuais usadas:
+pip freeze > requirements.txt
+
+Exemplo do conteúdo do arquivo requirements.txt gerado:
+
+asgiref==3.8.1
+Django==5.0.6
+sqlparse==0.5.0
+typing_extensions==4.12.2
