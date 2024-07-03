@@ -1,1 +1,46 @@
-Questões Ivan Varella: 2, 4, 6, 8, 10, 12, 14, 16
+Questões Ivan Varella: 2, 4, 6, 8, 10(Questão 1 da parte 2), 12(Questão 3 da parte 2), 14(Questão 5 da parte 2), 16 (Questão 7 da parte 2)
+
+Questão 2:
+Decomposição de Cédulas: Escreva um programa que leia um valor em reais
+(R$) e calcule a quantidade mínima de cédulas necessárias para representar esse
+valor. Considere cédulas de R$ 100, R$ 50, R$ 20, R$ 10, R$ 5, R$ 2 e R$ 1.
+
+Questão 4:
+Calculadora de Desconto de Combustível: Implemente um programa para um
+posto de gasolina que calcule o valor a ser pago pelo cliente, considerando o tipo
+de combustível (álcool ou gasolina) e a quantidade de litros. Use a seguinte
+tabela de descontos:
+* Álcool: até 20 litros (3% por litro), acima de 20 litros (5% por litro)
+* Gasolina: até 20 litros (4% por litro), acima de 20 litros (6% por litro) Preços
+base: Álcool R$ 1,90/litro, Gasolina R$ 2,50/litro
+
+Questão 6:
+ Classificador de Turma por Idade: Crie um programa que peça a idade de várias
+pessoas. O programa deve parar quando o usuário digitar 0. Ao final, o
+programa deve calcular a média de idade e classificar a turma como:
+* Jovem: 0-25 anos
+* Adulta: 26-60 anos
+* Idosa: > 60 anos
+
+Questão 8:
+Sistema de Votação: Crie um programa que simule uma votação com 4
+candidatos. O programa deve contar os votos de cada candidato, votos nulos e
+em branco. Ao final, deve mostrar o total de votos para cada candidato, o total
+de votos nulos e em branco, e as respectivas porcentagens sobre o total de votos.
+
+Questão 10(Questão 1 da parte 2):
+Crie uma função que receba uma string e retorne uma nova string com todas as
+vogais removidas.
+
+Questão 12(Questão 3 da parte 2):
+Crie um programa que receba uma frase e a "criptografe" movendo cada letra 3
+posições para frente no alfabeto (por exemplo, 'a' se torna 'd', 'z' se torna 'c').
+
+Questão 14(Questão 5 da parte 2):
+Desenvolva uma função que receba uma string e a comprima, substituindo
+sequências de caracteres repetidos por um número seguido do caractere (por
+exemplo, "aaabbbcccc" se tornaria "3a3b4c").
+
+Questão 16 (Questão 7 da parte 2):
+Escreva um programa que leia um arquivo de texto e conte o número de linhas,
+palavras e caracteres.
