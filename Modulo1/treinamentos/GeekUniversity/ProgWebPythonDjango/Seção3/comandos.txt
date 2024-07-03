@@ -9,6 +9,7 @@ Aqui está um guia básico para criar e usar um ambiente virtual com Django:
     pip install virtualenv
 	
 	2. Criar um Ambiente Virtual: Navegue até o diretório (importante) onde deseja criar o ambiente virtual e execute:
+  Usar um ambiente virtual ajuda a evitar conflitos de dependências e mantém seu ambiente de desenvolvimento limpo e organizado.
 
     sh
     virtualenv venv
@@ -94,8 +95,69 @@ Após ativar, você verá o nome do ambiente virtual no início do prompt do ter
             models.py
             tests.py
           views.py
+  
+  	Explicação dos Arquivos Criados
+		• __init__.py: Indica que este diretório deve ser tratado como um pacote Python.
+		• admin.py: Arquivo onde você pode registrar os modelos para serem gerenciados pela interface de administração do Django.
+		• apps.py: Configurações específicas da aplicação.
+		• migrations/: Diretório onde ficarão os arquivos de migração do banco de dados.
+		• models.py: Arquivo onde você define os modelos (estruturas de banco de dados) da sua aplicação.
+		• tests.py: Arquivo onde você pode escrever testes para sua aplicação.
+    • views.py: Arquivo onde você define as views (lógica de apresentação) da sua aplicação.
 
-Usar um ambiente virtual ajuda a evitar conflitos de dependências e mantém seu ambiente de desenvolvimento limpo e organizado.
+  10. Após criar a aplicação, adicionar a aplicação ao "settings.py" do projeto:
+
+  Exemplo (core: aplicação adicionada):
+  INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'core',
+]
+
+  11. Informar onde o Django deve procurar por templates:
+
+  Exemplo do código:
+
+  TEMPLATES = [
+      {
+          'BACKEND': 'django.template.backends.django.DjangoTemplates',
+          # Informar o diretório onde o Django irá procurar por templates
+          'DIRS': ['templates'],
+          'APP_DIRS': True,
+          'OPTIONS': {
+              'context_processors': [
+                  'django.template.context_processors.debug',
+                  'django.template.context_processors.request',
+                  'django.contrib.auth.context_processors.auth',
+                  'django.contrib.messages.context_processors.messages',
+              ],
+          },
+      },
+  ]
+	
+  Resumo da Configuração TEMPLATES dentro do "settings.py":
+    • 'BACKEND': 'django.template.backends.django.DjangoTemplates':
+      ○ Especifica o uso do backend padrão de templates do Django.
+    • 'DIRS': ['templates']:
+      ○ Diz ao Django para procurar por templates dentro do diretório templates na raiz do projeto.
+    • APP_DIRS: True:
+      ○ Diz ao Django para procurar por templates dentro de um diretório templates em cada aplicação instalada.
+    • context_processors:
+      ○ Funções que adicionam dados ao contexto dos templates, facilitando o acesso a informações comuns (como dados do usuário ou mensagens) em todos os templates.
+      
+    - Explicação sobre templates em Django:
+    Em Django, templates são arquivos que definem a estrutura ou layout da página HTML que será retornada ao usuário. Eles são utilizados para gerar dinamicamente conteúdo HTML baseado nos dados fornecidos pelas views do Django.
+    - O Que São Templates no Django?
+    Templates são geralmente arquivos HTML com placeholders para conteúdo dinâmico. Esses placeholders são preenchidos com dados do servidor quando a página é renderizada. O Django usa um sistema de templates que permite combinar HTML estático com variáveis e lógica de controle (como loops e condicionais) para gerar páginas HTML dinâmicas.
+    - Como Funcionam os Templates?
+  Quando uma view no Django precisa retornar uma resposta HTML, ela usa um template. A view passa dados para o template e o sistema de templates do Django combina esses dados com o HTML do template para gerar a resposta final.
+
+
+
 
 # Comando para gerar as dependências atuais usadas:
 pip freeze > requirements.txt
