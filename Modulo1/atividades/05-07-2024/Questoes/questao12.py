@@ -2,6 +2,14 @@
 # Crie um programa que receba uma frase e a "criptografe" movendo cada letra 3
 # posições para frente no alfabeto (por exemplo, 'a' se torna 'd', 'z' se torna 'c').
 
+# Exemplo funcionamento algoritmo circular: Pegar 4 na frente, levando em consideração o algoritomo circular.
+# lista = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+# tamanhoLista = len(lista) # tamanhoLista = 9
+# IndiceInicial = 7 # Ou seja, lista[7] = 8
+# proximoIndice = (IndiceInicial + 4) % tamanhoLista # Ou seja, proximoIndice = (7 + 4) % 9, proximoIndice = 11 % 9 = 2
+# # Com isso podemos ver que o próximo valor (4 na frente do algoritmo circular) será o 2, sendo o valor igual a 3 (lista[3])
+# # Para ser possível a implementação do algoritmo circular, é necessário saber o tamanho da pilha que se irá percorrer.
+
 import funcoesSuporte
 
 def criptografar(string):
