@@ -2,8 +2,7 @@ import json
 import os
 
 # Caminho do diretório atual
-caminho = os.getcwd() + "/Modulo1/atividades/05-07-2024/Parte 1 - Lógica de programação/"
-
+caminho = os.getcwd() + "/Modulo1/atividades/05-07-2024/Questoes/"
 
 # Futuros aprimoramentos:
 # 1- Função isValid:
