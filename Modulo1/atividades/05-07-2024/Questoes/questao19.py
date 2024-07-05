@@ -99,11 +99,30 @@ def exibirCsv(caminhoCompletoArquivo, arquivoCsv):
   except Exception as e:
     print(f"Ocorreu um erro ao ler o arquivo: {e}")
 
-  #return numeroLinhas, numeroColunas
+def linhasColunas(caminhoCompletoArquivo, arquivoCsv):
+  try:
+    with open(caminhoCompletoArquivo, newline='', encoding='utf-8') as csvfile:
+      leitorCsv = csv.reader(csvfile, delimiter=',')  # Cria um objeto leitor de CSV
+
+      # Lê o cabeçalho
+      cabeçalho = next(leitorCsv)
+      numeroColunas = len(cabeçalho)
+
+      # Contar o número de linhas
+      numeroLinhas = sum(1 for linha in leitorCsv)
+
+  # Exceção expecífica quando não encontrar o arquivo ou não consegui acessa-lo
+  except FileNotFoundError:
+    print(f"Arquivo '{arquivoCsv}' não encontrado no caminho: {caminhoPastaPadrao}.")
+  # Exceção genérica para qualquer outro tipo de erro
+  except Exception as e:
+    print(f"Ocorreu um erro ao ler o arquivo: {e}")
+
+  return numeroLinhas, numeroColunas
 
 carregaMesclaArquivosCsv(caminhoCompletoArquivoCsv1, caminhoCompletoArquivoCsv2, caminhoCompletoAquivoCsvMesclado)
 
 print(f"\n\nConteúdo do arquivo CSV mesclado: {arquivoCsvMesclado}\n")
 exibirCsv(caminhoCompletoAquivoCsvMesclado, arquivoCsvMesclado)
-# numeroLinhas, numeroColunas = exibirCsv(caminhoCompletoAquivoCsvMesclado, arquivoCsvMesclado)
-# print(f"Número de linhas: {numeroLinhas} | Número de colunas: {numeroColunas}\n")
+numeroLinhas, numeroColunas = linhasColunas(caminhoCompletoAquivoCsvMesclado, arquivoCsvMesclado)
+print(f"Número de linhas: {numeroLinhas} | Número de colunas: {numeroColunas}\n")
