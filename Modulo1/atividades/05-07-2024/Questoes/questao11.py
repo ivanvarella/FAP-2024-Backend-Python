@@ -17,18 +17,18 @@ def carregaTxt(caminhoArquivo):
 def limparDividirTexto(texto):
     # Define caracteres de pontuação
     pontuacoes = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
-    texto_sem_pontuacao = ""
+    textoSemPontuacao = ""
     
     for char in texto:
         # Se não estiver na lista de pontuacoes, guarda o caracter
         if char not in pontuacoes:
-            texto_sem_pontuacao += char.lower() # Todo o texto em minúsculo
+            textoSemPontuacao += char.lower() # Todo o texto em minúsculo
         else:
-            texto_sem_pontuacao += ' '  # Substitui pontuações por espaços para separar palavras
+            textoSemPontuacao += ' '  # Substitui pontuações por espaços para separar palavras
     
     # Divide o texto em palavras
     # .split(): divide a string em palavras separadas por espaços
-    palavras = texto_sem_pontuacao.split()
+    palavras = textoSemPontuacao.split()
     return palavras
 
 
