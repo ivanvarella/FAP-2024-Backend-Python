@@ -46,4 +46,4 @@ Escreva um programa que leia um arquivo de texto e conte o número de linhas,
 palavras e caracteres.
 
 
-- Faltam: 17, 18, 19
+- Faltam: 18, 19
