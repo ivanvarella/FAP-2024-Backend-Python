@@ -44,6 +44,3 @@ exemplo, "aaabbbcccc" se tornaria "3a3b4c").
 Questão 16 (Questão 7 da parte 2):
 Escreva um programa que leia um arquivo de texto e conte o número de linhas,
 palavras e caracteres.
-
-
-- Faltam: 19
