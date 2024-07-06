@@ -17,6 +17,8 @@ def contarLinhasPalavrasCaracteres(caminhoArquivo):
     if extensaoArquivo == '.txt':
         with open(caminhoArquivo, 'r', encoding='utf-8') as file:
             linhas = file.readlines()
+
+            linhas = file.read()
         
         numLinhas = len(linhas)
         # .split(): divide a string em palavras separadas por espaços
@@ -27,6 +29,7 @@ def contarLinhasPalavrasCaracteres(caminhoArquivo):
         # Ou seja,numPalavras está recebendo os valores de len(linha.split()), 
         # que por sua vez está sendo executado dentro do for linha in linhas
         numPalavras = sum(len(linha.split()) for linha in linhas)
+
         numCaracteres = sum(len(linha) for linha in linhas)
 
     elif extensaoArquivo == '.docx':
