@@ -1,0 +1,170 @@
+[
+    {
+        "nome": "Ana",
+        "telefones": [
+            {"tipo": "celular", "numero": "321654987"}
+        ],
+        "aniversario": "01/01/1990",
+        "email": "ana@example.com"
+    },
+    {
+        "nome": "Bianca",
+        "telefones": [
+            {"tipo": "celular", "numero": "654321098"}
+        ],
+        "aniversario": "02/02/1991",
+        "email": "bianca@example.com"
+    },
+    {
+        "nome": "Camila",
+        "telefones": [
+            {"tipo": "celular", "numero": "543210987"}
+        ],
+        "aniversario": "03/03/1992",
+        "email": "camila@example.com"
+    },
+    {
+        "nome": "Carla",
+        "telefones": [
+            {"tipo": "celular", "numero": "654321098"}
+        ],
+        "aniversario": "04/04/1993",
+        "email": "carla@example.com"
+    },
+    {
+        "nome": "Diego",
+        "telefones": [
+            {"tipo": "celular", "numero": "876543210"}
+        ],
+        "aniversario": "05/05/1994",
+        "email": "diego@example.com"
+    },
+    {
+        "nome": "Fernanda",
+        "telefones": [
+            {"tipo": "celular", "numero": "109876543"}
+        ],
+        "aniversario": "06/06/1995",
+        "email": "fernanda@example.com"
+    },
+    {
+        "nome": "Gabriel",
+        "telefones": [
+            {"tipo": "celular", "numero": "432109876"}
+        ],
+        "aniversario": "07/07/1996",
+        "email": "gabriel@example.com"
+    },
+    {
+        "nome": "Gustavo",
+        "telefones": [
+            {"tipo": "celular", "numero": "109876543"}
+        ],
+        "aniversario": "08/08/1997",
+        "email": "gustavo@example.com"
+    },
+    {
+        "nome": "Isabela",
+        "telefones": [
+            {"tipo": "celular", "numero": "987654321"}
+        ],
+        "aniversario": "09/09/1998",
+        "email": "isabela@example.com"
+    },
+    {
+        "nome": "José",
+        "telefones": [
+            {"tipo": "celular", "numero": "789012345"}
+        ],
+        "aniversario": "10/10/1999",
+        "email": "jose@example.com"
+    },
+    {
+        "nome": "João",
+        "telefones": [
+            {"tipo": "celular", "numero": "123456789"}
+        ],
+        "aniversario": "11/11/1988",
+        "email": "joao@example.com"
+    },
+    {
+        "nome": "Juliana",
+        "telefones": [
+            {"tipo": "celular", "numero": "432109876"}
+        ],
+        "aniversario": "12/12/1987",
+        "email": "juliana@example.com"
+    },
+    {
+        "nome": "Larissa",
+        "telefones": [
+            {"tipo": "celular", "numero": "210987654"}
+        ],
+        "aniversario": "13/01/1986",
+        "email": "larissa@example.com"
+    },
+    {
+        "nome": "Lucas",
+        "telefones": [
+            {"tipo": "celular", "numero": "543210987"}
+        ],
+        "aniversario": "14/02/1985",
+        "email": "lucas@example.com"
+    },
+    {
+        "nome": "Marcos",
+        "telefones": [
+            {"tipo": "celular", "numero": "987654321"}
+        ],
+        "aniversario": "15/03/1984",
+        "email": "marcos@example.com"
+    },
+    {
+        "nome": "Maria",
+        "telefones": [
+            {"tipo": "celular", "numero": "987654321"}
+        ],
+        "aniversario": "16/04/1983",
+        "email": "maria@example.com"
+    },
+    {
+        "nome": "Mariana",
+        "telefones": [
+            {"tipo": "celular", "numero": "876543210"}
+        ],
+        "aniversario": "17/05/1982",
+        "email": "mariana@example.com"
+    },
+    {
+        "nome": "Paulo",
+        "telefones": [
+            {"tipo": "celular", "numero": "210987654"}
+        ],
+        "aniversario": "18/06/1981",
+        "email": "paulo@example.com"
+    },
+    {
+        "nome": "Pedro",
+        "telefones": [
+            {"tipo": "celular", "numero": "456789012"}
+        ],
+        "aniversario": "19/07/1980",
+        "email": "pedro@example.com"
+    },
+    {
+        "nome": "Rafael",
+        "telefones": [
+            {"tipo": "celular", "numero": "654321098"}
+        ],
+        "aniversario": "20/08/1979",
+        "email": "rafael@example.com"
+    },
+    {
+        "nome": "Maria da Silva",
+        "telefones": [
+            {"tipo": "celular", "numero": "654654654"}
+        ],
+        "aniversario": "21/09/1978",
+        "email": "mariasilva@example.com"
+    }
+]
