@@ -1,8 +1,14 @@
 import json
 import os
 
+
+# os.path.join(os.getcwd(), "Modulo1", "projetos", "Atividade_avaliacao1") + os.sep
+# caminhoPastaPadrao = os.path.join(os.getcwd(), "Modulo1", "projetos", "Atividade_avaliacao1") + os.sep
+
 # Caminho do diretório atual
-caminho = os.getcwd() + "/Modulo1/atividades/26-06-2024/cadAlunosSys/"
+# os.getcwd() -> /home/ivanvarella/dev/FAP/FAP-2024-Backend-Python
+caminhoPastaPadrao = os.getcwd()
+caminho = os.path.join(caminhoPastaPadrao, "Modulo1", "projetos", "Atividade_avaliacao1") + os.sep
 
 
 # Função exibir menu opções:
