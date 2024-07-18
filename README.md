@@ -51,7 +51,7 @@ Softex
 Ministério da Ciência, Tecnologia e Inovação
 Universidade Federal do Rio Grande do Norte
 
-=============================================================================
+=======================================================================
 
 # FAP Course Repository (Accelerated Training in Programming)
 
