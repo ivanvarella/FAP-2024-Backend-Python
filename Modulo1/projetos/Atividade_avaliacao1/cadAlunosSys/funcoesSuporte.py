@@ -59,6 +59,13 @@ def sair():
     print("#  Obrigado por usar o Sistema de Cadastro de Alunos    #")
     print("#########################################################\n\n")
 
+# Função calcular média notas aluno
+def calcularMediaNotas(notasAluno):
+  if len(notasAluno) == 0:
+    return 0
+  else:
+    return sum(notasAluno) / len(notasAluno)
+
 # Função listar alunos cadastrados
 def listarAlunos():
   dados = readAlunos("alunos.json")
@@ -68,19 +75,23 @@ def listarAlunos():
   if len(alunos) == 0:
       print("\n\nNenhum aluno cadastrado.\n\n")
       return
-  
+
   # Mostrando alunos cadastrados
   print("\n\n############# Lista de Alunos #############")
   print(f"Total de alunos cadastrados: {len(alunos)}")
   for aluno in alunos:
-      print(f"\nMatrícula: {aluno['matricula']}")
-      print(f'Nome: {aluno["nome"]}')
-      print(f'Curso: {aluno["curso"]}')
-      print(f'Notas: {", ".join(map(str, aluno["notas"]))}')  # ', '.join(...): Une strings em única string, separando por ', '.
-      print(f'Presenças: {aluno["presencas"]}')
-      print(f'Telefone: {aluno["telefone"]}')
-      print(f'Email: {aluno["email"]}')
-      print("-" * 30)
+    
+    mediaNotas = calcularMediaNotas(aluno["notas"])
+
+    print(f"\nMatrícula: {aluno['matricula']}")
+    print(f'Nome: {aluno["nome"]}')
+    print(f'Curso: {aluno["curso"]}')
+    print(f'Notas: {", ".join(map(str, aluno["notas"]))}')  # ', '.join(...): Une strings em única string, separando por ', '.
+    print(f'Média das notas: {mediaNotas:.1f}')
+    print(f'Presenças: {aluno["presencas"]}')
+    print(f'Telefone: {aluno["telefone"]}')
+    print(f'Email: {aluno["email"]}')
+    print("-" * 30)
   
   # Opção alterar ou excluir aluno dentro de listar, para facilitar, já que o usuário poderá 
   # visualizar os alunos antes de realizar as alterações:
@@ -156,10 +167,14 @@ def pesquisar():
   if resultados:
     print(f"\n{len(resultados)} aluno(s) encontrado(s) com {nomeCriterio} '{valorBusca}':")
     for aluno in resultados:
+
+      mediaNotas = calcularMediaNotas(aluno["notas"])
+
       print(f"\nMatrícula: {aluno['matricula']}")
       print(f'Nome: {aluno["nome"]}')
       print(f'Curso: {aluno["curso"]}')
       print(f'Notas: {", ".join(map(str, aluno["notas"]))}')
+      print(f'Média das notas: {mediaNotas:.1f}')
       print(f'Presenças: {aluno["presencas"]}')
       print(f'Telefone: {aluno["telefone"]}')
       print(f'Email: {aluno["email"]}')
@@ -185,12 +200,16 @@ def alterarAluno():
   for aluno in alunos:
     if aluno["matricula"] == matriculaAlunoAlterar:
       achoAluno = True
+
+      mediaNotas = calcularMediaNotas(aluno["notas"])
+
       # Mostra os dados atuais do aluno encontrado:
       print("\n############# Dados Atuais do Aluno #############")
       print(f"\nMatrícula: {aluno['matricula']}")
       print(f'Nome: {aluno["nome"]}')
       print(f'Curso: {aluno["curso"]}')
       print(f'Notas: {", ".join(map(str, aluno["notas"]))}')
+      print(f'Média das notas: {mediaNotas:.1f}')
       print(f'Presenças: {aluno["presencas"]}')
       print(f'Telefone: {aluno["telefone"]}')
       print(f'Email: {aluno["email"]}')
