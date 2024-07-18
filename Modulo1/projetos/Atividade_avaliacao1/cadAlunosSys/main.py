@@ -1,24 +1,27 @@
 ##### FAP Backend Python - Turma 17 ####
 ##### Ivan Varella ####
+##### Ricardo Nogueira ####
 
-import funcoesSuporte
+import funcoesSuporte as func
 
 
 # Controle Menu Principal:
 while True:
 
   # Exibir menu principal:
-  opcaoMenuPrincipal, erroTipoMenu, erroVazioMenu, erroMsgMenu = funcoesSuporte.exibirMenuPrincipal()
+  opcaoMenuPrincipal, erroTipoMenu, erroVazioMenu, erroMsgMenu = func.exibirMenuPrincipal()
 
   if opcaoMenuPrincipal == 1:
-    funcoesSuporte.telaCadastroAluno()
+    func.telaCadastroAluno()
   elif opcaoMenuPrincipal == 2:
-    opcaoMenuAlterarExcluir = funcoesSuporte.listarAlunos()
+    opcaoMenuAlterarExcluir = func.listarAlunos()
   elif opcaoMenuPrincipal == 3:
-    funcoesSuporte.sair()
-    break
+    func.pesquisar()
   elif opcaoMenuPrincipal == 4:
-    funcoesSuporte.sobre()
+    func.sair()
+    break
+  elif opcaoMenuPrincipal == 5:
+    func.sobre()
   else:
     print("Opção inválida. Tente novamente.")
 
@@ -31,7 +34,7 @@ while True:
 # Aprimoramentos:
 # 1- Função isValid:
 #   - Receber listas e realizar validações
-#   - Receber int ou float com range limitado, por exemplo: validar se número está entre 1 e 10, muito útil para o caso de opções a fins
+#   - Receber int ou float com range limitado, por exemplo: validar se número está entre 1 e 10, muito útil para o caso de opções do menu e coisas do tipo
 #   - Como o retorno da função está ficando muito extenso, alterar o retorno para retornar uma lista com todos os retornos juntos
 
 
