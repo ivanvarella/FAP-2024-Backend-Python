@@ -1,0 +1,31 @@
+# Ignorar diretório __pycache__
+__pycache__/
+
+# Ignorar todos os arquivos .pyc
+*.pyc
+
+# Ignorar arquivos de configuração do editor
+.vscode/
+.idea/
+
+# Ignorar ambientes virtuais
+venv/
+.env/
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos temporários
+*.tmp
+*.temp
+
+# Ignorar arquivos de backup
+*.bak
+*.old
+
+# Ignorar arquivos de banco de dados SQLite
+*.sqlite3
+
+# Ignorar arquivos de sistema
+.DS_Store
+Thumbs.db
