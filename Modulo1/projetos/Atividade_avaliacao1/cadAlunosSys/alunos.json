@@ -90,14 +90,18 @@
     },
     {
       "matricula": 7,
-      "nome": "Pedro Borges",
+      "nome": "Pedro Gomes da Silva",
       "curso": "Programação para Nerds",
-      "presencas": 21,
-      "telefone": "987654321",
-      "email": "pedrinho@gmail.com",
+      "presencas": 24,
+      "telefone": "987654321654",
+      "email": "pepe@gmail.com",
       "notas": [
         10.0,
-        9.8
+        9.8,
+        10.0,
+        9.5,
+        8.9,
+        10.0
       ]
     }
   ]
