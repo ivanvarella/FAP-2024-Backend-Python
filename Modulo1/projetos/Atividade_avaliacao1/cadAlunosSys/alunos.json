@@ -92,16 +92,13 @@
       "matricula": 7,
       "nome": "Pedro Gomes da Silva",
       "curso": "Programação para Nerds",
-      "presencas": 24,
-      "telefone": "987654321654",
+      "presencas": 25,
+      "telefone": "654321654",
       "email": "pepe@gmail.com",
       "notas": [
         10.0,
         9.8,
-        10.0,
-        9.5,
-        8.9,
-        10.0
+        9.5
       ]
     }
   ]

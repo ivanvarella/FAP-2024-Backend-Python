@@ -1,18 +1,12 @@
 import json
 import os
 
-
-# os.path.join(os.getcwd(), "Modulo1", "projetos", "Atividade_avaliacao1") + os.sep
-# caminhoPastaPadrao = os.path.join(os.getcwd(), "Modulo1", "projetos", "Atividade_avaliacao1") + os.sep
-
 # Caminho do diretório atual
 # os.getcwd() -> /home/ivanvarella/dev/FAP/FAP-2024-Backend-Python
 caminhoPastaPadrao = os.getcwd()
 caminho = os.path.join(caminhoPastaPadrao, "Modulo1", "projetos", "Atividade_avaliacao1", "cadAlunosSys")
 
-
-
-# Função exibir menu opções:
+## Função exibir menu opções:
 def exibirMenuPrincipal():
     print("\n\n########### Menu Principal ############")
     print("#                                     #")
@@ -28,7 +22,7 @@ def exibirMenuPrincipal():
     opcaoMenuPrincipal, erroTipoMenu, erroVazioMenu, erroMsgMenu = isValidInput("Digite a opção desejada: ", "int")
     return opcaoMenuPrincipal, erroTipoMenu, erroVazioMenu, erroMsgMenu
 
-# Função exibir Sobre:
+## Função exibir Sobre:
 def sobre():
     print("\n\n################# Sobre #######################")
     print("#                                             #")
@@ -43,6 +37,7 @@ def sobre():
     print("###############################################\n")
     opcaoSobre, erroTipoSobre, erroVazioSobre, erroMsgSobre = isValidInput("Digite Enter para voltar: ", "string", True) # Aceita vazio, o usuário só pressiona o Enter e volta
 
+## Função de opções mostrada dentro do Exibir alunos - Exibe e depois manipula os alunos
 def exibirMenuAlterarExcluir():
     print("\n\n################################")
     print("# Menu Alterar/ Excluir Aluno  #")
@@ -53,20 +48,20 @@ def exibirMenuAlterarExcluir():
     print("#                              #")
     print("################################\n")
 
-# Função Sair:
+## Função Sair:
 def sair():
     print("\n\n#########################################################")
     print("#  Obrigado por usar o Sistema de Cadastro de Alunos    #")
     print("#########################################################\n\n")
 
-# Função calcular média notas aluno
+## Função calcular média notas aluno
 def calcularMediaNotas(notasAluno):
   if len(notasAluno) == 0:
     return 0
   else:
     return sum(notasAluno) / len(notasAluno)
 
-# Função listar alunos cadastrados
+## Função listar alunos cadastrados
 def listarAlunos():
   dados = readAlunos("alunos.json")
   alunos = dados.get("Alunos", [])  # get(): Pega valores da chave 'Alunos' no dicionário, caso não exista a chave, retorna vazio
@@ -107,7 +102,7 @@ def listarAlunos():
   else:
       print("\nOpção inválida!\n")
   
-# Exibir Menu Pesquisar
+## Exibir Menu Pesquisar
 def exibirMenuPesquisarCriterio():
     print("\n\n#######  Menu Pesquisar  #######")
     print("#                              #")
@@ -126,7 +121,7 @@ def exibirMenuPesquisarCriterio():
         break
     return criterio
 
-# Função para pesquisar nome = 1 / matrícula = 2 / email = 3 / curso = 4
+## Função para pesquisar nome = 1 / matrícula = 2 / email = 3 / curso = 4
 def pesquisar():
   # Exibir menu principal da pesquisa + obter o critério da pesquisa
   criterio = exibirMenuPesquisarCriterio()
@@ -183,12 +178,12 @@ def pesquisar():
     print(f"\nNenhum aluno encontrado com {nomeCriterio} '{valorBusca}'.")
 
 
-# Função excluir aluno (dentro do Listar Alunos):
+## Função excluir aluno (dentro do Listar Alunos):
 def excluirAluno():
   idAlunoExcluir, erroTipoIdAlunoExcluir, erroVazioIdAlunoExcluir, erroMsgIdAlunoExcluir = isValidInput("Digite a matrícula do aluno a ser excluido: ", "int")
   deleteAluno(idAlunoExcluir, "alunos.json")
 
-# Função alterar aluno (dentro do Listar Alunos):
+## Função alterar aluno (dentro do Listar Alunos):
 def alterarAluno():
   matriculaAlunoAlterar, erroTipoMatriculaAlunoAlterar, erroVazioMatriculaAlunoAlterar, erroMsgMatriculaAlunoAlterar = isValidInput("Digite a matrícula do aluno a ser alterado: ", "int")
 
@@ -224,7 +219,7 @@ def alterarAluno():
   novosDados = obterNovosDadosAluno()
   updateAluno(matriculaAlunoAlterar, novosDados, "alunos.json")
 
-# Função para "pegar" os novos dados do aluno a ser atualizado
+## Função para "pegar" os novos dados do aluno a ser atualizado
 def obterNovosDadosAluno():
   novosDados = {}
 
@@ -239,7 +234,7 @@ def obterNovosDadosAluno():
 
   return novosDados
 
-# Função exibir tela de cadastro novo aluno:
+## Função exibir tela de cadastro novo aluno:
 def telaCadastroAluno():
     print("\n\n############# Cadastro de Aluno #############")
 
@@ -262,7 +257,7 @@ def telaCadastroAluno():
     except Exception as e:
       print(f"Erro ao criar o aluno: {e}")
       
-# Função utilizada tratar notas no momento do cadastro do aluno:
+## Função utilizada tratar notas no momento do cadastro do aluno:
 def trataNotasAluno():
   numNotas, erroTipoNumNotas, erroVazioNumNotas, erroMsgNumNotas = isValidInput("Informe o número de notas a serem cadastradas: ", "int")
   notas = []
@@ -276,17 +271,20 @@ def trataNotasAluno():
         print("A nota deve estar entre 0 e 10.")
   return notas
 
-# Futuros aprimoramentos:
-# 1- Função isValid:
-#   - Receber listas e realizar validações
-#   - Receber int ou float com range limitado, por exemplo: validar se número está entre 1 e 10, muito útil para o caso de opções a fins
-#   - Como o retorno da função está ficando muito extenso, alterar o retorno para retornar uma lista com todos os retornos juntos
-# Função para validação de entradas input
+## Função para validação de entradas input
 # - msg: mensagem mostrada no input
 # - tipoEsperado: "string", "int", "float", "intFloat" - "intFloat" podendo receber int ou float
 # - aceitaVazio: padrão False (não aceitando valors vazios), caso aceite, declarar na chamada da função como True
 # - Retorno da função: valor, erroTipo, erroVazio, msgErro
 def isValidInput(msg, tipoEsperado, aceitaVazio = False):
+
+  # Futuros aprimoramentos:
+  # 1- Função isValid:
+  #   - Receber listas e realizar validações
+  #   - Receber int ou float com range limitado, por exemplo: validar se número está entre 1 e 10, muito útil para o caso de opções a fins
+  #   - Como o retorno da função está ficando muito extenso, alterar o retorno para retornar uma lista com todos os retornos juntos
+
+
   # Inicialização dos erros:
   erroTipo = False
   erroVazio = False
@@ -341,7 +339,7 @@ def isValidInput(msg, tipoEsperado, aceitaVazio = False):
 #Funções CRUD (Create, Read, Update, Delete):
 
 # ---------------------------------------------------------------------------
-# Função Create - Funcionando corretamente:
+## Função Create - Funcionando corretamente:
 def createAluno(novoAluno, arquivoJson):
   # Caminho do arquivo JSON
   global caminho  # Declarar que vamos usar a variável global 'caminho'
@@ -374,7 +372,7 @@ def createAluno(novoAluno, arquivoJson):
 
 # ---------------------------------------------------------------------------
 
-# Função Read - Funcionanado corretamente:
+## Função Read - Funcionanado corretamente:
 def readAlunos(arquivoJson):
   # Caminho do arquivo JSON
   global caminho  # Declarar que vamos usar a variável global 'caminho'
@@ -387,7 +385,7 @@ def readAlunos(arquivoJson):
   return data
 # ---------------------------------------------------------------------------
 
-# Função Update - funcionando:
+## Função Update - funcionando:
 # Fluxo: Read data -> Encontra o aluno pelo id -> Atualiza o aluno no dicionário obtino no Read
 # -> Salvar o novo Json com o aluno atualizado (todo o Json é gravado).
 def updateAluno(alunoMatricula, novosDados, arquivoJson):
@@ -415,7 +413,7 @@ def updateAluno(alunoMatricula, novosDados, arquivoJson):
     print(f"Aluno com Matrícula {alunoMatricula} não encontrado.")
 
 # ---------------------------------------------------------------------------
-# Função Delete - Funcionando corretamente:
+## Função Delete - Funcionando corretamente:
 # Fluxo: Read data -> Encontra o aluno pelo id -> Apaga aluno no dicionário obtino no Read
 # -> Salvar o novo Json com o aluno excluído.
 # Função para deletar aluno pelo ID
