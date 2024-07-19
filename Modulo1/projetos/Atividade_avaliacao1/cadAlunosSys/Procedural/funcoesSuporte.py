@@ -4,7 +4,7 @@ import os
 # Caminho do diretório atual
 # os.getcwd() -> /home/ivanvarella/dev/FAP/FAP-2024-Backend-Python
 caminhoPastaPadrao = os.getcwd()
-caminho = os.path.join(caminhoPastaPadrao, "Modulo1", "projetos", "Atividade_avaliacao1", "cadAlunosSys")
+caminho = os.path.join(caminhoPastaPadrao, "Modulo1", "projetos", "Atividade_avaliacao1", "cadAlunosSys", "Procedural")
 
 ## Função exibir menu opções:
 def exibirMenuPrincipal():
