@@ -1,140 +1,210 @@
 # Uma classe Aluno com atributos apropriados e métodos para:
 # o Adicionar notas
-# o Calcular a média
+# o Calcular a média - Ok
 # o Representar o aluno como string ->  def __str__(self): - OK
 
+# Classe que gerencia os dados do(s) arquivo(s) Json
+from jsonHandler import JsonHandler
 
+
+# A classe Pessoa só serve para a utilização de Aluno ou de futuras classes,
+# por exemplo, professores, funcionários...
 class Pessoa:
     """Classe base para representar uma pessoa."""
 
     def __init__(self, nome: str, telefone: str, email: str):
+        # Comando raise ValueError: "imprime" a mensagem e interrompe a continuação do código
+        if not nome or not isinstance(nome, str):
+            raise ValueError("Nome deve ser uma string não vazia.")
+        if not telefone or not isinstance(telefone, str):
+            raise ValueError("Telefone deve ser uma string não vazia.")
+        if not email or not isinstance(email, str):
+            raise ValueError("Email deve ser uma string não vazia.")
+
         self.nome = nome
         self.telefone = telefone
         self.email = email
 
-    def atualizar_info(self, nome=None, telefone=None, email=None):
-        """Atualiza as informações da pessoa."""
-        if nome:
-            self.nome = nome
-        if telefone:
-            self.telefone = telefone
-        if email:
-            self.email = email
-
     def __str__(self):
         """Retorna uma representação em string da pessoa."""
-        return (f"Nome: {self.nome}\n"
-                f"Telefone: {self.telefone}\n"
-                f"Email: {self.email}\n")
+        return (
+            f"Nome: {self.nome}\n"
+            f"Telefone: {self.telefone}\n"
+            f"Email: {self.email}\n"
+        )
+
 
 class Aluno(Pessoa):
     """Classe para representar um aluno, herda de Pessoa."""
 
-    def __init__(self, matricula: int, nome: str, curso: str, notas: list, presencas: int, telefone: str, email: str):
+    def __init__(
+        self,
+        matricula: None,  # Gerenciada dentro da classe JsonHandler
+        nome: str,
+        curso: str,
+        notas: list,
+        presencas: int,
+        telefone: str,
+        email: str,
+        json_handler: JsonHandler,  # Parâmetro classe JsonHandler
+    ):
+        # Chamada do construtor + inicializa os atributos da superclasse (Pessoa)
         super().__init__(nome, telefone, email)
+        # Comando raise ValueError: "imprime" a mensagem e interrompe a continuação do código
+        if matricula is not None and (not isinstance(matricula, int) or matricula <= 0):
+            raise ValueError("Matrícula deve ser um inteiro positivo.")
+        if not curso or not isinstance(curso, str):
+            raise ValueError("Curso deve ser uma string não vazia.")
+        # Utilizando a "função geradora": isinstance(nota, (int, float)) for nota in notas, onde,
+        # cada nota da lista é passada para o método "isinstance(nota, (int, float))", que verifica
+        # se são instatâncias de int ou de float (ou seja, verificam se são um int ou um float).
+        # Após a verificação de todoas as notas, é executado o método all(), que recebe o iterável retornado
+        # pela "função geradora" com True ou False. Se todos forem True, é retornado True pelo all().
+        if not all(isinstance(nota, (int, float)) for nota in notas):
+            raise ValueError("Todas as notas devem ser números.")
+        if not isinstance(presencas, int) or presencas < 0:
+            raise ValueError("Presenças deve ser um inteiro não negativo.")
+
+        # Validação do json_handler
+        if not isinstance(json_handler, JsonHandler):
+            raise ValueError("json_handler deve ser uma instância de JsonHandler.")
+
+        # Inicializa atributos específicos da subclasse (Aluno)
         self.matricula = matricula
         self.curso = curso
         self.notas = notas
         self.presencas = presencas
+        # Armazena a instância de JsonHandler de forma a permitir a utilização dos
+        # métodos da classe JsonHandler para manipular os dados do arquivo Json
+        self.json_handler = json_handler
 
-    def calcular_media(self):
-        """Calcula a média das notas do aluno."""
+    def calcular_media(self) -> float:
+        """Calcula a média das notas do aluno.
+
+        Returns:
+            float: Média das notas.
+        """
         if len(self.notas) == 0:
-            return 0
+            return 0.0
         return sum(self.notas) / len(self.notas)
 
     def __str__(self):
         """Retorna uma representação em string do aluno."""
         media_notas = self.calcular_media()
         notas_str = ", ".join(map(str, self.notas))
-        return (super().__str__() +
-                f"Matrícula: {self.matricula}\n"
-                f"Curso: {self.curso}\n"
-                f"Notas: {notas_str}\n"
-                f"Média das notas: {media_notas:.1f}\n"
-                f"Presenças: {self.presencas}\n")
+        return (
+            super().__str__() + f"Matrícula: {self.matricula}\n"
+            f"Curso: {self.curso}\n"
+            f"Notas: {notas_str}\n"
+            f"Média das notas: {media_notas:.1f}\n"
+            f"Presenças: {self.presencas}\n"
+        )
 
-class Professor(Pessoa):
-    """Classe para representar um professor, herda de Pessoa."""
+    # Mudar esse método para a classe: GerenciadorAlunos
+    # Utiliza o método interno da classe JsonHandler para adicionar o aluno no Json
+    def salvar(self):
+        """Salva a instância atual de Aluno usando o JsonHandler."""
 
-    def __init__(self, matricula: int, nome: str, telefone: str, email: str, departamento: str):
-        super().__init__(nome, telefone, email)
-        self.matricula = matricula
-        self.departamento = departamento
+        if self.matricula is None:
+            # Gerar uma nova matrícula se não estiver definida
+            self.matricula = self.json_handler.gerar_matricula()
 
-    def __str__(self):
-        """Retorna uma representação em string do professor."""
-        return (super().__str__() +
-                f"Matrícula: {self.matricula}\n"
-                f"Departamento: {self.departamento}\n")
+        aluno_data = {
+            # Matrícula está sendo gerenciado pos JsonHandler, nesse caso eu não posso
+            # mandar a matrícula dessa forma, talvez eu possa somente inicializar a matrícula
+            # em Alunos como None, ou talvés seja melhor passar a criação da matrícula aqui em Alunos
+            "matricula": self.matricula,
+            "nome": self.nome,
+            "curso": self.curso,
+            "notas": self.notas,
+            "presencas": self.presencas,
+            "telefone": self.telefone,
+            "email": self.email,
+        }
+        self.json_handler.create(aluno_data)
 
-class GerenciarAlunos:
-    """Classe para gerenciar alunos."""
 
-    def __init__(self):
-        self.alunos = []
+# class Professor(Pessoa):
+#     """Classe para representar um professor, herda de Pessoa."""
 
-    def create_aluno(self, matricula: int, nome: str, curso: str, notas: list, presencas: int, telefone: str, email: str):
-        """Cria um novo aluno e adiciona à lista de alunos."""
-        aluno = Aluno(matricula, nome, curso, notas, presencas, telefone, email)
-        self.alunos.append(aluno)
+#     def __init__(self, matricula: int, nome: str, telefone: str, email: str, departamento: str):
+#         super().__init__(nome, telefone, email)
+#         self.matricula = matricula
+#         self.departamento = departamento
 
-    def read_alunos(self):
-        """Imprime as informações de todos os alunos."""
-        for aluno in self.alunos:
-            print(aluno)
+#     def __str__(self):
+#         """Retorna uma representação em string do professor."""
+#         return (super().__str__() +
+#                 f"Matrícula: {self.matricula}\n"
+#                 f"Departamento: {self.departamento}\n")
 
-    def update_aluno(self, matricula: int, nome=None, telefone=None, email=None, curso=None, notas=None, presencas=None):
-        """Atualiza as informações de um aluno específico."""
-        for aluno in self.alunos:
-            if aluno.matricula == matricula:
-                aluno.atualizar_info(nome, telefone, email)
-                if curso:
-                    aluno.curso = curso
-                if notas is not None:
-                    aluno.notas = notas
-                if presencas is not None:
-                    aluno.presencas = presencas
-                break
-        else:
-            print(f"Aluno com matrícula {matricula} não encontrado.")
+# class GerenciarAlunos:
+#     """Classe para gerenciar alunos."""
 
-    def delete_aluno(self, matricula: int):
-        """Remove um aluno da lista baseado na matrícula."""
-        self.alunos = [aluno for aluno in self.alunos if aluno.matricula != matricula]
+#     def __init__(self):
+#         self.alunos = []
 
-class GerenciarProfessores:
-    """Classe para gerenciar professores."""
+#     def create_aluno(self, matricula: int, nome: str, curso: str, notas: list, presencas: int, telefone: str, email: str):
+#         """Cria um novo aluno e adiciona à lista de alunos."""
+#         aluno = Aluno(matricula, nome, curso, notas, presencas, telefone, email)
+#         self.alunos.append(aluno)
 
-    def __init__(self):
-        self.professores = []
+#     def read_alunos(self):
+#         """Imprime as informações de todos os alunos."""
+#         for aluno in self.alunos:
+#             print(aluno)
 
-    def create_professor(self, matricula: int, nome: str, telefone: str, email: str, departamento: str):
-        """Cria um novo professor e adiciona à lista de professores."""
-        professor = Professor(matricula, nome, telefone, email, departamento)
-        self.professores.append(professor)
+#     def update_aluno(self, matricula: int, nome=None, telefone=None, email=None, curso=None, notas=None, presencas=None):
+#         """Atualiza as informações de um aluno específico."""
+#         for aluno in self.alunos:
+#             if aluno.matricula == matricula:
+#                 aluno.atualizar_info(nome, telefone, email)
+#                 if curso:
+#                     aluno.curso = curso
+#                 if notas is not None:
+#                     aluno.notas = notas
+#                 if presencas is not None:
+#                     aluno.presencas = presencas
+#                 break
+#         else:
+#             print(f"Aluno com matrícula {matricula} não encontrado.")
 
-    def read_professores(self):
-        """Imprime as informações de todos os professores."""
-        for professor in self.professores:
-            print(professor)
+#     def delete_aluno(self, matricula: int):
+#         """Remove um aluno da lista baseado na matrícula."""
+#         self.alunos = [aluno for aluno in self.alunos if aluno.matricula != matricula]
 
-    def update_professor(self, matricula: int, nome=None, telefone=None, email=None, departamento=None):
-        """Atualiza as informações de um professor específico."""
-        for professor in self.professores:
-            if professor.matricula == matricula:
-                professor.atualizar_info(nome, telefone, email)
-                if departamento:
-                    professor.departamento = departamento
-                break
-        else:
-            print(f"Professor com matrícula {matricula} não encontrado.")
+# class GerenciarProfessores:
+#     """Classe para gerenciar professores."""
 
-    def delete_professor(self, matricula: int):
-        """Remove um professor da lista baseado na matrícula."""
-        self.professores = [professor for professor in self.professores if professor.matricula != matricula]
+#     def __init__(self):
+#         self.professores = []
 
-    
+#     def create_professor(self, matricula: int, nome: str, telefone: str, email: str, departamento: str):
+#         """Cria um novo professor e adiciona à lista de professores."""
+#         professor = Professor(matricula, nome, telefone, email, departamento)
+#         self.professores.append(professor)
+
+#     def read_professores(self):
+#         """Imprime as informações de todos os professores."""
+#         for professor in self.professores:
+#             print(professor)
+
+#     def update_professor(self, matricula: int, nome=None, telefone=None, email=None, departamento=None):
+#         """Atualiza as informações de um professor específico."""
+#         for professor in self.professores:
+#             if professor.matricula == matricula:
+#                 professor.atualizar_info(nome, telefone, email)
+#                 if departamento:
+#                     professor.departamento = departamento
+#                 break
+#         else:
+#             print(f"Professor com matrícula {matricula} não encontrado.")
+
+#     def delete_professor(self, matricula: int):
+#         """Remove um professor da lista baseado na matrícula."""
+#         self.professores = [professor for professor in self.professores if professor.matricula != matricula]
+
+
 # ========================================================================================================================================
 # class Aluno:
 #     def __init__(self, matricula: int, nome: str, curso: str, notas: list, presencas: int, telefone: str, email: str):
@@ -146,14 +216,14 @@ class GerenciarProfessores:
 #         self.telefone = telefone
 #         self.email = email
 
-    # def calcular_media(self):
-    #     if len(self.notas) == 0:
-    #         return 0
-    #     return sum(self.notas) / len(self.notas)
+# def calcular_media(self):
+#     if len(self.notas) == 0:
+#         return 0
+#     return sum(self.notas) / len(self.notas)
 
 #     # Método __str__ para representar o aluno como string
-#     # Quando você usa a função print() (por exemplo: print(alunoX)) em um objeto dessa classe, 
-#     # ou quando você converte o objeto para uma string, o método __str__ 
+#     # Quando você usa a função print() (por exemplo: print(alunoX)) em um objeto dessa classe,
+#     # ou quando você converte o objeto para uma string, o método __str__
 #     # é chamado para gerar uma representação legível do objeto.
 #     def __str__(self):
 #         media_notas = self.calcular_media()
@@ -195,12 +265,12 @@ class GerenciarProfessores:
 #         for aluno in self.alunos:
 #             aluno.exibir_informacoes()
 #             print()
-    
+
 #     def buscar_aluno(self, matricula: int):
 #         for aluno in self.alunos:
 #             if aluno.matricula == matricula:
 #                 return aluno
-            
+
 #     def editar_aluno(self, matricula: int, novos_dados: dict):
 #         aluno = self.buscar_aluno(matricula)
 #         if aluno:

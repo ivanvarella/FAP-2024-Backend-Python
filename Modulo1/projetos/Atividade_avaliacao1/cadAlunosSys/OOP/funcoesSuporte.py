@@ -1,11 +1,9 @@
 import json
 import os
-from alunos import Aluno
 
 # Usar Rich e Prettytable
 
 # Caminho do diretório atual
-# os.getcwd() -> /home/ivanvarella/dev/FAP/FAP-2024-Backend-Python
 caminhoPastaPadrao = os.getcwd()
 caminho = os.path.join(
     caminhoPastaPadrao,
@@ -13,7 +11,7 @@ caminho = os.path.join(
     "projetos",
     "Atividade_avaliacao1",
     "cadAlunosSys",
-    "Procedural",
+    "OOP",
 )
 
 
@@ -71,14 +69,6 @@ def sair():
     print("\n\n#########################################################")
     print("#  Obrigado por usar o Sistema de Cadastro de Alunos    #")
     print("#########################################################\n\n")
-
-
-## Função calcular média notas aluno
-def calcularMediaNotas(notasAluno):
-    if len(notasAluno) == 0:
-        return 0
-    else:
-        return sum(notasAluno) / len(notasAluno)
 
 
 ## Função listar alunos cadastrados
@@ -425,130 +415,3 @@ def isValidInput(msg, tipoEsperado, aceitaVazio=False):
                     valor = input(msg)
 
     return valor, erroTipo, erroVazio, erroMsg
-
-
-# ############################ CRUD Json ############################
-# Funções CRUD (Create, Read, Update, Delete):
-
-
-# ---------------------------------------------------------------------------
-## Função Create - Funcionando corretamente:
-def createAluno(novoAluno, arquivoJson):
-    # Caminho do arquivo JSON
-    global caminho  # Declarar que vamos usar a variável global 'caminho'
-    caminhoCompleto = os.path.join(caminho, arquivoJson)
-
-    # Carregar dados do arquivo JSON
-    with open(caminhoCompleto, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    # Se o Json estiver vazio, inicializa-o como objeto 'Alunos'
-    if "Alunos" not in data:
-        data["Alunos"] = []
-
-    # Determinar a próxima Matrícula única e sequencial:
-    matriculas = []
-    # Percorra cada aluno na lista 'data["Alunos"]' e adicione a matrícula do aluno à lista 'matriculas'
-    for aluno in data["Alunos"]:
-        matriculas.append(aluno["matricula"])
-    # Encontre a maior Matrícula e adiciona 1 para gerar a nova Matrícula
-    nova_matricula = max(matriculas) + 1
-    # Adiciona ao aluno que será gravado no Json com a Matrícula nova
-    novoAluno["matricula"] = nova_matricula
-
-    # Adicionar novo Aluno ao cadastro
-    data["Alunos"].append(novoAluno)
-
-    # Escrever de volta no arquivo JSON
-    with open(caminhoCompleto, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-
-
-# ---------------------------------------------------------------------------
-
-
-## Função Read - Funcionanado corretamente:
-def readAlunos(arquivoJson):
-    # Caminho do arquivo JSON
-    global caminho  # Declarar que vamos usar a variável global 'caminho'
-    caminhoCompleto = os.path.join(caminho, arquivoJson)
-
-    # Carregar dados do arquivo JSON
-    with open(caminhoCompleto, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    return data
-
-
-# ---------------------------------------------------------------------------
-
-
-## Função Update - funcionando:
-# Fluxo: Read data -> Encontra o aluno pelo id -> Atualiza o aluno no dicionário obtino no Read
-# -> Salvar o novo Json com o aluno atualizado (todo o Json é gravado).
-def updateAluno(alunoMatricula, novosDados, arquivoJson):
-    data = readAlunos(arquivoJson)
-    if "Alunos" not in data:
-        print("Nenhum aluno cadastrado no sistema.")
-        return
-    alunoEncontrado = False
-    for i, aluno in enumerate(data["Alunos"]):
-        if aluno["matricula"] == alunoMatricula:
-            alunoEncontrado = True
-            # Método update: atualiza dados no dicionário passado na posição do index
-            # como só tem uma matrícula, então só altera esta.
-            data["Alunos"][i].update(novosDados)
-            break
-    if alunoEncontrado:
-        # Caminho do arquivo JSON
-        global caminho  # Declarar que vamos usar a variável global 'caminho'
-        caminhoCompleto = os.path.join(caminho, arquivoJson)
-
-        with open(caminhoCompleto, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        print(f"\nAluno com Matrícula {alunoMatricula} atualizado com sucesso.")
-    else:
-        print(f"Aluno com Matrícula {alunoMatricula} não encontrado.")
-
-
-# ---------------------------------------------------------------------------
-## Função Delete - Funcionando corretamente:
-# Fluxo: Read data -> Encontra o aluno pelo id -> Apaga aluno no dicionário obtino no Read
-# -> Salvar o novo Json com o aluno excluído.
-# Função para deletar aluno pelo ID
-def deleteAluno(alunoMatricula, arquivoJson):
-    # Carregar dados do arquivo JSON
-    data = readAlunos(arquivoJson)
-
-    # Se o Json vazio, msg de "warning"
-    if "Alunos" not in data:
-        print("Nenhum aluno cadastrado no sistema.")
-        return
-
-    # Encontrar o aluno pela Matrícula e remover do dicionário carregado previamente (data)
-    alunoEncontrado = False
-    # Pega valor-chave (i, aluno), onde i = index e aluno = dicionário com os dados de cada aluno
-    for i, aluno in enumerate(data["Alunos"]):
-        if aluno["matricula"] == alunoMatricula:
-            alunoEncontrado = True
-            # Pega os dados do aluno antes de deletar para poder mostrar na tela
-            nomeAlunoDeletado = data["Alunos"][i]["nome"]
-            matriculaAlunoDeletado = data["Alunos"][i]["matricula"]
-            # Deleção de um único aluno via index
-            del data["Alunos"][i]
-            break  # Encontrou -> interrompe o for
-
-    if alunoEncontrado:
-        # Caminho do arquivo JSON
-        global caminho  # Declarar que vamos usar a variável global 'caminho'
-        caminhoCompleto = os.path.join(caminho, arquivoJson)
-
-        # Escreve de volta no JSON, o arquivo completo com todos os alunos, menos o aluno deletado
-        with open(caminhoCompleto, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        print(
-            f"O Aluno {nomeAlunoDeletado} (Matrícula: {matriculaAlunoDeletado}) foi deletado com sucesso."
-        )
-    else:
-        print(f"Aluno com a Matrícula {alunoMatricula} não foi encontrado.")
-    # ---------------------------------------------------------------------------

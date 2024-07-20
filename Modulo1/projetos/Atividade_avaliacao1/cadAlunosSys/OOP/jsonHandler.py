@@ -44,9 +44,9 @@ class JsonHandler:
                 # Não muda nada, pois pode-se acessar os dados da tupla diretamente
                 (
                     criarNovoJson,
-                    erroTipoCriarNovoJson,
-                    erroVazioCriarNovoJson,
-                    erroMsgCriarNovoJson,
+                    _,
+                    _,
+                    _,
                 ) = func.isValidInput("Opção desejada: ", "int")
 
                 if criarNovoJson == 1:
@@ -64,6 +64,34 @@ class JsonHandler:
             except IOError as e:
                 print(f"Erro ao criar o arquivo JSON: {e}")
                 return
+
+    # Determinar a próxima Matrícula única e sequencial:
+    # Função geradora cria a lista com todas as matrículas
+    def gerar_matricula(self, data):
+        """
+        Determina a próxima matrícula única e sequencial.
+        """
+        # Lista de matrículas existentes
+        matriculas = [item["matricula"] for item in data.get(self.chavePrincipal, [])]
+        # Operador ternário: Se tiver alguma matrícula faz matrícula + 1, se não
+        # (não tem dado nenhum), matrícula = 1
+        nova_matricula = max(matriculas) + 1 if matriculas else 1
+        return nova_matricula
+
+    def gerar_matricula(self):
+        try:
+            with open(self.caminhoCompletoJson, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            # Lista de matrículas existentes
+            matriculas = [
+                item["matricula"] for item in data.get(self.chavePrincipal, [])
+            ]
+            # Operador ternário: Se tiver alguma matrícula faz matrícula + 1, se não
+            # (não tem dado nenhum), matrícula = 1
+            nova_matricula = max(matriculas) + 1 if matriculas else 1
+            return nova_matricula
+        except (IOError, json.JSONDecodeError) as e:
+            print(f"Erro ao carregar o arquivo JSON: {e}")
 
     # ############################ CRUD Json ############################
     # Métodos CRUD (Create, Read, Update, Delete):
@@ -83,13 +111,8 @@ class JsonHandler:
         if self.chavePrincipal not in data:
             data[self.chavePrincipal] = []
 
-        # Determinar a próxima Matrícula única e sequencial:
-        matriculas = [
-            item["matricula"]
-            for item in data[self.chavePrincipal]
-            if "matricula" in item
-        ]
-        nova_matricula = max(matriculas) + 1 if matriculas else 1
+        # Nova matrícula única e seguencial
+        nova_matricula = self.gerar_matricula()
         novoData["matricula"] = nova_matricula
 
         # Adicionar novo dado ao cadastro
