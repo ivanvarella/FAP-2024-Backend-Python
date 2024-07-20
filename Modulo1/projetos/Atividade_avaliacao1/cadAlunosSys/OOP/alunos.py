@@ -224,6 +224,7 @@ class GerenciarProfessores:
 #     def __init__(self):
 #         self.alunos = []
 
+
 #     def create_aluno(self, nome: str, curso: str, notas: list, presencas: int, telefone: str, email: str):
 #         aluno = Aluno(nome, matricula, telefone, email, aniversario)
 #         self.alunos.append(aluno)
@@ -232,7 +233,7 @@ class GerenciarProfessores:
 #     def read_alunos(self):
 #         return self.alunos
 
-#     def update_aluno(self, matricula, nome=None, telefone=None, email=None, aniversario=None):
+#     def update_aluno(self, matricula):
 #         aluno = self.find_aluno(matricula)
 #         if aluno:
 #             aluno.atualizar_info(nome, telefone, email, aniversario)

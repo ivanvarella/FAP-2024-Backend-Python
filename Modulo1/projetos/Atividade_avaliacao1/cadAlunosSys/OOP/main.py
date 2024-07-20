@@ -8,23 +8,24 @@ import funcoesSuporte as func
 # Controle Menu Principal:
 while True:
 
-  # Exibir menu principal:
-  opcaoMenuPrincipal, erroTipoMenu, erroVazioMenu, erroMsgMenu = func.exibirMenuPrincipal()
+    # Exibir menu principal - Pega o retorno do input interno:
+    opcaoMenuPrincipal, erroTipoMenu, erroVazioMenu, erroMsgMenu = (
+        func.exibirMenuPrincipal()
+    )
 
-  if opcaoMenuPrincipal == 1:
-    func.telaCadastroAluno()
-  elif opcaoMenuPrincipal == 2:
-    func.listarAlunos()
-  elif opcaoMenuPrincipal == 3:
-    func.pesquisar()
-  elif opcaoMenuPrincipal == 4:
-    func.sair()
-    break
-  elif opcaoMenuPrincipal == 5:
-    func.sobre()
-  else:
-    print("Opção inválida. Tente novamente.")
-
+    if opcaoMenuPrincipal == 1:
+        func.telaCadastroAluno()
+    elif opcaoMenuPrincipal == 2:
+        func.listarAlunos()
+    elif opcaoMenuPrincipal == 3:
+        func.pesquisar()
+    elif opcaoMenuPrincipal == 4:
+        func.sair()
+        break
+    elif opcaoMenuPrincipal == 5:
+        func.sobre()
+    else:
+        print("Opção inválida. Tente novamente.")
 
 
 # Aprimoramentos:
