@@ -9,24 +9,55 @@ import funcoesSuporte as func
 while True:
 
     # Exibir menu principal - Pega o retorno do input interno:
-    opcaoMenuPrincipal, erroTipoMenu, erroVazioMenu, erroMsgMenu = (
-        func.exibirMenuPrincipal()
-    )
+    opcaoMenuPrincipal = func.exibirMenuPrincipal()
 
     if opcaoMenuPrincipal == 1:
-        func.telaCadastroAluno()
+        func.telaCadastro("Alunos")
     elif opcaoMenuPrincipal == 2:
-        func.listarAlunos()
+        func.listar("Alunos")
     elif opcaoMenuPrincipal == 3:
-        func.pesquisar()
+        func.pesquisar("Alunos")
     elif opcaoMenuPrincipal == 4:
+        func.telaCadastro("Professores")
+    elif opcaoMenuPrincipal == 5:
+        func.listar("Professores")
+    elif opcaoMenuPrincipal == 6:
+        func.pesquisar("Professores")
+    elif opcaoMenuPrincipal == 7:
+        func.listar()
+    elif opcaoMenuPrincipal == 8:
+        func.pesquisar()
+    elif opcaoMenuPrincipal == 9:
         func.sair()
         break
-    elif opcaoMenuPrincipal == 5:
+    elif opcaoMenuPrincipal == 0:
         func.sobre()
     else:
         print("Opção inválida. Tente novamente.")
 
+    # print("\n\n########### Menu Principal ############")
+    # print("#            [ Alunos ]               #")
+    # print("#                                     #")
+    # print("#   Cod[1]: Cadastrar Aluno           #")
+    # print("#   Cod[2]: Listar / Alterar Aluno    #")
+    # print("#   Cod[3]: Pesquisar Aluno           #")
+    # print("# ----------------------------------- #")
+    # print("#          [ Professores ]            #")
+    # print("#                                     #")
+    # print("#   Cod[4]: Cadastrar Professor       #")
+    # print("#   Cod[5]: Listar / Alterar Prof.    #")
+    # print("#   Cod[6]: Pesquisar Professor       #")
+    # print("# ----------------------------------- #")
+    # print("#         [ Outras opções ]           #")
+    # print("#                                     #")
+    # print("#   Cod[7]: Listar                    #")
+    # print("#   Cod[8]: Pesquisar                 #")
+    # print("# ----------------------------------- #")
+    # print("#                                     #")
+    # print("#   Cod[9]: Sair                      #")
+    # print("#   Cod[0]: Sobre                     #")
+    # print("#                                     #")
+    # print("#######################################\n")
 
 # Aprimoramentos:
 # 1- Função isValid:

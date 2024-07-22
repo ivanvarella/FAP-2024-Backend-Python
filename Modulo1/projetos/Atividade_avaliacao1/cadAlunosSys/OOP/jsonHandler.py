@@ -67,18 +67,10 @@ class JsonHandler:
 
     # Determinar a próxima Matrícula única e sequencial:
     # Função geradora cria a lista com todas as matrículas
-    def gerar_matricula(self, data):
+    def gerar_matricula(self):
         """
         Determina a próxima matrícula única e sequencial.
         """
-        # Lista de matrículas existentes
-        matriculas = [item["matricula"] for item in data.get(self.chavePrincipal, [])]
-        # Operador ternário: Se tiver alguma matrícula faz matrícula + 1, se não
-        # (não tem dado nenhum), matrícula = 1
-        nova_matricula = max(matriculas) + 1 if matriculas else 1
-        return nova_matricula
-
-    def gerar_matricula(self):
         try:
             with open(self.caminhoCompletoJson, "r", encoding="utf-8") as f:
                 data = json.load(f)
@@ -99,6 +91,12 @@ class JsonHandler:
     # ---------------------------------------------------------------------------
     ## Create
     def create(self, novoData):
+
+        # Chama a verificação do arquivo Json, caso não exista, pergunta se deseja criar, pois
+        # se o arquivo já existir, talvez não esteja sendo alcançado por algum motivo, então \
+        # o usuário não iria querer criar um novo.
+        self.verificar_e_inicializar_json()
+
         # Carregar dados do arquivo JSON
         try:
             with open(self.caminhoCompletoJson, "r", encoding="utf-8") as f:
