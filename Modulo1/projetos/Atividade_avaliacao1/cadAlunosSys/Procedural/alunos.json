@@ -4,11 +4,7 @@
       "matricula": 1,
       "nome": "João da Silva",
       "curso": "Ciência da Computação",
-      "notas": [
-        8.5,
-        7.0,
-        9.0
-      ],
+      "notas": [8.5, 7.0, 9.0],
       "presencas": 18,
       "telefone": "1234-5678",
       "email": "joao.silva@email.com"
@@ -17,11 +13,7 @@
       "matricula": 2,
       "nome": "Maria Oliveira",
       "curso": "Engenharia Civil",
-      "notas": [
-        9.5,
-        8.0,
-        10.0
-      ],
+      "notas": [9.5, 8.0, 10.0],
       "presencas": 20,
       "telefone": "9876-5432",
       "email": "maria.oliveira@email.com"
@@ -30,34 +22,19 @@
       "matricula": 3,
       "nome": "Pedro Santos",
       "curso": "Administração",
-      "notas": [
-        6.0,
-        7.5,
-        8.5
-      ],
+      "notas": [6.0, 7.5, 8.5],
       "presencas": 15,
       "telefone": "5555-1111",
       "email": "pedro.santos@email.com"
     },
     {
       "matricula": 4,
-      "nome": "Gogofredo Gois",
+      "nome": "Gogofredo Gois Silva",
       "curso": "Linguas estragueiras",
-      "presencas": 31,
-      "telefone": "654321654654",
-      "email": "gogo@teste.com.br",
-      "notas": [
-        10.0,
-        8.0,
-        9.0,
-        8.0,
-        7.0,
-        8.0,
-        8.0,
-        9.0,
-        8.0,
-        10.0
-      ]
+      "presencas": 20,
+      "telefone": "654987987",
+      "email": "gogo@gmail.com",
+      "notas": [10.0, 9.5, 7.5]
     },
     {
       "matricula": 5,
@@ -66,24 +43,13 @@
       "presencas": 15,
       "telefone": "56498731",
       "email": "raquel_do_python@gmail.com",
-      "notas": [
-        10,
-        9.5,
-        9.8
-      ]
+      "notas": [10, 9.5, 9.8]
     },
     {
       "matricula": 6,
       "nome": "Celestino Celestiano Celeste Celestial",
       "curso": "Engenharia de Dados com Python",
-      "notas": [
-        10.0,
-        9.6,
-        8.9,
-        9.5,
-        10.0,
-        9.3
-      ],
+      "notas": [10.0, 9.6, 8.9, 9.5, 10.0, 9.3],
       "presencas": 35,
       "telefone": "654321654",
       "email": "cece@gmail.com"
@@ -95,11 +61,16 @@
       "presencas": 25,
       "telefone": "654321654",
       "email": "pepe@gmail.com",
-      "notas": [
-        10.0,
-        9.8,
-        9.5
-      ]
+      "notas": [10.0, 9.8, 9.5]
+    },
+    {
+      "matricula": 8,
+      "nome": "Fulando sem notas",
+      "curso": "Enge comp.",
+      "presencas": 10,
+      "telefone": "654654654",
+      "email": "fufu@gmail.com",
+      "notas": []
     }
   ]
 }
