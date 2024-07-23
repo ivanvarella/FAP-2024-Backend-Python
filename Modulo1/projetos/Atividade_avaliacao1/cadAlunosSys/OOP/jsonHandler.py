@@ -74,13 +74,15 @@ class JsonHandler:
         try:
             with open(self.caminhoCompletoJson, "r", encoding="utf-8") as f:
                 data = json.load(f)
-            # Lista de matrículas existentes
-            matriculas = [
-                item["matricula"] for item in data.get(self.chavePrincipal, [])
+            # Lista de matrículas existentes de alunos e professores
+            matriculas_alunos = [item["matricula"] for item in data.get("Alunos", [])]
+            matriculas_professores = [
+                item["matricula"] for item in data.get("Professores", [])
             ]
+            todas_matriculas = matriculas_alunos + matriculas_professores
             # Operador ternário: Se tiver alguma matrícula faz matrícula + 1, se não
             # (não tem dado nenhum), matrícula = 1
-            nova_matricula = max(matriculas) + 1 if matriculas else 1
+            nova_matricula = max(todas_matriculas) + 1 if todas_matriculas else 1
             return nova_matricula
         except (IOError, json.JSONDecodeError) as e:
             print(f"Erro ao carregar o arquivo JSON: {e}")
@@ -105,15 +107,18 @@ class JsonHandler:
             print(f"Erro ao carregar o arquivo JSON: {e}")
             return
 
-        # Se o Json estiver vazio, inicializa-o conforme a chavePrincipal
+        # Se o Json tiver dados de "Alunos" ou "Professor" (chavePrincipal), inicializa-o conforme a chavePrincipal
+        # Assim é possível utilizar esse mesmo método para Alunos, Professores ou outros dados
         if self.chavePrincipal not in data:
-            data[self.chavePrincipal] = []
+            data[self.chavePrincipal] = (
+                []
+            )  # Exemplo: data["Alunos"] = [] -> onde será populado com dicionários de Alunos
 
         # Nova matrícula única e seguencial
         nova_matricula = self.gerar_matricula()
         novoData["matricula"] = nova_matricula
 
-        # Adicionar novo dado ao cadastro
+        # Adicionar novo dado ao cadastro, na chave correta ("Alunos" ou "Professores")
         data[self.chavePrincipal].append(novoData)
 
         # Escrever de volta no arquivo JSON
@@ -124,7 +129,7 @@ class JsonHandler:
             print(f"Erro ao salvar o arquivo JSON: {e}")
 
     # ---------------------------------------------------------------------------
-    ## Função Read
+    ## Read
     def read(self, matricula=None):
         # Se não foi passado a matrícula (parâmetro opcional), então retorna todo o JSON
         if matricula is None:
@@ -156,7 +161,7 @@ class JsonHandler:
                 return None
 
     # ---------------------------------------------------------------------------
-    ## Função Update
+    ## Update
     # Fluxo: Read data -> Encontra o dado pelo id -> Atualiza o dado no dicionário obtido no Read
     # -> Salvar o novo Json com o dado atualizado (todo o Json é gravado).
     def update(self, matricula, novosDados):
@@ -186,7 +191,7 @@ class JsonHandler:
             print(f"Dado com Matrícula {matricula} não encontrado.")
 
     # ---------------------------------------------------------------------------
-    ## Função Delete
+    ## Delete
     # Fluxo: Read data -> Encontra o dado pelo id -> Apaga dado no dicionário obtido no Read
     # -> Salvar o novo Json com o dado excluído.
     def delete(self, matricula):

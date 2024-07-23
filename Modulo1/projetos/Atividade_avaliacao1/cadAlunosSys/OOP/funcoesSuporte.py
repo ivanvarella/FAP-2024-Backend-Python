@@ -563,44 +563,50 @@ def obterNovosDados(chaveJson, oldData=None):
 
 
 ## Função exibir tela de cadastro novo aluno:
-def telaCadastro():
+def telaCadastro(chaveJson):
     print("Revisar função telaCadastro...")
 
+    print("\n\n############# Cadastro de Aluno #############")
 
-#     print("\n\n############# Cadastro de Aluno #############")
+    if chaveJson == "Alunos":
+        # Preparação dados:
+        novoAluno = {}
 
-#     # Preparação dados:
-#     novoAluno = {}
+        novoAluno["matricula"] = (
+            None  # Inicializando a matrícula, que será incrementada e inserida automaticamente ao cadastro do aluno
+        )
+        novoAluno["nome"], _, _, _ = isValidInput("Digite o nome do aluno: ", "string")
+        novoAluno["curso"], _, _, _ = isValidInput("Digite o curso: ", "string")
+        novoAluno["presencas"], _, _, _ = isValidInput(
+            "Digite o número de presenças: ", "int"
+        )
+        novoAluno["telefone"], _, _, _ = isValidInput("Digite o telefone: ", "string")
+        novoAluno["email"], _, _, _ = isValidInput("Digite o email: ", "string")
+        # Entrada das notas do aluno:
+        novoAluno["notas"] = trataNotasAluno()  # Exemplo de retorno: [9.5, 6.5, 8.2]
 
-#     novoAluno["matricula"] = (
-#         None  # Inicializando a matrícula, que será incrementada e inserida automaticamente ao cadastro do aluno
-#     )
-#     novoAluno["nome"], erroTipoNomeAluno, erroVazioNomeAluno, erroMsgNomeAluno = (
-#         isValidInput("Digite o nome do aluno: ", "string")
-#     )
-#     novoAluno["curso"], erroTipoCursoAluno, erroVazioCursoAluno, erroMsgCursoAluno = (
-#         isValidInput("Digite o curso: ", "string")
-#     )
-#     novoAluno["presencas"], erroTipoPresencas, erroVazioPresencas, erroMsgPresencas = (
-#         isValidInput("Digite o número de presenças: ", "int")
-#     )
-#     novoAluno["telefone"], erroTipoTelefone, erroVazioTelefone, erroMsgTelefone = (
-#         isValidInput("Digite o telefone: ", "string")
-#     )
-#     novoAluno["email"], erroTipoEmail, erroVazioEmail, erroMsgEmail = isValidInput(
-#         "Digite o email: ", "string"
-#     )
-#     # Entrada das notas do aluno:
-#     novoAluno["notas"] = trataNotasAluno()  # Exemplo de retorno: [9.5, 6.5, 8.2]
+        # Salva os dados altualizados no Json
+        # Cria instância do objeto de Aluno:
+        alunoObj = Aluno(
+            matricula=None,  # Criado dentro do JsonHandler, passando aqui para ficar organizado no arquivo Json
+            nome=novoAluno["nome"],
+            curso=novoAluno["curso"],
+            notas=novoAluno["notas"],  # Já está no formato correto
+            presencas=novoAluno["presencas"],
+            telefone=novoAluno["telefone"],
+            email=novoAluno["email"],
+        )
+        # A classe JsonHandler é instanciada dentro da classe Alunos
+        alunoObj.salvar()
 
-#     # Create no Json
-#     try:
-#         createAluno(novoAluno, "alunos.json")
-#         print(
-#             "\n\n########################### Aluno cadastrado com sucesso! ###########################\n"
-#         )
-#     except Exception as e:
-#         print(f"Erro ao criar o aluno: {e}")
+        # Create no Json
+        # try:
+        #     createAluno(novoAluno, "alunos.json")
+        #     print(
+        #         "\n\n########################### Aluno cadastrado com sucesso! ###########################\n"
+        #     )
+        # except Exception as e:
+        #     print(f"Erro ao criar o aluno: {e}")
 
 
 # ## Função utilizada tratar notas no momento do cadastro do aluno:

@@ -121,6 +121,20 @@
         9.7,
         6.3
       ]
+    },
+    {
+      "matricula": 21,
+      "nome": "Fulonivisk da Silva Sauro",
+      "curso": "Desenvoltura Avançada para Nerds II",
+      "notas": [
+        10.0,
+        10.0,
+        9.1,
+        9.8
+      ],
+      "presencas": 10,
+      "telefone": "6549876543",
+      "email": "fufu@gmail.com"
     }
   ],
   "Professores": [

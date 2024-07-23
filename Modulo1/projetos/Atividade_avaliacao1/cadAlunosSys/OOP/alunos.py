@@ -116,7 +116,7 @@ class Aluno(Pessoa):
         }
         try:
             self.json_handler.create(aluno_data)
-            print("\nAluno salvo com sucesso.")
+            print("\nAluno salvo com sucesso.\n")
             print("Dados do aluno:")
             print(f" Matrícula: {aluno_data['matricula']}")
             print(f" Nome: {aluno_data['nome']}")
@@ -125,6 +125,7 @@ class Aluno(Pessoa):
             print(f" Presenças: {aluno_data['presencas']}")
             print(f" Telefone: {aluno_data['telefone']}")
             print(f" Email: {aluno_data['email']}\n")
+            espere = input("Pressione Enter para continuar...")
         except Exception as e:
             print(f"Erro ao salvar aluno: {e}")
 
