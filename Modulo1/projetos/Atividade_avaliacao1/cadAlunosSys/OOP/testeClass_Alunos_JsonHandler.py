@@ -1,5 +1,7 @@
 # Importando as classes
-from alunos import Pessoa, Aluno
+from aluno import Aluno
+from pessoa import Pessoa
+from professor import Professor
 from jsonHandler import JsonHandler
 
 # Cria uma instância de JsonHandler

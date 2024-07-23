@@ -181,6 +181,21 @@
       ],
       "telefone": "987123456",
       "email": "luiz.fernando@email.com"
+    },
+    {
+      "matricula": 22,
+      "nome": "Nome prof teste",
+      "disciplinas": [
+        "Programação Avançada",
+        "Física Relativística"
+      ],
+      "turmas": [
+        "Eng. Comp. 2021.2",
+        "Eng. Elétrica 2023.1",
+        "Arquitetura 2020.1"
+      ],
+      "telefone": "6549876545",
+      "email": "proteste@gmail.com"
     }
   ]
 }

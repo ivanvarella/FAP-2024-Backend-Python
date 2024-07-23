@@ -1,5 +1,6 @@
 import os
-from alunos import Aluno
+from aluno import Aluno
+from professor import Professor
 from jsonHandler import JsonHandler
 from copy import deepcopy
 
@@ -564,7 +565,6 @@ def obterNovosDados(chaveJson, oldData=None):
 
 ## Função exibir tela de cadastro novo aluno:
 def telaCadastro(chaveJson):
-    print("Revisar função telaCadastro...")
 
     print("\n\n############# Cadastro de Aluno #############")
 
@@ -599,14 +599,76 @@ def telaCadastro(chaveJson):
         # A classe JsonHandler é instanciada dentro da classe Alunos
         alunoObj.salvar()
 
-        # Create no Json
-        # try:
-        #     createAluno(novoAluno, "alunos.json")
-        #     print(
-        #         "\n\n########################### Aluno cadastrado com sucesso! ###########################\n"
-        #     )
-        # except Exception as e:
-        #     print(f"Erro ao criar o aluno: {e}")
+    if chaveJson == "Professores":
+        # Preparação dados:
+        novoProfessor = {}
+
+        novoProfessor["matricula"] = (
+            None  # Inicializando a matrícula, que será incrementada e inserida automaticamente ao cadastro do aluno
+        )
+        novoProfessor["nome"], _, _, _ = isValidInput(
+            "Digite o nome do professor: ", "string"
+        )
+        novoProfessor["telefone"], _, _, _ = isValidInput(
+            "Digite o telefone: ", "string"
+        )
+        novoProfessor["email"], _, _, _ = isValidInput("Digite o email: ", "string")
+
+        # Entrada das disciplinas e turmas do Professor:
+        novoProfessor["disciplinas"] = trataDisciplinasTurmas(
+            "disciplinas"
+        )  # Exemplo de retorno: ["Matemática", "Física", "Programação"]
+        novoProfessor["turmas"] = trataDisciplinasTurmas(
+            "turmas"
+        )  # Exemplo de retorno: ["Eng.Comp_2024.2", "Física_2023.1", "Matemática_2022.2"]
+
+        # Salva os dados altualizados no Json
+        # Cria instância do objeto de Professor:
+        professorObj = Professor(
+            matricula=None,  # Criado dentro do JsonHandler, passando aqui para ficar organizado no arquivo Json
+            nome=novoProfessor["nome"],
+            disciplinas=novoProfessor["disciplinas"],
+            turmas=novoProfessor["turmas"],
+            telefone=novoProfessor["telefone"],
+            email=novoProfessor["email"],
+        )
+        # A classe JsonHandler é instanciada dentro da classe Alunos
+        professorObj.salvar()
+
+
+# ## Função para tratar disciplinas e turmas do professor
+def trataDisciplinasTurmas(tipo):
+    """
+    Função para capturar uma lista de disciplinas ou turmas do usuário.
+
+    Args:
+        tipo (str): Tipo de dado a ser capturado (por exemplo, 'disciplina' ou 'turma').
+
+    Returns:
+        list: Lista de disciplinas ou turmas inseridas pelo usuário.
+    """
+    dados = []
+    while True:
+        # Solicita a entrada do usuário e permite entrada vazia para finalizar
+        entradaDado, _, _, _ = isValidInput(
+            f"\nDigite a {tipo[:-1]} a ser cadastrada ou Enter para finalizar o cadastro das {tipo}: ",
+            "string",
+            aceitaVazio=True,
+        )
+
+        # Verifica se a entrada é vazia para sair do loop
+        if entradaDado.lower() == "":
+            break
+
+        # Adiciona a entrada à lista de dados
+        dados.append(entradaDado)
+
+        # Converte a lista de dados em uma string para exibição
+        dados_str = ", ".join(dados)
+
+        # Exibe a lista atual de entradas
+        print(f"\n{tipo.capitalize()} já foram inseridas: {dados_str}.\n")
+    return dados
 
 
 # ## Função utilizada tratar notas no momento do cadastro do aluno:
