@@ -4,6 +4,9 @@ from professor import Professor
 from jsonHandler import JsonHandler
 from copy import deepcopy
 
+# Testar essa lib: printa mais bonito
+from pprint import pprint
+
 # Caminho do diretório atual
 caminhoPastaPadrao = os.getcwd()
 caminho = os.path.join(
@@ -120,6 +123,8 @@ def exibirMenuPesquisarCriterio(chaveJson):
     if chaveJson == "Alunos":
         print("\n\n#######  Menu Pesquisar  #######")
         print("#                              #")
+        print("#         [Alunos]             #")
+        print("#                              #")
         print("#   Cod[1]: Por Nome           #")
         print("#   Cod[2]: Por Matrícula      #")
         print("#   Cod[3]: Por E-mail         #")
@@ -128,6 +133,8 @@ def exibirMenuPesquisarCriterio(chaveJson):
         print("################################\n")
     elif chaveJson == "Professores":
         print("\n\n#######  Menu Pesquisar  #######")
+        print("#                              #")
+        print("#       [Professores]          #")
         print("#                              #")
         print("#   Cod[1]: Por Nome           #")
         print("#   Cod[2]: Por Matrícula      #")
@@ -186,7 +193,7 @@ def listar(chaveJson=""):
 
     # Se tiver buscado por Dados e não existir nenhum
     if chaveJson == "" and len(dados) == 0:
-        print("\n\nNenhum Aluno cadastrado.\n\n")
+        print("\n\nNenhum dado cadastrado.\n\n")
         return
 
     # Mostrando Alunos cadastrados
@@ -239,14 +246,14 @@ def listar(chaveJson=""):
         print("\nOpção inválida!\n")
 
 
-## Função para pesquisar nome = 1 / matrícula = 2 / email = 3 / curso = 4
+## Função pesquisar
 def pesquisar(chaveJson=""):
-    print("Revisar função pesquisar...")
 
     # Exibir menu principal da pesquisa + obter o critério da pesquisa
     criterio = exibirMenuPesquisarCriterio(chaveJson)
 
     # Obtém o valor a ser pesquisado
+    # Pesquisa de dados de Alunos
     if chaveJson == "Alunos":
         if criterio == 1:
             valorBusca, _, _, _ = isValidInput(
@@ -268,6 +275,7 @@ def pesquisar(chaveJson=""):
                 "Digite o curso a ser pesquisado: ", "string"
             )
             nomeCriterio = "Curso"
+    # Pesquisa de dados de Professores
     elif chaveJson == "Professores":
         if criterio == 1:
             valorBusca, _, _, _ = isValidInput(
@@ -289,6 +297,7 @@ def pesquisar(chaveJson=""):
                 "Digite a disciplina a ser pesquisada: ", "string"
             )
             nomeCriterio = "Disciplina"
+    # Pesquisa de dados quaisquer
     elif chaveJson == "":
         if criterio == 1:
             valorBusca, _, _, _ = isValidInput(
@@ -306,18 +315,18 @@ def pesquisar(chaveJson=""):
             )
             nomeCriterio = "E-mail"
 
-    # Cria uma instância de JsonHandler
+    # Cria uma instância de JsonHandler - Alunos ou Professores -> chavePrincipal
     json_handler = JsonHandler(arquivoJson="dados.json", chavePrincipal=chaveJson)
 
     # Pega todos os dados e "filtra" de acodor com o retorno do chaveJson
     dados = json_handler.read()
-    # get(): Pega valores da chave 'Alunos' no dicionário, caso não exista a chave, retorna vazio
+    # get(): Pega valores da chave 'Alunos' ou 'Professores' no Json, caso não exista a chave, retorna vazio
     alunos = dados.get("Alunos", [])
     professores = dados.get("Professores", [])
     alunos_professores = alunos + professores
     resultados = []
 
-    # Percorre todo o Json acumulando (qnd mais de 1 resultado) os dados completos daquele aluno
+    # Percorre todos os dados filtrados do Json
     if chaveJson == "Alunos":
         for aluno in alunos:
             if criterio == 1 and valorBusca.lower() in aluno["nome"].lower():
@@ -328,7 +337,7 @@ def pesquisar(chaveJson=""):
                 resultados.append(aluno)
             elif criterio == 4 and valorBusca.lower() in aluno["curso"].lower():
                 resultados.append(aluno)
-    elif chaveJson == "Professor":
+    elif chaveJson == "Professores":
         for professor in professores:
             if criterio == 1 and valorBusca.lower() in professor["nome"].lower():
                 resultados.append(professor)
@@ -336,8 +345,11 @@ def pesquisar(chaveJson=""):
                 resultados.append(professor)
             elif criterio == 3 and valorBusca.lower() in professor["email"].lower():
                 resultados.append(professor)
-            elif (
-                criterio == 4 and valorBusca.lower() in professor["disciplinas"].lower()
+            # Função geradora any() + for = percorre cada posição da lista disciplina,
+            # executando o lower() e comparando
+            elif criterio == 4 and any(
+                valorBusca.lower() in disciplina.lower()
+                for disciplina in professor["disciplinas"]
             ):
                 resultados.append(professor)
     elif chaveJson == "":
@@ -351,8 +363,9 @@ def pesquisar(chaveJson=""):
 
     # Se não retornar vazio, mostra os alunos cujo critério deu certo
     if resultados and chaveJson == "Alunos":
+        print("-" * 60)
         print(
-            f"\n{len(resultados)} aluno(s) encontrado(s) com {nomeCriterio} '{valorBusca}':"
+            f"\n ###   {len(resultados)} aluno(s) encontrado(s) com {nomeCriterio} '{valorBusca}'   ###"
         )
         for aluno in resultados:
 
@@ -367,8 +380,23 @@ def pesquisar(chaveJson=""):
             print(f'Telefone: {aluno["telefone"]}')
             print(f'Email: {aluno["email"]}')
             print("-" * 30)
+    elif resultados and chaveJson == "Professores":
+        print("-" * 60)
+        print(
+            f"\n ###   {len(resultados)} professor(es) encontrado(s) com {nomeCriterio} '{valorBusca}'   ###"
+        )
+        for professor in resultados:
+
+            print(f"\nMatrícula: {professor['matricula']}")
+            print(f'Nome: {professor["nome"]}')
+            print(f'Disciplinas: {professor["disciplinas"]}')
+            print(f'Turmas: {professor["turmas"]}')
+            print(f'Telefone: {professor["telefone"]}')
+            print(f'Email: {professor["email"]}')
+            print("-" * 30)
     else:
-        print(f"\nNenhum aluno encontrado com {nomeCriterio} '{valorBusca}'.")
+        print(f"\nNenhum dado encontrado com {nomeCriterio} '{valorBusca}'.")
+    espere = input("Pressione Enter para continuar...\n")
 
 
 ## Função excluir aluno (dentro do Listar Alunos):

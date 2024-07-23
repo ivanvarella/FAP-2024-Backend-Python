@@ -147,14 +147,10 @@ class JsonHandler:
                 with open(self.caminhoCompletoJson, "r", encoding="utf-8") as f:
                     data = json.load(f)
 
-                # Busca o aluno com a matrícula fornecida
-                for aluno in data.get(self.chavePrincipal, []):
-                    if aluno.get("matricula") == matricula:
-                        return aluno
-
-                # Se nenhum dado for encontrado com a matrícula fornecida
-                print(f"Dado com Matrícula {matricula} não encontrado.")
-                return None
+                # Busca o dado com a matrícula fornecida - Aluno ou Professor
+                for dado in data.get(self.chavePrincipal, []):
+                    if dado.get("matricula") == matricula:
+                        return dado
 
             except (IOError, json.JSONDecodeError) as e:
                 print(f"Erro ao carregar o arquivo JSON: {e}")
