@@ -1,6 +1,7 @@
 import os
 from alunos import Aluno
 from jsonHandler import JsonHandler
+from copy import deepcopy
 
 # Caminho do diretório atual
 caminhoPastaPadrao = os.getcwd()
@@ -228,11 +229,11 @@ def listar(chaveJson=""):
 
     # Controla os opções do Menu Alterar / Excluir aluno
     if opcaoMenuAlterarExcluir == 3:
-        return
+        return  # Volta para o o loop do menu principal
     elif opcaoMenuAlterarExcluir == 1:
-        alterar()
+        alterar(chaveJson)
     elif opcaoMenuAlterarExcluir == 2:
-        excluir()
+        excluir(chaveJson)
     else:
         print("\nOpção inválida!\n")
 
@@ -382,79 +383,183 @@ def excluir():
 
 
 ## Função alterar aluno (dentro do Listar Alunos):
-def alterar():
-    print("Revisar função alterar...")
-    # (
-    #     matriculaAlunoAlterar,
-    #     erroTipoMatriculaAlunoAlterar,
-    #     erroVazioMatriculaAlunoAlterar,
-    #     erroMsgMatriculaAlunoAlterar,
-    # ) = isValidInput("Digite a matrícula do aluno a ser alterado: ", "int")
+def alterar(chaveJson):
+    # Carrega Json - Alunos e Professores
+    dados = JsonHandler(arquivoJson="dados.json", chavePrincipal=chaveJson).read()
+    # Só retorna dados se a chaveJson for "Alunos"
+    alunos = dados.get("Alunos", [])
+    # Só retorna dados se a chaveJson for "Professores"
+    professores = dados.get("Professores", [])
 
-    # # Carrega Json
-    # dados = readAlunos("alunos.json")
-    # alunos = dados.get("Alunos", [])
-    # # Flag
-    # achoAluno = False
-    # for aluno in alunos:
-    #     if aluno["matricula"] == matriculaAlunoAlterar:
-    #         achoAluno = True
+    # Alterar Aluno
+    if chaveJson == "Alunos":
+        (
+            matriculaAlunoAlterar,
+            _,
+            _,
+            _,
+        ) = isValidInput("Digite a matrícula do aluno a ser alterado: ", "int")
 
-    #         mediaNotas = calcularMediaNotas(aluno["notas"])
+        # Flag
+        achoAluno = False
+        for aluno in alunos:
+            if aluno["matricula"] == matriculaAlunoAlterar:
+                achoAluno = True
 
-    #         # Mostra os dados atuais do aluno encontrado:
-    #         print("\n############# Dados Atuais do Aluno #############")
-    #         print(f"\nMatrícula: {aluno['matricula']}")
-    #         print(f'Nome: {aluno["nome"]}')
-    #         print(f'Curso: {aluno["curso"]}')
-    #         print(f'Notas: {", ".join(map(str, aluno["notas"]))}')
-    #         print(f"Média das notas: {mediaNotas:.1f}")
-    #         print(f'Presenças: {aluno["presencas"]}')
-    #         print(f'Telefone: {aluno["telefone"]}')
-    #         print(f'Email: {aluno["email"]}')
-    #         print("-" * 30)
-    #         break
-    # if not achoAluno:
-    #     print("\n\nAluno não encontrado.\n\n")
-    #     # Retorna e não faz a atualização - Early return pattern
-    #     return
+                # Faz uma cópia profunda do dicionário do aluno
+                # Diferente do shallow copy, o que faz com que o objeto interno seja copiado também,
+                # evitando assim a referência do objeto original
+                alunoAlt = deepcopy(aluno)
+                print(f"alunoAlt: {alunoAlt}")
+                teste = input("Pressione Enter para continuar...")
 
-    # # Pega os novos dados do aluno (menos id e matrícula que não mudam em relação ao aluno)
-    # novosDados = obterNovosDadosAluno()
+                mediaNotas = Aluno.calcular_media(aluno["notas"])
+
+                # Mostra os dados atuais do aluno encontrado:
+                print("\n############# Dados Atuais do Aluno #############")
+                print(f"\nMatrícula: {aluno['matricula']}")
+                print(f'Nome: {aluno["nome"]}')
+                print(f'Curso: {aluno["curso"]}')
+                print(f'Notas: {", ".join(map(str, aluno["notas"]))}')
+                print(f"Média das notas: {mediaNotas:.1f}")
+                print(f'Presenças: {aluno["presencas"]}')
+                print(f'Telefone: {aluno["telefone"]}')
+                print(f'Email: {aluno["email"]}')
+                print("-" * 30)
+                break
+        if not achoAluno:
+            print("\n\nAluno não encontrado.\n\n")
+            # Retorna e não faz a atualização - Early return pattern
+            return
+
+        # Pega os novos dados do aluno (menos a matrícula que não mudam em relação ao aluno)
+        novosDados = obterNovosDados(chaveJson, alunoAlt)
+
+        # Salva os dados altualizados no Json
+        # Cria instância do objeto de Aluno:
+        alunoObj = Aluno(
+            matricula=novosDados["matricula"],  # Nesse caso tem que enviar a matrícula
+            nome=novosDados["nome"],
+            curso=novosDados["curso"],
+            notas=novosDados["notas"],  # Já está no formato correto
+            presencas=novosDados["presencas"],
+            telefone=novosDados["telefone"],
+            email=novosDados["email"],
+        )
+        # A classe JsonHandler é instanciada dentro da classe Alunos
+        alunoObj.atualizar()
+
+    # Falta fazer para professor
+    elif chaveJson == "Professores":
+        # (
+        #     matriculaProfessorAlterar,
+        #     _,
+        #     _,
+        #     _,
+        # ) = isValidInput("Digite a matrícula do professor a ser alterado: ", "int")
+
+        # # Flag
+        # achoProfessor = False
+        # for professor in professores:
+        #     if professor["matricula"] == matriculaProfessorAlterar:
+        #         achoProfessor = True
+
+        #         # Mostra os dados atuais do professor encontrado:
+        #         print("\n############# Dados Atuais do professor #############")
+        #         print(f"\nMatrícula: {professor['matricula']}")
+        #         print(f'Nome: {professor["nome"]}')
+        #         print(f'Disciplinas: {professor["disciplinas"]}')
+        #         print(f'Turmas: {professor["turmas"]}')
+        #         print(f'Telefone: {professor["telefone"]}')
+        #         print(f'Email: {professor["email"]}')
+        #         print("-" * 30)
+        #         break
+        # if not achoProfessor:
+        #     print("\n\Professor não encontrado.\n\n")
+        #     # Retorna e não faz a atualização - Early return pattern
+        return
+
+    # Pega os novos dados do professor (menos a matrícula que não mudam em relação ao professor)
+    # novosDados = obterNovosDados(chaveJson, professorAlt)
     # updateAluno(matriculaAlunoAlterar, novosDados, "alunos.json")
 
 
 ## Função para "pegar" os novos dados do aluno a ser atualizado
-def obterNovosDados():
-    print("Revisar função obterNovosDados...")
-    # novosDados = {}
+def obterNovosDados(chaveJson, oldData=None):
+    if chaveJson == "Alunos":
+        novosDados = {}
 
-    # novosDados["nome"], erroTipoNovoNome, erroVazioNovoNome, erroMsgNovoNome = (
-    #     isValidInput("Digite o novo nome do aluno: ", "string")
-    # )
-    # novosDados["curso"], erroTipoNovoCurso, erroVazioNovoCurso, erroMsgNovoCurso = (
-    #     isValidInput("Digite o novo curso do aluno: ", "string")
-    # )
-    # (
-    #     novosDados["presencas"],
-    #     erroTipoNovasPresencas,
-    #     erroVaziasNovasPresencas,
-    #     erroMsgNovasPresencas,
-    # ) = isValidInput("Digite o novo número de presenças do aluno: ", "int")
-    # (
-    #     novosDados["telefone"],
-    #     erroTipoNovoTelefone,
-    #     erroVazioNovoTelefone,
-    #     erroMsgNovoTelefone,
-    # ) = isValidInput("Digite o novo telefone do aluno: ", "string")
-    # novosDados["email"], erroTipoNovoEmail, erroVazioNovoEmail, erroMsgNovoEmail = (
-    #     isValidInput("Digite o novo email do aluno: ", "string")
-    # )
+        # Poderia pegar dentro da função alterar, mas fazendo aqui fica mais organizado
+        novosDados["matricula"] = oldData["matricula"]
 
-    # # Entrada das notas do aluno:
-    # novosDados["notas"] = trataNotasAluno()  # Exemplo de retorno: [9.5, 6.5, 8.2]
+        print(f'Nome atual: {oldData["nome"]}')
+        novosDados["nome"], _, _, _ = isValidInput(
+            "Digite o novo nome do aluno ou Enter para manter o atual: ",
+            "string",
+            aceitaVazio=True,
+        )
+        if novosDados["nome"] == "":
+            novosDados["nome"] = oldData["nome"]
 
-    # return novosDados
+        print(f'\nCurso atual: {oldData["curso"]}')
+        novosDados["curso"], _, _, _ = isValidInput(
+            "Digite o novo curso do aluno ou Enter para manter o atual: ",
+            "string",
+            aceitaVazio=True,
+        )
+        if novosDados["curso"] == "":
+            novosDados["curso"] = oldData["curso"]
+
+        print(f'\nPresenças atual: {oldData["presencas"]}')
+        (
+            novosDados["presencas"],
+            _,
+            _,
+            _,
+        ) = isValidInput(
+            "Digite o novo número de presenças do aluno ou Enter para manter o atual: ",
+            "int",
+            aceitaVazio=True,
+        )
+        if novosDados["presencas"] == "":
+            novosDados["presencas"] = int(oldData["presencas"])
+
+        print(f'\nTelefone atual: {oldData["telefone"]}')
+        (
+            novosDados["telefone"],
+            _,
+            _,
+            _,
+        ) = isValidInput(
+            "Digite o novo telefone do aluno ou Enter para manter o atual: ",
+            "string",
+            aceitaVazio=True,
+        )
+        if novosDados["telefone"] == "":
+            novosDados["telefone"] = oldData["telefone"]
+
+        print(f'\nEmail atual: {oldData["email"]}')
+        novosDados["email"], _, _, _ = isValidInput(
+            "Digite o novo email do aluno ou Enter para manter o atual: ",
+            "string",
+            aceitaVazio=True,
+        )
+        if novosDados["email"] == "":
+            novosDados["email"] = oldData["email"]
+
+        # Entrada das notas do aluno:
+        print(f'\nNotas atuais: {", ".join(map(str, oldData["notas"]))}')
+        # Na verdade só verifica se está vazio ou não: vazio mantém as notas antigas, != vazio chama a função trataNotasAluno
+        novosDados["notas"], _, _, _ = isValidInput(
+            "Digite '1' para alterar as notas do aluno ou Enter para manter a(s) nota(s): ",
+            "string",
+            aceitaVazio=True,
+        )
+        novosDados["notas"] = (
+            trataNotasAluno() if novosDados["notas"] != "" else oldData["notas"]
+        )
+
+        return novosDados
 
 
 ## Função exibir tela de cadastro novo aluno:
@@ -499,22 +604,21 @@ def telaCadastro():
 
 
 # ## Função utilizada tratar notas no momento do cadastro do aluno:
-# def trataNotasAluno():
-#     numNotas, erroTipoNumNotas, erroVazioNumNotas, erroMsgNumNotas = isValidInput(
-#         "Informe o número de notas a serem cadastradas: ", "int"
-#     )
-#     notas = []
-#     for i in range(numNotas):
-#         while True:
-#             nota, erroTipoNota, erroVazioNota, erroMsgNota = isValidInput(
-#                 f"Informe a {i+1}ª nota: ", "float"
-#             )
-#             if 0 <= nota <= 10:  # Verifica se a nota está entre 0 e 10
-#                 notas.append(nota)
-#                 break
-#             else:
-#                 print("A nota deve estar entre 0 e 10.")
-#     return notas
+def trataNotasAluno():
+
+    numNotas, _, _, _ = isValidInput(
+        "Informe o número de notas a serem cadastradas: ", "int"
+    )
+    notas = []
+    for i in range(numNotas):
+        while True:
+            nota, _, _, _ = isValidInput(f"Informe a {i+1}ª nota: ", "float")
+            if 0 <= nota <= 10:  # Verifica se a nota está entre 0 e 10
+                notas.append(nota)
+                break
+            else:
+                print("A nota deve estar entre 0 e 10.")
+    return notas
 
 
 ## Função para validação de entradas input
@@ -537,11 +641,17 @@ def isValidInput(msg, tipoEsperado, aceitaVazio=False):
     valor = input(msg)
 
     while True:
-        # Verifica se está vazio e se deveria estar
+        # Verifica se está vazio e se deveria estar: Não aceita mas está?  Erro
         if (aceitaVazio == False) and (len(valor) == 0):
             erroMsg = "Entrada vazia não é permitida."
             print(erroMsg)
             valor = input(msg)
+        # Verifica se está vazio e se deveria estar: Aceita vazio e está vazio? Tudo certo!
+        # Não verifica mais nada!
+        elif (aceitaVazio == True) and (len(valor) == 0):
+            erroTipo = False
+            erroVazio = False
+            break
         else:
             # Se o tipo esperado for string, todos os valores são aceitos
             if tipoEsperado == "string":

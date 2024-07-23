@@ -37,10 +37,9 @@ class Pessoa:
 class Aluno(Pessoa):
     """Classe para representar um aluno, herda de Pessoa."""
 
-    # Criar uma instância de JsonHandler, passando seus parâmetros obrigatórios
-    json_handler = JsonHandler(
-        arquivoJson="testeClassAlunos.json", chavePrincipal="Alunos"
-    )
+    # Cria uma instância de JsonHandler, passando seus parâmetros obrigatórios
+    # Na classe Aluno a chavePrincipal sempre será "Alunos"
+    json_handler = JsonHandler(arquivoJson="dados.json", chavePrincipal="Alunos")
 
     def __init__(
         self,

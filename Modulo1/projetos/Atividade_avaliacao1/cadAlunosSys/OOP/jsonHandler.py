@@ -160,6 +160,7 @@ class JsonHandler:
     # Fluxo: Read data -> Encontra o dado pelo id -> Atualiza o dado no dicionário obtido no Read
     # -> Salvar o novo Json com o dado atualizado (todo o Json é gravado).
     def update(self, matricula, novosDados):
+
         data = self.read()
         if not data or self.chavePrincipal not in data:
             print("Nenhum dado encontrado para atualizar.")
