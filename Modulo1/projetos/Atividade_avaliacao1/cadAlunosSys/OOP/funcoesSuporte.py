@@ -21,29 +21,29 @@ caminho = os.path.join(
 
 ## Função exibir menu opções:
 def exibirMenuPrincipal():
-    print("\n\n########### Menu Principal ############")
-    print("#            [ Alunos ]               #")
-    print("#                                     #")
-    print("#   Cod[1]: Cadastrar Aluno           #")
-    print("#   Cod[2]: Listar / Alterar Aluno    #")
-    print("#   Cod[3]: Pesquisar Aluno           #")
-    print("# ----------------------------------- #")
-    print("#          [ Professores ]            #")
-    print("#                                     #")
-    print("#   Cod[4]: Cadastrar Professor       #")
-    print("#   Cod[5]: Listar / Alterar Prof.    #")
-    print("#   Cod[6]: Pesquisar Professor       #")
-    print("# ----------------------------------- #")
-    print("#         [ Outras opções ]           #")
-    print("#                                     #")
-    print("#   Cod[7]: Listar                    #")
-    print("#   Cod[8]: Pesquisar                 #")
-    print("# ----------------------------------- #")
-    print("#                                     #")
-    print("#   Cod[9]: Sair                      #")
-    print("#   Cod[0]: Sobre                     #")
-    print("#                                     #")
-    print("#######################################\n")
+    print("\n\n############ Menu Principal #############")
+    print("#              [ Alunos ]               #")
+    print("#                                       #")
+    print("#   Cod[1]: Cadastrar Aluno             #")
+    print("#   Cod[2]: Listar / Alterar / excluir  #")
+    print("#   Cod[3]: Pesquisar Aluno             #")
+    print("# ------------------------------------- #")
+    print("#          [ Professores ]              #")
+    print("#                                       #")
+    print("#   Cod[4]: Cadastrar Professor         #")
+    print("#   Cod[5]: Listar / Alterar / Excluir  #")
+    print("#   Cod[6]: Pesquisar Professor         #")
+    print("# ------------------------------------- #")
+    print("#          [ Outras opções ]            #")
+    print("#                                       #")
+    print("#   Cod[7]: Listar                      #")
+    print("#   Cod[8]: Pesquisar                   #")
+    print("# ------------------------------------- #")
+    print("#                                       #")
+    print("#   Cod[9]: Sair                        #")
+    print("#   Cod[0]: Sobre                       #")
+    print("#                                       #")
+    print("#########################################\n")
     # Verifica erros de tipo: Erros: Vazio, string, float
     (opcaoMenuPrincipal, _, _, _) = isValidInput("Digite a opção desejada: ", "int")
     return opcaoMenuPrincipal
@@ -447,15 +447,18 @@ def pesquisar(chaveJson=""):
 
 
 ## Função excluir aluno (dentro do Listar Alunos):
-def excluir():
-    print("Revisar função excluir...")
-    # (
-    #     idAlunoExcluir,
-    #     erroTipoIdAlunoExcluir,
-    #     erroVazioIdAlunoExcluir,
-    #     erroMsgIdAlunoExcluir,
-    # ) = isValidInput("Digite a matrícula do aluno a ser excluido: ", "int")
-    # deleteAluno(idAlunoExcluir, "alunos.json")
+def excluir(chaveJson):
+
+    (
+        matriculaExcluir,
+        _,
+        _,
+        _,
+    ) = isValidInput("Digite a matrícula da entidade a ser excluida: ", "int")
+    # Exclui pela matrícula - Aluno ou Professor
+    JsonHandler(arquivoJson="dados.json", chavePrincipal=chaveJson).delete(
+        matriculaExcluir
+    )
 
 
 ## Função alterar aluno (dentro do Listar Alunos):
@@ -542,10 +545,6 @@ def alterar(chaveJson):
                 # Diferente do shallow copy, o que faz com que o objeto interno seja copiado também,
                 # evitando assim a referência do objeto original
                 professorAlt = deepcopy(professor)
-                print(
-                    f"Excluir isso após concluidos os testes - professorAlt: {professorAlt}"
-                )
-                espere = input("Pressione Enter para continuar...")
 
                 # Mostra os dados atuais do professor encontrado:
                 print("\n############# Dados Atuais do Professor #############")
