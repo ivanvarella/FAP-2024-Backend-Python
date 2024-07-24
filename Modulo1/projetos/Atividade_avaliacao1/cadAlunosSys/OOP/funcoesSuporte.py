@@ -486,8 +486,6 @@ def alterar(chaveJson):
                 # Diferente do shallow copy, o que faz com que o objeto interno seja copiado também,
                 # evitando assim a referência do objeto original
                 alunoAlt = deepcopy(aluno)
-                print(f"alunoAlt: {alunoAlt}")
-                teste = input("Pressione Enter para continuar...")
 
                 mediaNotas = Aluno.calcular_media(aluno["notas"])
 
@@ -525,7 +523,7 @@ def alterar(chaveJson):
         # A classe JsonHandler é instanciada dentro da classe Alunos
         alunoObj.atualizar()
 
-    # Falta fazer para professor
+    # Alterar Professores
     elif chaveJson == "Professores":
         (
             matriculaProfessorAlterar,
@@ -540,8 +538,17 @@ def alterar(chaveJson):
             if professor["matricula"] == matriculaProfessorAlterar:
                 achoProfessor = True
 
+                # Faz uma cópia profunda do dicionário do professor
+                # Diferente do shallow copy, o que faz com que o objeto interno seja copiado também,
+                # evitando assim a referência do objeto original
+                professorAlt = deepcopy(professor)
+                print(
+                    f"Excluir isso após concluidos os testes - professorAlt: {professorAlt}"
+                )
+                espere = input("Pressione Enter para continuar...")
+
                 # Mostra os dados atuais do professor encontrado:
-                print("\n############# Dados Atuais do professor #############")
+                print("\n############# Dados Atuais do Professor #############")
                 print(f"\nMatrícula: {professor['matricula']}")
                 print(f'Nome: {professor["nome"]}')
                 print(f'Disciplinas: {professor["disciplinas"]}')
@@ -551,17 +558,33 @@ def alterar(chaveJson):
                 print("-" * 30)
                 break
         if not achoProfessor:
-            print("\n\Professor não encontrado.\n\n")
+            print("\n\nProfessor não encontrado.\n\n")
             # Retorna e não faz a atualização - Early return pattern
-        return
+            return
 
-    # Pega os novos dados do professor (menos a matrícula que não mudam em relação ao professor)
-    # novosDados = obterNovosDados(chaveJson, professorAlt)
-    # updateAluno(matriculaAlunoAlterar, novosDados, "alunos.json")
+        # Pega os novos dados do professor (menos a matrícula que não mudam em relação ao professor)
+        # Passa os dados antigos para mostrar como referência para alteração
+        novosDados = obterNovosDados(chaveJson, professorAlt)
+
+        # Salva os dados altualizados no Json
+        # Cria instância do objeto de Aluno:
+        professorObj = Professor(
+            matricula=novosDados[
+                "matricula"
+            ],  # Nesse caso tem que enviar a matrícula - update
+            nome=novosDados["nome"],
+            disciplinas=novosDados["disciplinas"],
+            turmas=novosDados["turmas"],
+            telefone=novosDados["telefone"],
+            email=novosDados["email"],
+        )
+        # A classe JsonHandler é instanciada dentro da classe Alunos
+        professorObj.atualizar()
 
 
 ## Função para "pegar" os novos dados do aluno a ser atualizado
 def obterNovosDados(chaveJson, oldData=None):
+    # Para Alunos
     if chaveJson == "Alunos":
         novosDados = {}
 
@@ -637,13 +660,77 @@ def obterNovosDados(chaveJson, oldData=None):
 
         return novosDados
 
+    # Para Professores
+    elif chaveJson == "Professores":
+        novosDados = {}
+
+        # Poderia pegar dentro da função alterar, mas fazendo aqui fica mais organizado
+        novosDados["matricula"] = oldData["matricula"]
+
+        print(f'Nome atual: {oldData["nome"]}')
+        novosDados["nome"], _, _, _ = isValidInput(
+            "Digite o novo nome do professor ou Enter para manter o atual: ",
+            "string",
+            aceitaVazio=True,
+        )
+        if novosDados["nome"] == "":
+            novosDados["nome"] = oldData["nome"]
+
+        print(f'\nDisciplinas atuais: {oldData["disciplinas"]}')
+        novosDados["disciplinas"], _, _, _ = isValidInput(
+            "Digite 1 para alterar as disciplinas ou Enter para manter as atuais: ",
+            "string",
+            aceitaVazio=True,
+        )
+        novosDados["disciplinas"] = (
+            trataDisciplinasTurmas("disciplinas")
+            if novosDados["disciplinas"] != ""
+            else oldData["disciplinas"]
+        )
+
+        print(f'\nTurmas atuais: {oldData["turmas"]}')
+        novosDados["turmas"], _, _, _ = isValidInput(
+            "Digite 1 para alterar as turmas ou Enter para manter as atuais: ",
+            "string",
+            aceitaVazio=True,
+        )
+        novosDados["turmas"] = (
+            trataDisciplinasTurmas("turmas")
+            if novosDados["turmas"] != ""
+            else oldData["turmas"]
+        )
+
+        print(f'\nTelefone atual: {oldData["telefone"]}')
+        (
+            novosDados["telefone"],
+            _,
+            _,
+            _,
+        ) = isValidInput(
+            "Digite o novo telefone do professor ou Enter para manter o atual: ",
+            "string",
+            aceitaVazio=True,
+        )
+        if novosDados["telefone"] == "":
+            novosDados["telefone"] = oldData["telefone"]
+
+        print(f'\nEmail atual: {oldData["email"]}')
+        novosDados["email"], _, _, _ = isValidInput(
+            "Digite o novo email do professor ou Enter para manter o atual: ",
+            "string",
+            aceitaVazio=True,
+        )
+        if novosDados["email"] == "":
+            novosDados["email"] = oldData["email"]
+
+        return novosDados
+
 
 ## Função exibir tela de cadastro novo aluno:
 def telaCadastro(chaveJson):
 
-    print("\n\n############# Cadastro de Aluno #############")
-
     if chaveJson == "Alunos":
+        print("\n\n############# Cadastro de Aluno #############")
         # Preparação dados:
         novoAluno = {}
 
@@ -675,6 +762,7 @@ def telaCadastro(chaveJson):
         alunoObj.salvar()
 
     if chaveJson == "Professores":
+        print("\n\n############# Cadastro de Professor #############")
         # Preparação dados:
         novoProfessor = {}
 
@@ -731,7 +819,7 @@ def trataDisciplinasTurmas(tipo):
             aceitaVazio=True,
         )
 
-        # Verifica se a entrada é vazia para sair do loop
+        # Verifica se a entrada é vazia para sair do loop e retornar os dados
         if entradaDado.lower() == "":
             break
 

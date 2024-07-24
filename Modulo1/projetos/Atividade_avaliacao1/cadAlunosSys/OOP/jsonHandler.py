@@ -184,7 +184,8 @@ class JsonHandler:
             except IOError as e:
                 print(f"Erro ao salvar o arquivo JSON: {e}")
         else:
-            print(f"Dado com Matrícula {matricula} não encontrado.")
+            print(f"Dado com Matrícula {matricula} não encontrado.\n")
+            espere = input("Pressione Enter para continuar...")
 
     # ---------------------------------------------------------------------------
     ## Delete
