@@ -118,6 +118,18 @@
       ],
       "telefone": "6549876545",
       "email": "proteste@gmail.com"
+    },
+    {
+      "matricula": 25,
+      "nome": "Gogonoid Júnior Senior",
+      "disciplinas": ["Python IV", "Física Básica"],
+      "turmas": [
+        "Eng. Comp. 2021.2",
+        "Eng. Elétrica 2023.1",
+        "Arquitetura 2020.1"
+      ],
+      "telefone": "623423476545",
+      "email": "nonoid@gmail.com"
     }
   ]
 }

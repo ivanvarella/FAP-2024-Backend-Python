@@ -35,30 +35,6 @@ while True:
     else:
         print("Opção inválida. Tente novamente.")
 
-    # print("\n\n########### Menu Principal ############")
-    # print("#            [ Alunos ]               #")
-    # print("#                                     #")
-    # print("#   Cod[1]: Cadastrar Aluno           #")
-    # print("#   Cod[2]: Listar / Alterar Aluno    #")
-    # print("#   Cod[3]: Pesquisar Aluno           #")
-    # print("# ----------------------------------- #")
-    # print("#          [ Professores ]            #")
-    # print("#                                     #")
-    # print("#   Cod[4]: Cadastrar Professor       #")
-    # print("#   Cod[5]: Listar / Alterar Prof.    #")
-    # print("#   Cod[6]: Pesquisar Professor       #")
-    # print("# ----------------------------------- #")
-    # print("#         [ Outras opções ]           #")
-    # print("#                                     #")
-    # print("#   Cod[7]: Listar                    #")
-    # print("#   Cod[8]: Pesquisar                 #")
-    # print("# ----------------------------------- #")
-    # print("#                                     #")
-    # print("#   Cod[9]: Sair                      #")
-    # print("#   Cod[0]: Sobre                     #")
-    # print("#                                     #")
-    # print("#######################################\n")
-
 # Aprimoramentos:
 # 1- Função isValid:
 #   - Receber listas e realizar validações

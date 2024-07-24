@@ -297,7 +297,7 @@ def pesquisar(chaveJson=""):
                 "Digite a disciplina a ser pesquisada: ", "string"
             )
             nomeCriterio = "Disciplina"
-    # Pesquisa de dados quaisquer
+    # Pesquisa de dados quaisquer - chaveJson = ""
     elif chaveJson == "":
         if criterio == 1:
             valorBusca, _, _, _ = isValidInput(
@@ -323,10 +323,13 @@ def pesquisar(chaveJson=""):
     # get(): Pega valores da chave 'Alunos' ou 'Professores' no Json, caso não exista a chave, retorna vazio
     alunos = dados.get("Alunos", [])
     professores = dados.get("Professores", [])
-    alunos_professores = alunos + professores
     resultados = []
+    # Quando shaveJson = ""
+    resultados_alunos = []
+    resultados_professores = []
 
     # Percorre todos os dados filtrados do Json
+    # Somente Alunos
     if chaveJson == "Alunos":
         for aluno in alunos:
             if criterio == 1 and valorBusca.lower() in aluno["nome"].lower():
@@ -337,6 +340,7 @@ def pesquisar(chaveJson=""):
                 resultados.append(aluno)
             elif criterio == 4 and valorBusca.lower() in aluno["curso"].lower():
                 resultados.append(aluno)
+    # Somente Professores
     elif chaveJson == "Professores":
         for professor in professores:
             if criterio == 1 and valorBusca.lower() in professor["nome"].lower():
@@ -352,14 +356,24 @@ def pesquisar(chaveJson=""):
                 for disciplina in professor["disciplinas"]
             ):
                 resultados.append(professor)
+    # Alunos ou Professores
     elif chaveJson == "":
-        for dado in alunos_professores:
+        # Pega todos os alunos
+        for dado in alunos:
             if criterio == 1 and valorBusca.lower() in dado["nome"].lower():
-                resultados.append(dado)
+                resultados_alunos.append(dado)
             elif criterio == 2 and valorBusca == dado["matricula"]:
                 resultados.append(dado)
             elif criterio == 3 and valorBusca.lower() in dado["email"].lower():
                 resultados.append(dado)
+        # Pega todos os professores
+        for professor in professores:
+            if criterio == 1 and valorBusca.lower() in professor["nome"].lower():
+                resultados_professores.append(professor)
+            elif criterio == 2 and valorBusca == professor["matricula"]:
+                resultados_professores.append(professor)
+            elif criterio == 3 and valorBusca.lower() in professor["email"].lower():
+                resultados_professores.append(professor)
 
     # Se não retornar vazio, mostra os alunos cujo critério deu certo
     if resultados and chaveJson == "Alunos":
@@ -394,6 +408,39 @@ def pesquisar(chaveJson=""):
             print(f'Telefone: {professor["telefone"]}')
             print(f'Email: {professor["email"]}')
             print("-" * 30)
+    elif (resultados_alunos or resultados_professores) and chaveJson == "":
+        print("-" * 60)
+        print(
+            f"\n ###   {len(resultados_alunos + resultados_professores)} dado(s) encontrado(s) com {nomeCriterio} '{valorBusca}'   ###"
+            f"\n ### {len(resultados_alunos)} Aluno(s) e {len(resultados_professores)} Professor(es) ###"
+        )
+        if resultados_alunos:
+            print("\n\n############# Lista de Alunos #############")
+            for aluno in resultados_alunos:
+
+                mediaNotas = Aluno.calcular_media(aluno["notas"])
+
+                print(f"\nMatrícula: {aluno['matricula']}")
+                print(f'Nome: {aluno["nome"]}')
+                print(f'Curso: {aluno["curso"]}')
+                print(f'Notas: {", ".join(map(str, aluno["notas"]))}')
+                print(f"Média das notas: {mediaNotas:.1f}")
+                print(f'Presenças: {aluno["presencas"]}')
+                print(f'Telefone: {aluno["telefone"]}')
+                print(f'Email: {aluno["email"]}')
+                print("-" * 30)
+        if resultados_professores:
+            print("\n\n############# Lista de Professores #############")
+            for professor in resultados_professores:
+
+                print(f"\nMatrícula: {professor['matricula']}")
+                print(f'Nome: {professor["nome"]}')
+                print(f'Disciplinas: {professor["disciplinas"]}')
+                print(f'Turmas: {professor["turmas"]}')
+                print(f'Telefone: {professor["telefone"]}')
+                print(f'Email: {professor["email"]}')
+                print("-" * 30)
+    # Se não encontrou nenhum dado entre todos
     else:
         print(f"\nNenhum dado encontrado com {nomeCriterio} '{valorBusca}'.")
     espere = input("Pressione Enter para continuar...\n")
@@ -480,32 +527,32 @@ def alterar(chaveJson):
 
     # Falta fazer para professor
     elif chaveJson == "Professores":
-        # (
-        #     matriculaProfessorAlterar,
-        #     _,
-        #     _,
-        #     _,
-        # ) = isValidInput("Digite a matrícula do professor a ser alterado: ", "int")
+        (
+            matriculaProfessorAlterar,
+            _,
+            _,
+            _,
+        ) = isValidInput("Digite a matrícula do professor a ser alterado: ", "int")
 
-        # # Flag
-        # achoProfessor = False
-        # for professor in professores:
-        #     if professor["matricula"] == matriculaProfessorAlterar:
-        #         achoProfessor = True
+        # Flag
+        achoProfessor = False
+        for professor in professores:
+            if professor["matricula"] == matriculaProfessorAlterar:
+                achoProfessor = True
 
-        #         # Mostra os dados atuais do professor encontrado:
-        #         print("\n############# Dados Atuais do professor #############")
-        #         print(f"\nMatrícula: {professor['matricula']}")
-        #         print(f'Nome: {professor["nome"]}')
-        #         print(f'Disciplinas: {professor["disciplinas"]}')
-        #         print(f'Turmas: {professor["turmas"]}')
-        #         print(f'Telefone: {professor["telefone"]}')
-        #         print(f'Email: {professor["email"]}')
-        #         print("-" * 30)
-        #         break
-        # if not achoProfessor:
-        #     print("\n\Professor não encontrado.\n\n")
-        #     # Retorna e não faz a atualização - Early return pattern
+                # Mostra os dados atuais do professor encontrado:
+                print("\n############# Dados Atuais do professor #############")
+                print(f"\nMatrícula: {professor['matricula']}")
+                print(f'Nome: {professor["nome"]}')
+                print(f'Disciplinas: {professor["disciplinas"]}')
+                print(f'Turmas: {professor["turmas"]}')
+                print(f'Telefone: {professor["telefone"]}')
+                print(f'Email: {professor["email"]}')
+                print("-" * 30)
+                break
+        if not achoProfessor:
+            print("\n\Professor não encontrado.\n\n")
+            # Retorna e não faz a atualização - Early return pattern
         return
 
     # Pega os novos dados do professor (menos a matrícula que não mudam em relação ao professor)
