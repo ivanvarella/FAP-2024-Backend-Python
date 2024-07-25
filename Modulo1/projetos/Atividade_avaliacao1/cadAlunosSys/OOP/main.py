@@ -30,6 +30,8 @@ while True:
     elif opcaoMenuPrincipal == 9:
         func.html("dados.html")
     elif opcaoMenuPrincipal == 10:
+        func.pdf("dados.pdf")
+    elif opcaoMenuPrincipal == 11:
         func.sair()
         break
     elif opcaoMenuPrincipal == 0:

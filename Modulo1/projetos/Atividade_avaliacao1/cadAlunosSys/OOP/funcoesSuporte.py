@@ -3,11 +3,11 @@ from aluno import Aluno
 from professor import Professor
 from jsonHandler import JsonHandler
 from copy import deepcopy
-import platform
-import html
+import platform  # Para abrir o navegador padrão
 
-# Testar essa lib: printa mais bonito
-from pprint import pprint
+# Gerar o arquivo PDF
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
 # Caminho do diretório atual
 caminhoPastaPadrao = os.getcwd()
@@ -38,12 +38,13 @@ def exibirMenuPrincipal():
     print("# ------------------------------------- #")
     print("#          [ Outras opções ]            #")
     print("#                                       #")
-    print("#   Cod[7]: Listar                      #")
-    print("#   Cod[8]: Pesquisar                   #")
-    print("#   Cod[9]: Dados no navegador          #")
+    print("#   Cod[7]:  Listar                     #")
+    print("#   Cod[8]:  Pesquisar                  #")
+    print("#   Cod[9]:  Dados no navegador         #")
+    print("#   Cod[10]: Gera PDF com os dados      #")
     print("# ------------------------------------- #")
     print("#                                       #")
-    print("#   Cod[10]: Sair                       #")
+    print("#   Cod[11]: Sair                       #")
     print("#   Cod[0]: Sobre                       #")
     print("#                                       #")
     print("#########################################\n")
@@ -1182,18 +1183,51 @@ def gera_html(arquivo_html, chaveJson):
         html_file.write("</div></body></html>")
 
 
-def verifica_ou_cria_arquivo_html(caminho_arquivo):
-    # Verifica se o arquivo HTML já existe
-    if os.path.isfile(caminho_arquivo):
-        # Se o arquivo existe, abre em modo de escrita para limpar seu conteúdo
-        with open(caminho_arquivo, "w", encoding="utf-8") as file:
-            # pass dentro do contexto with open() no modo escrita (w),
-            # o arquivo será limpo, ou truncado.
-            pass  # Não escreve nada, apenas limpa o conteúdo
-    else:
-        # Se o arquivo não existe, ele será criado
-        with open(caminho_arquivo, "w", encoding="utf-8") as file:
-            pass  # Cria um arquivo vazio
+def verifica_arquivo(arquivo, tipo):
+    global caminho
+
+    # Para arquivo html
+    if tipo == "html":
+        # Verifica se o arquivo HTML já existe
+        if os.path.isfile(arquivo):
+            # Se o arquivo existe, abre em modo de escrita para limpar seu conteúdo
+            with open(arquivo, "w", encoding="utf-8") as file:
+                # pass dentro do contexto with open() no modo escrita (w),
+                # o arquivo será limpo, ou truncado.
+                pass  # Não escreve nada, apenas limpa o conteúdo
+        else:
+            # Se o arquivo não existe, ele será criado
+            with open(arquivo, "w", encoding="utf-8") as file:
+                pass  # Cria um arquivo vazio
+
+    # Para arquivo pdf
+    elif tipo == "pdf":
+        # Verifica se o arquivo já existe
+        if os.path.exists(arquivo):
+            print(f"Arquivo {arquivo} já existe.")
+            while True:
+                novo_pdf = input(
+                    "Digite Enter para sobrescrevê-lo ou digite o nome do novo arquivo a ser criado: "
+                ).strip()
+
+                # Se o usuário digitar um novo nome, verifica se é válido e se não é o mesmo nome
+                if novo_pdf:
+                    # Adiciona a extensão .pdf se não estiver presente
+                    if not novo_pdf.lower().endswith(".pdf"):
+                        novo_pdf += ".pdf"
+                    novo_arquivo_pdf_completo = os.path.join(caminho, novo_pdf)
+                    if novo_arquivo_pdf_completo != arquivo:
+                        return novo_arquivo_pdf_completo
+                    else:
+                        print(
+                            "Nome inválido. O nome digitado é o mesmo do arquivo já existente. Tente novamente."
+                        )
+                else:
+                    # Se o usuário não digitar nada, sobrescreve o arquivo existente
+                    return arquivo
+        else:
+            # Se o arquivo não existir, retorna o nome do arquivo original que será sobrescrito
+            return arquivo
 
 
 # Abre um link ou o arquivo html no navegador padrão
@@ -1221,7 +1255,7 @@ def html(arquivo_html, chaveJson=""):
     arquivo_html = os.path.join(caminho, arquivo_html)
 
     # Verifica se o arquivo existe, se existir limpa, se não cria
-    verifica_ou_cria_arquivo_html(arquivo_html)
+    verifica_arquivo(arquivo_html, "html")
 
     # Se o arquivo não existir, será criado
     gera_html(arquivo_html, chaveJson)
@@ -1230,3 +1264,123 @@ def html(arquivo_html, chaveJson=""):
     # file_url = "https://www.google.com"
     file_url = arquivo_html
     abrir_link(file_url)
+
+
+# Passando chaveJson para futura espanção do código, não está sendo utilizando no momento
+def pdf(arquivo_pdf, chaveJson=""):
+    """
+    Gera um arquivo PDF com os dados de alunos e professores.
+
+    Args:
+    arquivo_pdf (str): Nome do arquivo PDF.
+    chaveJson (str): Chave para filtrar os dados do JSON.
+    """
+
+    # Caminho completo do arquivo HTML
+    global caminho
+    arquivo_pdf = os.path.join(caminho, arquivo_pdf)
+
+    # Verifica se o arquivo já existe, caso exista, pergunta se quer substituir ou criar novo
+    arquivo_pdf_verificado = verifica_arquivo(arquivo_pdf, "pdf")
+    # Se retornar o mesmo, sobrescreve -> Deleta o arquivo existente e cria um novo com mesmo nome
+    if arquivo_pdf_verificado == arquivo_pdf:
+        # Verifica se existe antes de deletar, caso contrário dá erro
+        if os.path.exists(arquivo_pdf):
+            os.remove(arquivo_pdf)
+    else:
+        # Se não, pega o novo nome de arquivo retornado de verifica_arquivo()
+        # Já vem com o caminho completo do arquivo
+        arquivo_pdf = arquivo_pdf_verificado
+
+    # Cria uma instância de JsonHandler
+    json_handler = JsonHandler(arquivoJson="dados.json", chavePrincipal=chaveJson)
+
+    # Pega todos os dados e "filtra" de acordo com o retorno do chaveJson
+    dados = json_handler.read()
+    alunos = dados.get("Alunos", [])
+    professores = dados.get("Professores", [])
+
+    # Se não existir nenhum dado para gerar o PDF, retorna
+    if chaveJson == "Alunos" and not alunos:
+        print("\n\nNenhum Aluno cadastrado.\n\n")
+        return
+    elif chaveJson == "Professores" and not professores:
+        print("\n\nNenhum Professor cadastrado.\n\n")
+        return
+    elif chaveJson == "" and not (alunos or professores):
+        print("\n\nNenhum dado cadastrado.\n\n")
+        return
+
+    # Cria o PDF
+    c = canvas.Canvas(arquivo_pdf, pagesize=letter)
+    width, height = letter
+
+    c.setFont("Helvetica", 12)
+
+    # Adiciona o título
+    c.drawString(200, height - 40, "Relatório de Dados")
+
+    y_position = height - 60
+
+    def check_page_full(y_pos):
+        """Verifica se a posição Y está no final da página e adiciona uma nova página se necessário."""
+        if y_pos < 50:  # Ajuste o limite conforme necessário
+            c.showPage()  # Adiciona uma nova página
+            c.setFont("Helvetica", 12)
+            y_pos = height - 40  # Redefine a posição vertical inicial na nova página
+        return y_pos
+
+    # Adiciona dados dos alunos
+    if alunos:
+        c.drawString(30, y_position, f"Lista de Alunos ({len(alunos)}):")
+        y_position -= 20
+        for aluno in alunos:
+            y_position = check_page_full(y_position)
+            media_notas = sum(aluno["notas"]) / len(aluno["notas"])
+            c.drawString(30, y_position, f"Matrícula: {aluno['matricula']}")
+            y_position -= 20
+            c.drawString(30, y_position, f"Nome: {aluno['nome']}")
+            y_position -= 20
+            c.drawString(30, y_position, f"Curso: {aluno['curso']}")
+            y_position -= 20
+            c.drawString(
+                30, y_position, f"Notas: {', '.join(map(str, aluno['notas']))}"
+            )
+            y_position -= 20
+            c.drawString(30, y_position, f"Média das notas: {media_notas:.1f}")
+            y_position -= 20
+            c.drawString(30, y_position, f"Presenças: {aluno['presencas']}")
+            y_position -= 20
+            c.drawString(30, y_position, f"Telefone: {aluno['telefone']}")
+            y_position -= 20
+            c.drawString(30, y_position, f"Email: {aluno['email']}")
+            y_position -= 40
+
+    # Adiciona dados dos professores
+    if professores:
+        # Desenha uma linha horizontal no meio da página
+        c.setStrokeColorRGB(0, 0, 0)  # Cor da linha (preto)
+        c.setLineWidth(2)  # Largura da linha
+        y_position = check_page_full(y_position)
+        c.line(30, y_position + 15, width - 30, y_position + 15)  # Linha horizontal
+        c.drawString(30, y_position, f"Lista de Professores ({len(professores)}):")
+        y_position -= 20
+        for professor in professores:
+            y_position = check_page_full(y_position)
+            c.drawString(30, y_position, f"Matrícula: {professor['matricula']}")
+            y_position -= 20
+            c.drawString(30, y_position, f"Nome: {professor['nome']}")
+            y_position -= 20
+            c.drawString(30, y_position, f"Disciplinas: {professor['disciplinas']}")
+            y_position -= 20
+            c.drawString(30, y_position, f"Turmas: {professor['turmas']}")
+            y_position -= 20
+            c.drawString(30, y_position, f"Telefone: {professor['telefone']}")
+            y_position -= 20
+            c.drawString(30, y_position, f"Email: {professor['email']}")
+            y_position -= 40
+
+    # Salva o PDF
+    c.save()
+    print(f"\n\nPDF gerado com sucesso em {arquivo_pdf}\n")
+    espere = input("Digite Enter para continuar... \n\n")
