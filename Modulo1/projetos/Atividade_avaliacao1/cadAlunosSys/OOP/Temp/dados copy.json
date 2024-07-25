@@ -37,6 +37,15 @@
       "notas": [10.0, 8.0, 9.0, 8.0, 7.0, 8.0, 8.0, 9.0, 8.0, 10.0]
     },
     {
+      "matricula": 20,
+      "nome": "Gogozinhozinho Pereira Gois",
+      "curso": "Caligrafia ",
+      "presencas": 31,
+      "telefone": "654321654654",
+      "email": "gogo@teste.com.br",
+      "notas": [10.0, 8.0, 9.0, 8.0, 7.0, 8.0, 8.0, 9.0, 8.0, 10.0]
+    },
+    {
       "matricula": 5,
       "nome": "Raquel Dias",
       "curso": "Python Ultra Mega Avançado para Iniciantes",
@@ -57,11 +66,20 @@
     {
       "matricula": 7,
       "nome": "Pedro Gomes da Silva",
-      "curso": "Programação para Nerds",
-      "presencas": 25,
+      "curso": "Programação para Nerds III",
+      "presencas": 32,
       "telefone": "654321654",
       "email": "pepe@gmail.com",
-      "notas": [10.0, 9.8, 9.5]
+      "notas": [4.5, 10.0, 9.7, 6.3]
+    },
+    {
+      "matricula": 21,
+      "nome": "Fulonivisk da Silva Sauro",
+      "curso": "Desenvoltura Avançada para Nerds II",
+      "notas": [10.0, 10.0, 9.1, 9.8],
+      "presencas": 10,
+      "telefone": "6549876543",
+      "email": "fufu@gmail.com"
     }
   ],
   "Professores": [
@@ -88,6 +106,34 @@
       "turmas": ["Hist_2024.1", "Geo_2023.2"],
       "telefone": "987123456",
       "email": "luiz.fernando@email.com"
+    },
+    {
+      "matricula": 22,
+      "nome": "Novo Nome professor teste",
+      "disciplinas": [
+        "Programação Avançada II Alt",
+        "Física Relativística III Alt"
+      ],
+      "turmas": [
+        "Eng. Comp. 2010.1",
+        "Eng. Elétrica 2012.2",
+        "Arquitetura 2012.1",
+        "Medicina 2024.2"
+      ],
+      "telefone": "987654321654987",
+      "email": "newprof_teste@gmail.com"
+    },
+    {
+      "matricula": 25,
+      "nome": "Gogonoid Júnior Senior",
+      "disciplinas": ["Python IV", "Física Básica"],
+      "turmas": [
+        "Eng. Comp. 2021.2",
+        "Eng. Elétrica 2023.1",
+        "Arquitetura 2020.1"
+      ],
+      "telefone": "623423476545",
+      "email": "nonoid@gmail.com"
     }
   ]
 }

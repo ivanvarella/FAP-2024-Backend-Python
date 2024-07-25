@@ -854,7 +854,7 @@ def trataNotasAluno():
 ## Função para validação de entradas input
 # - msg: mensagem mostrada no input
 # - tipoEsperado: "string", "int", "float", "intFloat" - "intFloat" podendo receber int ou float
-# - aceitaVazio: padrão False (não aceitando valors vazios), caso aceite, declarar na chamada da função como True
+# - aceitaVazio: padrão False (não aceitando valors vazios), caso aceite, declarar True - Não faz nenhuma verificação
 # - Retorno da função: valor, erroTipo, erroVazio, msgErro
 def isValidInput(msg, tipoEsperado, aceitaVazio=False):
 
