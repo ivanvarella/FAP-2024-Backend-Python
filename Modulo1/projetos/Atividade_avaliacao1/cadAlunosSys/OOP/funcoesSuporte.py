@@ -3,6 +3,8 @@ from aluno import Aluno
 from professor import Professor
 from jsonHandler import JsonHandler
 from copy import deepcopy
+import platform
+import html
 
 # Testar essa lib: printa mais bonito
 from pprint import pprint
@@ -38,9 +40,10 @@ def exibirMenuPrincipal():
     print("#                                       #")
     print("#   Cod[7]: Listar                      #")
     print("#   Cod[8]: Pesquisar                   #")
+    print("#   Cod[9]: Dados no navegador          #")
     print("# ------------------------------------- #")
     print("#                                       #")
-    print("#   Cod[9]: Sair                        #")
+    print("#   Cod[10]: Sair                       #")
     print("#   Cod[0]: Sobre                       #")
     print("#                                       #")
     print("#########################################\n")
@@ -113,9 +116,12 @@ def exibirMenuAlterarExcluir(chaveJson):
 
 ## Função Sair:
 def sair():
-    print("\n\n#########################################################")
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    print("#########################################################")
     print("#  Obrigado por usar o Sistema de Cadastro de Alunos    #")
-    print("#########################################################\n\n")
+    print("#########################################################")
+    print("\n\n\n\n\n")
 
 
 ## Exibir Menu Pesquisar
@@ -919,3 +925,308 @@ def isValidInput(msg, tipoEsperado, aceitaVazio=False):
                     valor = input(msg)
 
     return valor, erroTipo, erroVazio, erroMsg
+
+
+# Popula o arquivo html com os dados do Json
+# chaveJson não está sendo utilizado no momento, mas pode ser usada para filtrar os
+# dados no futuro, dependendo da necessidade.
+def gera_html(arquivo_html, chaveJson):
+    # Cria uma instância de JsonHandler
+    json_handler = JsonHandler(arquivoJson="dados.json", chavePrincipal=chaveJson)
+
+    # Pega todos os dados e "filtra" de acordo com o retorno do chaveJson
+    dados = json_handler.read()
+    alunos = dados.get("Alunos", [])
+    professores = dados.get("Professores", [])
+
+    # Se tiver buscado por Alunos e não existir nenhum
+    if chaveJson == "Alunos" and not alunos:
+        print("\n\nNenhum Aluno cadastrado.\n\n")
+        return
+
+    # Se tiver buscado por Professores e não existir nenhum
+    if chaveJson == "Professores" and not professores:
+        print("\n\nNenhum Professor cadastrado.\n\n")
+        return
+
+    # Se tiver buscado por Dados e não existir nenhum
+    if chaveJson == "" and not (alunos or professores):
+        print("\n\nNenhum dado cadastrado.\n\n")
+        return
+
+    # Criando o arquivo HTML
+    with open(arquivo_html, "w", encoding="utf-8") as html_file:
+        html_file.write(
+            """
+            <!DOCTYPE html>
+            <html lang="pt-BR">
+            <head>
+            <meta charset="utf-8">
+            <title>Relatório de Dados</title>
+            <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+            header { background-color: #4CAF50; color: white; padding: 10px 0; text-align: center; }
+            .container { width: 80%; margin: auto; padding: 20px; }
+            .button { background-color: #4CAF50; color: white; border: none; padding: 10px 20px; margin: 10px; cursor: pointer; border-radius: 5px; }
+            .button:hover { background-color: #45a049; }
+            .section { display: none; margin-bottom: 20px; padding: 20px; border-radius: 5px; background-color: #f4f4f4; }
+            .section.active { display: block; }
+            .section h2 { color: #333; }
+            .item { margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: white; }
+            .item p { margin: 5px 0; }
+            .item hr { margin: 10px 0; }
+            </style>
+            <script>
+            function showSection(sectionId) {
+                var sections = document.querySelectorAll('.section');
+                sections.forEach(function(section) {
+                    section.classList.remove('active');
+                });
+                var section = document.getElementById(sectionId);
+                if (section) {
+                    section.classList.add('active');
+                } else {
+                    console.warn('Elemento com ID "' + sectionId + '" não encontrado.');
+                }
+            }
+            window.onload = function() {
+                var defaultSection = document.querySelector('.button').getAttribute('data-target');
+                if (defaultSection) {
+                    showSection(defaultSection);
+                }
+            }
+            </script>
+            </head>
+            <body>
+            <header>
+                <h1>Relatório de Dados</h1>
+            </header>
+            <div class="container">
+                <button class="button" data-target="alunosSection" onclick="showSection('alunosSection')">Mostrar Alunos</button>
+                <button class="button" data-target="professoresSection" onclick="showSection('professoresSection')">Mostrar Professores</button>
+                <button class="button" data-target="allSection" onclick="showSection('allSection')">Mostrar Todos</button>
+        """
+        )
+
+        # Para alunos
+        if alunos:
+            html_file.write(
+                """
+                <div id="alunosSection" class="section">
+                    <h2>Lista de Alunos</h2>
+                    <p>Total de alunos cadastrados: {}</p>
+                """.format(
+                    len(alunos)
+                )
+            )
+
+            for aluno in alunos:
+                media_notas = Aluno.calcular_media(aluno["notas"])
+                html_file.write(
+                    """
+                    <div class="item">
+                        <p><strong>Matrícula:</strong> {}</p>
+                        <p><strong>Nome:</strong> {}</p>
+                        <p><strong>Curso:</strong> {}</p>
+                        <p><strong>Notas:</strong> {}</p>
+                        <p><strong>Média das notas:</strong> {:.1f}</p>
+                        <p><strong>Presenças:</strong> {}</p>
+                        <p><strong>Telefone:</strong> {}</p>
+                        <p><strong>Email:</strong> {}</p>
+                    </div>
+                    """.format(
+                        aluno["matricula"],
+                        aluno["nome"],
+                        aluno["curso"],
+                        ", ".join(map(str, aluno["notas"])),
+                        media_notas,
+                        aluno["presencas"],
+                        aluno["telefone"],
+                        aluno["email"],
+                    )
+                )
+            html_file.write("</div>")
+        else:
+            html_file.write(
+                """
+                <div id="alunosSection" class="section">
+                    <h2>Nenhum aluno cadastrado</h2>
+                </div>
+                """
+            )
+
+        # Para professores
+        if professores:
+            html_file.write(
+                """
+                <div id="professoresSection" class="section">
+                    <h2>Lista de Professores</h2>
+                    <p>Total de Professores cadastrados: {}</p>
+                """.format(
+                    len(professores)
+                )
+            )
+
+            for professor in professores:
+                html_file.write(
+                    """
+                    <div class="item">
+                        <p><strong>Matrícula:</strong> {}</p>
+                        <p><strong>Nome:</strong> {}</p>
+                        <p><strong>Disciplinas:</strong> {}</p>
+                        <p><strong>Turmas:</strong> {}</p>
+                        <p><strong>Telefone:</strong> {}</p>
+                        <p><strong>Email:</strong> {}</p>
+                    </div>
+                    """.format(
+                        professor["matricula"],
+                        professor["nome"],
+                        professor["disciplinas"],
+                        professor["turmas"],
+                        professor["telefone"],
+                        professor["email"],
+                    )
+                )
+            html_file.write("</div>")
+        else:
+            html_file.write(
+                """
+                <div id="professoresSection" class="section">
+                    <h2>Nenhum professor cadastrado</h2>
+                </div>
+                """
+            )
+
+        # Para todos os dados
+        if alunos or professores:
+            html_file.write(
+                """
+                <div id="allSection" class="section">
+                """
+            )
+            # Só cria os dados de Alunos se existir
+            if alunos:
+                html_file.write(
+                    """
+                    <h2>Lista de Alunos</h2>
+                    <p>Total de alunos cadastrados: {}</p>
+                """.format(
+                        len(alunos)
+                    )
+                )
+                for aluno in alunos:
+                    media_notas = Aluno.calcular_media(aluno["notas"])
+                    html_file.write(
+                        """
+                        <div class="item">
+                            <p><strong>Matrícula:</strong> {}</p>
+                            <p><strong>Nome:</strong> {}</p>
+                            <p><strong>Curso:</strong> {}</p>
+                            <p><strong>Notas:</strong> {}</p>
+                            <p><strong>Média das notas:</strong> {:.1f}</p>
+                            <p><strong>Presenças:</strong> {}</p>
+                            <p><strong>Telefone:</strong> {}</p>
+                            <p><strong>Email:</strong> {}</p>
+                        </div>
+                        """.format(
+                            aluno["matricula"],
+                            aluno["nome"],
+                            aluno["curso"],
+                            ", ".join(map(str, aluno["notas"])),
+                            media_notas,
+                            aluno["presencas"],
+                            aluno["telefone"],
+                            aluno["email"],
+                        )
+                    )
+            # Só cria os dados de Professores se existir
+            if professores:
+                html_file.write(
+                    """
+                    <h2>Lista de Professores</h2>
+                    <p>Total de Professores cadastrados: {}</p>
+                    """.format(
+                        len(professores)
+                    )
+                )
+                for professor in professores:
+                    html_file.write(
+                        """
+                        <div class="item">
+                            <p><strong>Matrícula:</strong> {}</p>
+                            <p><strong>Nome:</strong> {}</p>
+                            <p><strong>Disciplinas:</strong> {}</p>
+                            <p><strong>Turmas:</strong> {}</p>
+                            <p><strong>Telefone:</strong> {}</p>
+                            <p><strong>Email:</strong> {}</p>
+                        </div>
+                        """.format(
+                            professor["matricula"],
+                            professor["nome"],
+                            professor["disciplinas"],
+                            professor["turmas"],
+                            professor["telefone"],
+                            professor["email"],
+                        )
+                    )
+                html_file.write("</div>")
+        else:
+            html_file.write(
+                """
+                <div id="allSection" class="section">
+                    <h2>Nenhum dado cadastrado</h2>
+                </div>
+                """
+            )
+
+        html_file.write("</div></body></html>")
+
+
+def verifica_ou_cria_arquivo_html(caminho_arquivo):
+    # Verifica se o arquivo HTML já existe
+    if os.path.isfile(caminho_arquivo):
+        # Se o arquivo existe, abre em modo de escrita para limpar seu conteúdo
+        with open(caminho_arquivo, "w", encoding="utf-8") as file:
+            # pass dentro do contexto with open() no modo escrita (w),
+            # o arquivo será limpo, ou truncado.
+            pass  # Não escreve nada, apenas limpa o conteúdo
+    else:
+        # Se o arquivo não existe, ele será criado
+        with open(caminho_arquivo, "w", encoding="utf-8") as file:
+            pass  # Cria um arquivo vazio
+
+
+# Abre um link ou o arquivo html no navegador padrão
+def abrir_link(file_url):
+    if platform.system() == "Windows":
+        os.system(f"start {file_url}")
+    elif platform.system() == "Darwin":  # macOS
+        os.system(f"open {file_url}")
+    else:  # Linux
+        os.system(f"xdg-open {file_url}")
+        # Brs para mover os warnings do xdg-open
+        # Enquanto o navegador estiver aberto o terminal ficará "travado" com a instância do xdg-open
+        # só será efetivo quando fechar
+        print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+        print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+
+
+# arquivo_html = nome do arquivo e extesão (exemplo: "dados.html")
+# chaveJson (opcional, "" por padrão): No contexto desse programa: "Alunos" ou "Professores"
+# Usado para saber quais dados serão gerados: chaveJson = "", é para retornar todos os dados\
+def html(arquivo_html, chaveJson=""):
+
+    # Caminho completo do arquivo HTML
+    global caminho
+    arquivo_html = os.path.join(caminho, arquivo_html)
+
+    # Verifica se o arquivo existe, se existir limpa, se não cria
+    verifica_ou_cria_arquivo_html(arquivo_html)
+
+    # Se o arquivo não existir, será criado
+    gera_html(arquivo_html, chaveJson)
+
+    # Tem que ter o "https://" ou o "http://"
+    # file_url = "https://www.google.com"
+    file_url = arquivo_html
+    abrir_link(file_url)

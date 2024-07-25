@@ -28,6 +28,8 @@ while True:
     elif opcaoMenuPrincipal == 8:
         func.pesquisar()
     elif opcaoMenuPrincipal == 9:
+        func.html("dados.html")
+    elif opcaoMenuPrincipal == 10:
         func.sair()
         break
     elif opcaoMenuPrincipal == 0:
