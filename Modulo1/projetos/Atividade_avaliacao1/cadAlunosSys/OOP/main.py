@@ -9,7 +9,7 @@ import funcoesSuporte as func
 while True:
 
     # Exibir menu principal - Pega o retorno do input interno:
-    opcaoMenuPrincipal = func.exibirMenuPrincipal()
+    opcaoMenuPrincipal = func.exibirMenuPrincipal("rich1")
 
     if opcaoMenuPrincipal == 1:
         func.telaCadastro("Alunos")

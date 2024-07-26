@@ -5,6 +5,9 @@ from jsonHandler import JsonHandler
 from copy import deepcopy
 import platform  # Para abrir o navegador padrão
 
+# Teste Menu com Rich
+import rich_menus as richs
+
 # Gerar o arquivo PDF
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -21,33 +24,39 @@ caminho = os.path.join(
 )
 
 
-## Função exibir menu opções:
-def exibirMenuPrincipal():
-    print("\n\n############ Menu Principal #############")
-    print("#              [ Alunos ]               #")
-    print("#                                       #")
-    print("#   Cod[1]: Cadastrar Aluno             #")
-    print("#   Cod[2]: Listar / Alterar / excluir  #")
-    print("#   Cod[3]: Pesquisar Aluno             #")
-    print("# ------------------------------------- #")
-    print("#          [ Professores ]              #")
-    print("#                                       #")
-    print("#   Cod[4]: Cadastrar Professor         #")
-    print("#   Cod[5]: Listar / Alterar / Excluir  #")
-    print("#   Cod[6]: Pesquisar Professor         #")
-    print("# ------------------------------------- #")
-    print("#          [ Outras opções ]            #")
-    print("#                                       #")
-    print("#   Cod[7]:  Listar                     #")
-    print("#   Cod[8]:  Pesquisar                  #")
-    print("#   Cod[9]:  Dados no navegador         #")
-    print("#   Cod[10]: Gera PDF com os dados      #")
-    print("# ------------------------------------- #")
-    print("#                                       #")
-    print("#   Cod[11]: Sair                       #")
-    print("#   Cod[0]: Sobre                       #")
-    print("#                                       #")
-    print("#########################################\n")
+# ## Função exibir menu opções:
+def exibirMenuPrincipal(tipo="default"):
+    if tipo == "default":
+        print("\n\n############ Menu Principal #############")
+        print("#              [ Alunos ]               #")
+        print("#                                       #")
+        print("#   Cod[1]: Cadastrar Aluno             #")
+        print("#   Cod[2]: Listar / Alterar / excluir  #")
+        print("#   Cod[3]: Pesquisar Aluno             #")
+        print("# ------------------------------------- #")
+        print("#          [ Professores ]              #")
+        print("#                                       #")
+        print("#   Cod[4]: Cadastrar Professor         #")
+        print("#   Cod[5]: Listar / Alterar / Excluir  #")
+        print("#   Cod[6]: Pesquisar Professor         #")
+        print("# ------------------------------------- #")
+        print("#          [ Outras opções ]            #")
+        print("#                                       #")
+        print("#   Cod[7]:  Listar                     #")
+        print("#   Cod[8]:  Pesquisar                  #")
+        print("#   Cod[9]:  Dados no navegador         #")
+        print("#   Cod[10]: Gera PDF com os dados      #")
+        print("# ------------------------------------- #")
+        print("#                                       #")
+        print("#   Cod[11]: Sair                       #")
+        print("#   Cod[0]: Sobre                       #")
+        print("#                                       #")
+        print("#########################################\n")
+    elif tipo == "rich1":
+        richs.principal_rich1()
+    elif tipo == "rich2":
+        richs.principal_rich2()
+
     # Verifica erros de tipo: Erros: Vazio, string, float
     (opcaoMenuPrincipal, _, _, _) = isValidInput("Digite a opção desejada: ", "int")
     return opcaoMenuPrincipal
