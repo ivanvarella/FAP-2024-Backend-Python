@@ -93,7 +93,7 @@ class Aluno(Pessoa):
             print(f" Presenças: {aluno_data['presencas']}")
             print(f" Telefone: {aluno_data['telefone']}")
             print(f" Email: {aluno_data['email']}\n")
-            espere = input("Pressione Enter para continuar...")
+            input("Pressione Enter para continuar...")
         except Exception as e:
             print(f"Erro ao salvar aluno: {e}")
 

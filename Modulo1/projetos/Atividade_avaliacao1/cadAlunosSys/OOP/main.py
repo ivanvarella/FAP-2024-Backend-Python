@@ -9,6 +9,7 @@ import funcoesSuporte as func
 while True:
 
     # Exibir menu principal - Pega o retorno do input interno:
+    # Opções de vizualização do meu principal: "" - default / "rich1" / "rich2"
     opcaoMenuPrincipal = func.exibirMenuPrincipal("rich1")
 
     if opcaoMenuPrincipal == 1:

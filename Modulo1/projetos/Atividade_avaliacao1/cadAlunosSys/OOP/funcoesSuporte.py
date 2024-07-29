@@ -45,7 +45,7 @@ def exibirMenuPrincipal(tipo="default"):
         print("#   Cod[7]:  Listar                     #")
         print("#   Cod[8]:  Pesquisar                  #")
         print("#   Cod[9]:  Dados no navegador         #")
-        print("#   Cod[10]: Gera PDF com os dados      #")
+        print("#   Cod[10]: Gerar PDF com os dados     #")
         print("# ------------------------------------- #")
         print("#                                       #")
         print("#   Cod[11]: Sair                       #")
@@ -247,19 +247,21 @@ def listar(chaveJson=""):
             print(f'Email: {professor["email"]}')
             print("-" * 30)
 
-    # Opção alterar ou excluir aluno ou professor dentro de listar, para facilitar,
-    # já que o usuário poderá visualizar os alunos antes de realizar as alterações:
-    opcaoMenuAlterarExcluir = exibirMenuAlterarExcluir(chaveJson)
-
-    # Controla os opções do Menu Alterar / Excluir aluno
-    if opcaoMenuAlterarExcluir == 3:
-        return  # Volta para o o loop do menu principal
-    elif opcaoMenuAlterarExcluir == 1:
-        alterar(chaveJson)
-    elif opcaoMenuAlterarExcluir == 2:
-        excluir(chaveJson)
-    else:
-        print("\nOpção inválida!\n")
+    while True:
+        # Opção alterar ou excluir aluno ou professor dentro de listar, para facilitar,
+        # já que o usuário poderá visualizar os alunos antes de realizar as alterações:
+        opcaoMenuAlterarExcluir = exibirMenuAlterarExcluir(chaveJson)
+        # Controla os opções do Menu Alterar / Excluir aluno
+        if opcaoMenuAlterarExcluir == 3:
+            return  # Volta para o o loop do menu principal
+        elif opcaoMenuAlterarExcluir == 1:
+            alterar(chaveJson)
+            break
+        elif opcaoMenuAlterarExcluir == 2:
+            excluir(chaveJson)
+            break
+        else:
+            print("\nOpção inválida!\n")
 
 
 ## Função pesquisar
@@ -339,8 +341,8 @@ def pesquisar(chaveJson=""):
     # get(): Pega valores da chave 'Alunos' ou 'Professores' no Json, caso não exista a chave, retorna vazio
     alunos = dados.get("Alunos", [])
     professores = dados.get("Professores", [])
+    # Quando chaveJson = ""
     resultados = []
-    # Quando shaveJson = ""
     resultados_alunos = []
     resultados_professores = []
 
@@ -459,7 +461,7 @@ def pesquisar(chaveJson=""):
     # Se não encontrou nenhum dado entre todos
     else:
         print(f"\nNenhum dado encontrado com {nomeCriterio} '{valorBusca}'.")
-    espere = input("Pressione Enter para continuar...\n")
+    input("Pressione Enter para continuar...\n")
 
 
 ## Função excluir aluno (dentro do Listar Alunos):
@@ -1392,4 +1394,4 @@ def pdf(arquivo_pdf, chaveJson=""):
     # Salva o PDF
     c.save()
     print(f"\n\nPDF gerado com sucesso em {arquivo_pdf}\n")
-    espere = input("Digite Enter para continuar... \n\n")
+    input("Digite Enter para continuar... \n\n")

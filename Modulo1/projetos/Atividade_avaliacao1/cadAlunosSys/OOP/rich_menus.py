@@ -47,7 +47,7 @@ def principal_rich1():
     table.add_row("Cod[ 7]", "Listar")
     table.add_row("Cod[ 8]", "Pesquisar")
     table.add_row("Cod[ 9]", "Dados no Navegador")
-    table.add_row("Cod[10]", "Gera PDF com os Dados")
+    table.add_row("Cod[10]", "Gerar PDF com os Dados")
     table.add_row("", "")
     table.add_row(linha_pequena, linha_grande)
     table.add_row("", "")
@@ -86,7 +86,7 @@ def principal_rich2():
         ["Cod: [ 7]", "Listar"],
         ["Cod: [ 8]", "Pesquisar"],
         ["Cod: [ 9]", "Dados no navegador"],
-        ["Cod: [10]", "Gera PDF com os dados"],
+        ["Cod: [10]", "Gerar PDF com os dados"],
         [linha_pequena, linha_grande],
         ["", ""],
         ["Cod: [11]", "Sair"],
@@ -109,14 +109,14 @@ def principal_rich2():
     console.clear()
 
     with Live(table, console=console, screen=False, refresh_per_second=120):
-        with beat(12):
+        with beat(5):
             table.title = "[not italic]:chart_increasing:[/] Menu Principal [not italic]:chart_decreasing:[/]"
 
         for row in TABLE_DATA:
-            with beat(12):
+            with beat(5):
                 table.add_row(*row)
 
-        with beat(10):
+        with beat(4):
             table.border_style = "bright_yellow"
             table.row_styles = ["none", "dim"]
             table.columns[0].header_style = "bold cyan"
