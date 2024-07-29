@@ -2,7 +2,9 @@ import os
 from aluno import Aluno
 from professor import Professor
 from jsonHandler import JsonHandler
-from copy import deepcopy
+from copy import (
+    deepcopy,
+)  # Cópia profunda dos dados de alunos / professores sem risco de "comtaminação"
 import platform  # Para abrir o navegador padrão
 
 # Teste Menu com Rich
