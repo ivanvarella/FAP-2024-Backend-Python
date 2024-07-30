@@ -122,7 +122,7 @@ def exibirMenuAlterarExcluir(chaveJson):
             _,
             _,
             _,
-        ) = isValidInput("Digite Enter para voltar: ", "string", aceitaVazio=True)
+        ) = isValidInput("Digite Enter para voltar. ", "string", aceitaVazio=True)
         return
 
 
@@ -262,6 +262,8 @@ def listar(chaveJson=""):
         elif opcaoMenuAlterarExcluir == 2:
             excluir(chaveJson)
             break
+        elif opcaoMenuAlterarExcluir == None:
+            return
         else:
             print("\nOpção inválida!\n")
 

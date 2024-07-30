@@ -55,7 +55,7 @@ class Aluno(Pessoa):
             f"Presenças: {self.presencas}\n"
         )
 
-    # É um método estático, então posso usar sem precisar instânciar o objeto da classe Aluno e passando os parâmetros obrigatórios
+    # É um método estático, pois não tem nenhum atributo da classe Aluno.
     # Por isso não possui o parâmetro self
     @staticmethod
     def calcular_media(notas) -> float:
