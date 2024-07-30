@@ -20,6 +20,8 @@ def testar_pessoa():
     except Exception as e:
         print(f"Erro ao testar Pessoa: {e}")
 
+    # aluno_teste = Aluno(p, matricula=100, curso="Matemática", notas=[9.5, 8.0, 7.5], presencas=15)
+
 
 def testar_aluno():
     print("\nTestando Aluno:")
