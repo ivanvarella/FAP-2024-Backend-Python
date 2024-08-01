@@ -4,11 +4,7 @@
       "matricula": 1,
       "nome": "João da Silva",
       "curso": "Ciência da Computação",
-      "notas": [
-        8.5,
-        7.0,
-        9.0
-      ],
+      "notas": [8.5, 7.0, 9.0],
       "presencas": 18,
       "telefone": "1234-5678",
       "email": "joao.silva@email.com"
@@ -17,11 +13,7 @@
       "matricula": 2,
       "nome": "Maria Oliveira",
       "curso": "Engenharia Civil",
-      "notas": [
-        9.5,
-        8.0,
-        10.0
-      ],
+      "notas": [9.5, 8.0, 10.0],
       "presencas": 20,
       "telefone": "9876-5432",
       "email": "maria.oliveira@email.com"
@@ -30,11 +22,7 @@
       "matricula": 3,
       "nome": "Pedro Santos",
       "curso": "Administração",
-      "notas": [
-        6.0,
-        7.5,
-        8.5
-      ],
+      "notas": [6.0, 7.5, 8.5],
       "presencas": 15,
       "telefone": "5555-1111",
       "email": "pedro.santos@email.com"
@@ -46,18 +34,7 @@
       "presencas": 31,
       "telefone": "654321654654",
       "email": "gogo@teste.com.br",
-      "notas": [
-        10.0,
-        8.0,
-        9.0,
-        8.0,
-        7.0,
-        8.0,
-        8.0,
-        9.0,
-        8.0,
-        10.0
-      ]
+      "notas": [10.0, 8.0, 9.0, 8.0, 7.0, 8.0, 8.0, 9.0, 8.0, 10.0]
     },
     {
       "matricula": 20,
@@ -66,18 +43,7 @@
       "presencas": 31,
       "telefone": "654321654654",
       "email": "gogo@teste.com.br",
-      "notas": [
-        10.0,
-        8.0,
-        9.0,
-        8.0,
-        7.0,
-        8.0,
-        8.0,
-        9.0,
-        8.0,
-        10.0
-      ]
+      "notas": [10.0, 8.0, 9.0, 8.0, 7.0, 8.0, 8.0, 9.0, 8.0, 10.0]
     },
     {
       "matricula": 5,
@@ -86,24 +52,13 @@
       "presencas": 15,
       "telefone": "56498731",
       "email": "raquel_do_python@gmail.com",
-      "notas": [
-        10,
-        9.5,
-        9.8
-      ]
+      "notas": [10, 9.5, 9.8]
     },
     {
       "matricula": 6,
       "nome": "Celestino Celestiano Celeste Celestial",
       "curso": "Engenharia de Dados com Python",
-      "notas": [
-        10.0,
-        9.6,
-        8.9,
-        9.5,
-        10.0,
-        9.3
-      ],
+      "notas": [10.0, 9.6, 8.9, 9.5, 10.0, 9.3],
       "presencas": 35,
       "telefone": "654321654",
       "email": "cece@gmail.com"
@@ -115,23 +70,13 @@
       "presencas": 32,
       "telefone": "654321654",
       "email": "pepe@gmail.com",
-      "notas": [
-        4.5,
-        10.0,
-        9.7,
-        6.3
-      ]
+      "notas": [4.5, 10.0, 9.7, 6.3]
     },
     {
       "matricula": 21,
       "nome": "Fulonivisk da Silva Sauro",
       "curso": "Desenvoltura Avançada para Nerds II",
-      "notas": [
-        10.0,
-        10.0,
-        9.1,
-        9.8
-      ],
+      "notas": [10.0, 10.0, 9.1, 9.8],
       "presencas": 11,
       "telefone": "6549876543",
       "email": "fufu@gmail.com"
@@ -141,44 +86,24 @@
     {
       "matricula": 10,
       "nome": "Caio Pereira",
-      "disciplinas": [
-        "Matemática",
-        "Física",
-        "Programação"
-      ],
-      "turmas": [
-        "Eng.Comp_2024.2",
-        "Física_2023.1",
-        "Matemática_2022.2"
-      ],
+      "disciplinas": ["Matemática", "Física", "Programação"],
+      "turmas": ["Eng.Comp_2024.2", "Física_2023.1", "Matemática_2022.2"],
       "telefone": "987654321",
       "email": "caio.pereira@email.com"
     },
     {
       "matricula": 11,
       "nome": "Ana Souza",
-      "disciplinas": [
-        "Química",
-        "Biologia"
-      ],
-      "turmas": [
-        "Bio_2024.1",
-        "Química_2023.2"
-      ],
+      "disciplinas": ["Química", "Biologia"],
+      "turmas": ["Bio_2024.1", "Química_2023.2"],
       "telefone": "123456789",
       "email": "ana.souza@email.com"
     },
     {
       "matricula": 12,
       "nome": "Luiz Fernando",
-      "disciplinas": [
-        "História",
-        "Geografia"
-      ],
-      "turmas": [
-        "Hist_2024.1",
-        "Geo_2023.2"
-      ],
+      "disciplinas": ["História", "Geografia"],
+      "turmas": ["Hist_2024.1", "Geo_2023.2"],
       "telefone": "987123456",
       "email": "luiz.fernando@email.com"
     },
@@ -201,10 +126,7 @@
     {
       "matricula": 25,
       "nome": "Gogonoid Júnior Senior",
-      "disciplinas": [
-        "Python IV",
-        "Física Básica"
-      ],
+      "disciplinas": ["Python IV", "Física Básica"],
       "turmas": [
         "Eng. Comp. 2021.2",
         "Eng. Elétrica 2023.1",
