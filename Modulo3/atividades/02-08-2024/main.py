@@ -1,6 +1,8 @@
 import mysql.connector
 from mysql.connector import Error
 
+import windows_ip as wip
+
 # Dados para configuração da conexão com o banco de dados MySQL
 # Rasp:
 # db_config = {
@@ -12,8 +14,10 @@ from mysql.connector import Error
 # }
 
 # MySQL - WorkBech:
+host_windows = wip.get_windows_ip()
+
 db_config = {
-    "host": "192.168.50.19",  # Ip do Windows!
+    "host": host_windows,  # Ip do Windows!
     "port": "3307",
     "user": "root",
     "password": "123321",
