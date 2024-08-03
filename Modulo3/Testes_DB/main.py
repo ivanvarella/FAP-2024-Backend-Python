@@ -7,16 +7,16 @@ def connect_to_database():
         # Estabeleça a conexão com o banco de dados
         connection = mysql.connector.connect(
             # Rasp
-            # host="192.168.50.1",
-            # user="root",  # Substitua por seu nome de usuário do MySQL
-            # password="123321",  # Substitua pela sua senha do MySQL
-            # database="teste_db",  # Substitua pelo nome do banco de dados que você deseja acessar
-            # PC - MariaDB
-            host="127.0.0.1",
-            port=3307,  # Especificar a porta correta pois é diferente da padrão (3306)
+            host="192.168.50.1",
             user="root",  # Substitua por seu nome de usuário do MySQL
             password="123321",  # Substitua pela sua senha do MySQL
-            database="teste_db_aula",  # Substitua pelo nome do banco de dados que você deseja acessar
+            database="biblioteca",  # Substitua pelo nome do banco de dados que você deseja acessar
+            # PC - MariaDB
+            # host="127.0.0.1",
+            # port=3307,  # Especificar a porta correta pois é diferente da padrão (3306)
+            # user="root",  # Substitua por seu nome de usuário do MySQL
+            # password="123321",  # Substitua pela sua senha do MySQL
+            # database="teste_db_aula",  # Substitua pelo nome do banco de dados que você deseja acessar
         )
 
         if connection.is_connected():

@@ -1,0 +1,480 @@
+CREATE TABLE livros ( id INT AUTO_INCREMENT PRIMARY KEY, titulo VARCHAR(255) NOT NULL, estado_do_livro ENUM('Disponível', 'Emprestado', 'Em Reparo') NOT NULL, ano INT);
+
+
+INSERT INTO livros (titulo, estado_do_livro, ano) VALUES
+('1984', 'Disponível', 1949),
+('To Kill a Mockingbird', 'Emprestado', 1960),
+('Pride and Prejudice', 'Em Reparo', 1813),
+('The Catcher in the Rye', 'Disponível', 1951),
+('The Great Gatsby', 'Emprestado', 1925),
+('Moby-Dick', 'Disponível', 1851),
+('War and Peace', 'Emprestado', 1869),
+('The Hobbit', 'Disponível', 1937),
+('Fahrenheit 451', 'Em Reparo', 1953),
+('Jane Eyre', 'Disponível', 1847),
+('Brave New World', 'Emprestado', 1932),
+('The Chronicles of Narnia', 'Disponível', 1950),
+('Catch-22', 'Em Reparo', 1961),
+('The Lord of the Rings', 'Disponível', 1954),
+('The Alchemist', 'Emprestado', 1988),
+('One Hundred Years of Solitude', 'Disponível', 1967),
+('The Bell Jar', 'Emprestado', 1963),
+('The Outsiders', 'Disponível', 1967),
+('The Little Prince', 'Em Reparo', 1943),
+('Murder on the Orient Express', 'Disponível', 1934),
+('Gone with the Wind', 'Emprestado', 1936),
+('Les Misérables', 'Disponível', 1862),
+('The Picture of Dorian Gray', 'Em Reparo', 1890),
+('Dracula', 'Disponível', 1897),
+('The Shining', 'Emprestado', 1977),
+('The Da Vinci Code', 'Disponível', 2003),
+('The Hunger Games', 'Em Reparo', 2008),
+('Dune', 'Disponível', 1965),
+('The Road', 'Emprestado', 2006),
+('The Godfather', 'Disponível', 1969),
+('A Tale of Two Cities', 'Em Reparo', 1859),
+('Wuthering Heights', 'Disponível', 1847),
+('The Name of the Wind', 'Emprestado', 2007),
+('A Game of Thrones', 'Disponível', 1996),
+('Sapiens: A Brief History of Humankind', 'Em Reparo', 2011),
+('The Kite Runner', 'Disponível', 2003),
+('The Handmaid\'s Tale', 'Emprestado', 1985),
+('Life of Pi', 'Disponível', 2001),
+('The Silence of the Lambs', 'Em Reparo', 1988),
+('The Girl with the Dragon Tattoo', 'Disponível', 2005),
+('The Secret History', 'Emprestado', 1992),
+('Little Women', 'Disponível', 1868),
+('The Hitchhiker\'s Guide to the Galaxy', 'Em Reparo', 1979),
+('A Clockwork Orange', 'Disponível', 1962),
+('The Giver', 'Emprestado', 1993),
+('The Bronze Horseman', 'Disponível', 2000);
+
+
+Livros com mais de um autor (usando esses):
+
+INSERT INTO livros (titulo, estado_do_livro, ano) VALUES
+('The Art of War', 'Disponível', 500),
+('The Science Fiction Hall of Fame', 'Emprestado', 1965),
+('The Best American Series', 'Disponível', 2000),
+('The Norton Anthology of English Literature', 'Emprestado', 1962),
+('The Oxford Book of American Short Stories', 'Disponível', 1992),
+('The Columbia Anthology of Modern Chinese Drama', 'Emprestado', 2008),
+('The Penguin Book of English Short Stories', 'Disponível', 2007),
+('The Vintage Book of Contemporary American Short Stories', 'Emprestado', 1994),
+('The Cambridge History of the Cold War', 'Disponível', 2010),
+('The HarperCollins Book of English Poetry', 'Emprestado', 2004),
+('The Essential Writings of Ralph Waldo Emerson', 'Disponível', 2000),
+('The Bedford Anthology of American Literature', 'Emprestado', 2008),
+('The Penguin Anthology of 20th Century American Poetry', 'Disponível', 2011),
+('The Complete Works of William Shakespeare', 'Emprestado', 2003),
+('The Routledge Companion to Philosophy in Organization Studies', 'Disponível', 2013),
+('The International Handbook of Social Innovation', 'Emprestado', 2014),
+('The Blackwell Companion to Philosophy of Language', 'Disponível', 2012),
+('The Cambridge Companion to American Poets', 'Emprestado', 2008),
+('The Norton Anthology of World Literature', 'Disponível', 2012),
+('The Oxford Handbook of Global Policy', 'Emprestado', 2018),
+('The Handbook of New Media', 'Disponível', 2006),
+('The Oxford Companion to English Literature', 'Emprestado', 2000),
+('The Cambridge Companion to Feminist Literary Theory', 'Disponível', 2004),
+('The Routledge Companion to Management and Organizational History', 'Emprestado', 2016),
+('The Oxford Handbook of Economic Geography', 'Disponível', 2000),
+('The Palgrave Handbook of Global Health Data', 'Emprestado', 2018),
+('The Routledge Handbook of Japanese Politics', 'Disponível', 2016),
+('The Cambridge History of the Modern World', 'Emprestado', 2008),
+('The Oxford Handbook of Political Psychology', 'Disponível', 2011),
+('The Blackwell Companion to the Bible and Culture', 'Emprestado', 2006),
+('The Cambridge Companion to American Travel Writing', 'Disponível', 2008),
+('The Routledge Handbook of Peacebuilding', 'Emprestado', 2013),
+('The Oxford Handbook of Clinical Medicine', 'Disponível', 2014),
+('The Cambridge History of Latin America', 'Emprestado', 2006),
+('The Routledge Companion to Literature and Psychoanalysis', 'Disponível', 2017),
+('The Cambridge Handbook of Language and Social Interaction', 'Emprestado', 2011),
+('The Penguin Historical Atlas of Ancient Rome', 'Disponível', 1998),
+('The Norton Anthology of English Literature', 'Emprestado', 1962),
+('The Oxford Companion to American Literature', 'Disponível', 2001),
+('The Cambridge Companion to American Poets', 'Emprestado', 2008),
+('The Routledge Companion to Literature and Psychoanalysis', 'Disponível', 2017),
+('The Oxford Handbook of Global Policy', 'Emprestado', 2018),
+('The Cambridge History of Modern European Thought', 'Disponível', 2011),
+('The Cambridge Companion to American Travel Writing', 'Emprestado', 2008),
+('The Blackwell Companion to Philosophy of Language', 'Disponível', 2012),
+('The Handbook of New Media', 'Emprestado', 2006),
+('The Oxford Handbook of Economic Geography', 'Disponível', 2000),
+('The Cambridge Companion to the History of the Book', 'Emprestado', 2015),
+('The Routledge Companion to American Literature', 'Disponível', 2020),
+('The Cambridge Companion to the Philosophy of Language', 'Emprestado', 2004),
+('The Oxford Handbook of Political Psychology', 'Disponível', 2011),
+('The Cambridge Companion to Feminist Literary Theory', 'Emprestado', 2004),
+('The Routledge Handbook of Peacebuilding', 'Disponível', 2013),
+('The Cambridge Handbook of Language and Social Interaction', 'Emprestado', 2011),
+('The Routledge Handbook of Peacebuilding', 'Disponível', 2013),
+('The Oxford Handbook of Social and Political Trust', 'Emprestado', 2016);
+
+
+Lista dos livros com mais de um autor:
+The Art of War (500)
+The Science Fiction Hall of Fame (1965)
+The Best American Series (2000)
+The Norton Anthology of English Literature (1962)
+The Oxford Book of American Short Stories (1992)
+The Columbia Anthology of Modern Chinese Drama (2008)
+The Penguin Book of English Short Stories (2007)
+The Vintage Book of Contemporary American Short Stories (1994)
+The Cambridge History of the Cold War (2010)
+The HarperCollins Book of English Poetry (2004)
+The Essential Writings of Ralph Waldo Emerson (2000)
+The Bedford Anthology of American Literature (2008)
+The Penguin Anthology of 20th Century American Poetry (2011)
+The Complete Works of William Shakespeare (2003)
+The Routledge Companion to Philosophy in Organization Studies (2013)
+The International Handbook of Social Innovation (2014)
+The Blackwell Companion to Philosophy of Language (2012)
+The Cambridge Companion to American Poets (2008)
+The Norton Anthology of World Literature (2012)
+The Oxford Handbook of Global Policy (2018)
+The Handbook of New Media (2006)
+The Oxford Companion to English Literature (2000)
+The Cambridge Companion to Feminist Literary Theory (2004)
+The Routledge Companion to Management and Organizational History (2016)
+The Oxford Handbook of Economic Geography (2000)
+The Palgrave Handbook of Global Health Data (2018)
+The Routledge Handbook of Japanese Politics (2016)
+The Cambridge History of the Modern World (2008)
+The Oxford Handbook of Political Psychology (2011)
+The Blackwell Companion to the Bible and Culture (2006)
+The Cambridge Companion to American Travel Writing (2008)
+The Routledge Handbook of Peacebuilding (2013)
+The Oxford Handbook of Clinical Medicine (2014)
+The Cambridge History of Latin America (2006)
+The Routledge Companion to Literature and Psychoanalysis (2017)
+The Cambridge Handbook of Language and Social Interaction (2011)
+The Penguin Historical Atlas of Ancient Rome (1998)
+The Norton Anthology of English Literature (1962)
+The Oxford Companion to American Literature (2001)
+The Cambridge Companion to American Poets (2008)
+The Routledge Companion to Literature and Psychoanalysis (2017)
+The Oxford Handbook of Global Policy (2018)
+The Cambridge History of Modern European Thought (2011)
+The Cambridge Companion to American Travel Writing (2008)
+The Blackwell Companion to Philosophy of Language (2012)
+The Handbook of New Media (2006)
+The Oxford Handbook of Economic Geography (2000)
+The Cambridge Companion to the History of the Book (2015)
+The Routledge Companion to American Literature (2020)
+The Cambridge Companion to the Philosophy of Language (2004)
+
+
+
+===========================================================
+
+
+
+Tabela Autores:
+
+Script para criar a tabela:
+CREATE TABLE autores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL
+);
+
+
+Popula a tabela autores:
+
+-- Popula a tabela autores com todos os autores dos livros listados, sem duplicatas
+INSERT INTO autores (nome) VALUES 
+('Sun Tzu'),
+('Robert Silverberg'),
+('Best American Series Editor'),
+('Stephen Greenblatt'),
+('Joyce Carol Oates'),
+('Xiaomei Chen'),
+('Christopher Dolley'),
+('Tobias Wolff'),
+('Melvyn P. Leffler'),
+('Sukrita Paul Kumar'),
+('Ralph Waldo Emerson'),
+('Susan Belasco'),
+('Rita Dove'),
+('William Shakespeare'),
+('Raza Mir'),
+('Frank Moulaert'),
+('Bob Hale'),
+('Mark Richardson'),
+('Martin Puchner'),
+('Michael Cox'),
+('Leah A. Lievrouw'),
+('Dinah Birch'),
+('Ellen Rooney'),
+('Patricia Genoe McLaren'),
+('Gordon L. Clark'),
+('Núria Homedes'),
+('Alisa Gaunder'),
+('David Armitage'),
+('David O. Sears'),
+('John F. A. Sawyer'),
+('Alfred Bendixen'),
+('Roger Mac Ginty'),
+('Murray Longmore'),
+('Leslie Bethell'),
+('Laura Marcus'),
+('Jack Sidnell'),
+('Chris Scarre'),
+('M. H. Abrams'),
+('James D. Hart'),
+('Robert Von Hallberg'),
+('Jean-Michel Rabaté'),
+('Helga Nowotny'),
+('Warren Breckman'),
+('James Duncan'),
+('David Schalkwyk'),
+('Peter Lamarque');
+
+
+=========================
+
+
+Tabela livros autores
+
+
+-- Cria a tabela livros_autores
+CREATE TABLE livros_autores (
+    livro_id INT NOT NULL,
+    autor_id INT NOT NULL,
+    PRIMARY KEY (livro_id, autor_id),
+    FOREIGN KEY (livro_id) REFERENCES livros(id),
+    FOREIGN KEY (autor_id) REFERENCES autores(id)
+);
+
+
+-- Livros com apenas um autor
+INSERT INTO livros_autores (livro_id, autor_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10),
+(11, 11),
+(12, 12),
+(13, 13),
+(14, 14),
+(15, 15),
+(16, 16),
+(17, 17),
+(18, 18),
+(19, 19),
+(20, 20),
+(21, 21),
+(22, 22),
+(23, 23),
+(24, 24),
+(25, 25),
+(26, 26),
+(27, 27),
+(28, 28),
+(29, 29),
+(30, 30),
+(31, 31),
+(32, 32),
+(33, 33),
+(34, 34),
+(35, 35),
+(36, 36),
+(37, 37),
+(38, 38),
+(39, 39),
+(40, 40),
+(41, 41),
+(42, 42),
+(43, 43),
+(44, 44),
+(45, 45),
+(46, 46),
+
+-- Livros com múltiplos autores (pelo menos 25 livros)
+(47, 1),
+(47, 2),
+(48, 3),
+(48, 4),
+(49, 5),
+(49, 6),
+(50, 7),
+(50, 8),
+(51, 9),
+(51, 10),
+(52, 11),
+(52, 12),
+(53, 13),
+(53, 14),
+(54, 15),
+(54, 16),
+(55, 17),
+(55, 18),
+(56, 19),
+(56, 20),
+(47, 21),
+(48, 22),
+(49, 23),
+(50, 24),
+(51, 25),
+(52, 26),
+(53, 27),
+(54, 28),
+(55, 29),
+(56, 30),
+(47, 31),
+(48, 32),
+(49, 33),
+(50, 34),
+(51, 35),
+(52, 36),
+(53, 37),
+(54, 38),
+(55, 39),
+(56, 40),
+(47, 41),
+(48, 42),
+(49, 43),
+(50, 44),
+(51, 45),
+(52, 46),
+(53, 1),
+(54, 2),
+(55, 3),
+(56, 4);
+
+---------------
+Outro teste
+
+
+-- Exemplos de registros na tabela livros_autores
+INSERT INTO livros_autores (livro_id, autor_id) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 4),
+(4, 5),
+(5, 6),
+(6, 7),
+(7, 8),
+(8, 9),
+(9, 10),
+(10, 11),
+(11, 12),
+(12, 13),
+(13, 14),
+(14, 15),
+(15, 16),
+(16, 17),
+(17, 18),
+(18, 19),
+(19, 20),
+(20, 21),
+(21, 22),
+(22, 23),
+(23, 24),
+(24, 25),
+(25, 26),
+(26, 27),
+(27, 28),
+(28, 29),
+(29, 30),
+(30, 31),
+(31, 32),
+(32, 33),
+(33, 34),
+(34, 35),
+(35, 36),
+(36, 37),
+(37, 38),
+(38, 39),
+(39, 40),
+(40, 41),
+(41, 42),
+(42, 43),
+(43, 44),
+(44, 45),
+(45, 46),
+(46, 47),
+(47, 48),
+(48, 49),
+(49, 50),
+(50, 1);
+
+
+Com os ids corretos dos livros:
+INSERT INTO livros_autores (livro_id, autor_id) VALUES
+(101, 1),
+(101, 2),
+(102, 2),
+(102, 3),
+(103, 3),
+(103, 4),
+(104, 4),
+(104, 5),
+(105, 5),
+(105, 6),
+(106, 6),
+(106, 7),
+(107, 7),
+(107, 8),
+(108, 8),
+(108, 9),
+(109, 9),
+(109, 10),
+(110, 10),
+(110, 11),
+(111, 11),
+(111, 12),
+(112, 12),
+(112, 13),
+(113, 13),
+(113, 14),
+(114, 14),
+(114, 15),
+(115, 15),
+(115, 16),
+(116, 16),
+(116, 17),
+(117, 17),
+(117, 18),
+(118, 18),
+(118, 19),
+(119, 19),
+(119, 20),
+(120, 20),
+(120, 21),
+(121, 21),
+(121, 22),
+(122, 22),
+(122, 23),
+(123, 23),
+(123, 24),
+(124, 24),
+(124, 25),
+(125, 25),
+(125, 26),
+(101, 27),
+(102, 28),
+(103, 29),
+(104, 30),
+(105, 31),
+(106, 32),
+(107, 33),
+(108, 34),
+(109, 35),
+(110, 36),
+(111, 37),
+(112, 38),
+(113, 39),
+(114, 40),
+(115, 41),
+(116, 42),
+(117, 43),
+(118, 44),
+(119, 45),
+(120, 46);
