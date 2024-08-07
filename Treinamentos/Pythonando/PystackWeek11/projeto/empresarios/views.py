@@ -81,3 +81,10 @@ def listar_empresas(request):
 
         empresas = Empresas.objects.filter(user=request.user)
         return render(request, "listar_empresas.html", {"empresas": empresas})
+
+
+# Além do request, tem que receber o id, que estará no link da página anterior (via GET)
+def empresa(request, id):
+    empresa = Empresas.objects.get(id=id)
+    if request.method == "GET":
+        return render(request, "empresa.html", {"empresa": empresa})

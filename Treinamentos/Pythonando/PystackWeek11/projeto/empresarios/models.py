@@ -57,3 +57,7 @@ class Empresas(models.Model):
                 '<span class="badge bg-success">Captação finalizada</span>'
             )
         return mark_safe('<span class="badge bg-primary">Em captação</span>')
+
+    @property
+    def valuation(self):
+        return f"{(100 * self.valor) / self.percentual_equity:.2f}"
