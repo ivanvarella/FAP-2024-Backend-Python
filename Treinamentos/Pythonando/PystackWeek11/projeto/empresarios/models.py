@@ -3,6 +3,11 @@ from django.db import models
 # Importar o User do Django - É FK dessa tabela Empresas - que na verdade o Django é faz a normatização do banco, pelo que eu entendi
 from django.contrib.auth.models import User
 
+# Importar marksafe + data do Django (status)
+# O marksafe faz com que se possa retornar um texto de forma segura - é isso mesmo? - pesquisar mais
+from django.utils.safestring import mark_safe
+from datetime import date
+
 
 # Create your models here.
 class Empresas(models.Model):
@@ -43,4 +48,12 @@ class Empresas(models.Model):
     logo = models.FileField(upload_to="logo")
 
     def __str__(self):
-        return f"{self.user.username} | {self.nome}"
+        return f"{self.user.username} | {self.nome}"  # type: ignore
+
+    @property
+    def status(self):
+        if date.today() > self.data_final_captacao:
+            return mark_safe(
+                '<span class="badge bg-success">Captação finalizada</span>'
+            )
+        return mark_safe('<span class="badge bg-primary">Em captação</span>')
