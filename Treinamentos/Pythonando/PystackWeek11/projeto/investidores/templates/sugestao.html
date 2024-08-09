@@ -29,6 +29,7 @@
                     <select name="tipo" id="" class="form-select">
                         <option value="C">Conservador</option>
                         <option value="D">Despojado</option>
+                        <option value="G">Genérico</option>
                     </select>
                     <br>
                     <h3>Áreas de interesses</h3>
@@ -60,7 +61,7 @@
                         <div class="card-body dark-color">
                         <h5 class="card-title">{{empresa.nome}}</h5>
                         <p class="card-text">{{empresa.descricao}}</p>
-                        <a href="#" class="btn btn-indigo">Acessar</a>
+                        <a href="{% url 'ver_empresa' empresa.id %}" class="btn btn-indigo">Acessar</a>
                         </div>
                     </div>
                 </div>
