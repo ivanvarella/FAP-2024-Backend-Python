@@ -11,8 +11,8 @@ import crud as banco
 # print("Livros na tabela:", livros)
 
 # Ler um livro específico
-livro = banco.ler_livro_por_id(10)
-print("Livro com ID 1:", livro)
+# livro = banco.ler_livro_por_id(10)
+# print("Livro com ID 1:", livro)
 
 # Atualizar um livro
 # banco.atualizar_livro(
@@ -28,3 +28,17 @@ print("Livro com ID 1:", livro)
 
 # Deletar um livro
 # banco.deletar_livro(1)
+
+
+# ===========================
+
+# 1. SELECT - Seleciona dados do banco de dados
+# Exemplo:
+# sql
+# SELECT titulo FROM livros;
+
+query = "SELECT * FROM livros"
+dados = banco.executar_query(query)
+
+for linha in dados:
+    print(", ".join(map(str, linha)))

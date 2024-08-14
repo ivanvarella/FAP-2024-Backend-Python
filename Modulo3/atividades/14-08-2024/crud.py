@@ -6,27 +6,27 @@ def conectar_db():
     return sqlite3.connect("biblioteca.db")
 
 
-# # Função para criar a tabela de livros
-# def criar_tabela_livros():
-#     conn = conectar_db()
-#     cursor = conn.cursor()
-#     cursor.execute(
-#         """
-#         CREATE TABLE IF NOT EXISTS livros (
-#             id INTEGER PRIMARY KEY AUTOINCREMENT,
-#             titulo TEXT NOT NULL,
-#             estado_do_livro TEXT NOT NULL,
-#             ano INTEGER,
-#             data_aquisicao DATE,
-#             observacao TEXT,
-#             lido INTEGER,
-#             editora_id INTEGER,
-#             FOREIGN KEY(editora_id) REFERENCES editoras(id)
-#         );
-#         """
-#     )
-#     conn.commit()
-#     conn.close()
+# Função para criar a tabela de livros
+def criar_tabela_livros():
+    conn = conectar_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS livros (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            titulo TEXT NOT NULL,
+            estado_do_livro TEXT NOT NULL,
+            ano INTEGER,
+            data_aquisicao DATE,
+            observacao TEXT,
+            lido INTEGER,
+            editora_id INTEGER,
+            FOREIGN KEY(editora_id) REFERENCES editoras(id)
+        );
+        """
+    )
+    conn.commit()
+    conn.close()
 
 
 # Função para inserir um livro
@@ -46,11 +46,21 @@ def inserir_livro(
     conn.close()
 
 
-# Função para ler todos os livros
-def ler_livros():
+# Função para executar query
+def executar_query(query):
     conn = conectar_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM livros")
+    cursor.execute(query)
+    livros = cursor.fetchall()
+    conn.close()
+    return livros
+
+
+# Função para ler todos os livros
+def ler_livros(query="SELECT * FROM livros"):
+    conn = conectar_db()
+    cursor = conn.cursor()
+    cursor.execute(query)
     livros = cursor.fetchall()
     conn.close()
     return livros
