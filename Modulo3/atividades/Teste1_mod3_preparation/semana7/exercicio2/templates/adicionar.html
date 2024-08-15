@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Adicionar Livro Favorito</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Adicionar Livro Favorito</h1>
+    <form method="post">
+      <label for="titulo">Título:</label>
+      <input type="text" id="titulo" name="titulo" required /><br />
+      <label for="autor">Autor:</label>
+      <input type="text" id="autor" name="autor" required /><br />
+      <input type="submit" value="Adicionar" />
+    </form>
+    <a href="{{ url_for('index') }}">Voltar para a Lista</a>
+  </body>
+</html>

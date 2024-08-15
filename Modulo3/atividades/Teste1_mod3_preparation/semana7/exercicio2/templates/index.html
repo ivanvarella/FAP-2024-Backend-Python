@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Livros Favoritos</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Livros Favoritos</h1>
+    <a href="{{ url_for('adicionar_livro') }}">Adicionar Novo Livro</a>
+    <ul>
+      {% for livro in livros %}
+      <li>
+        {{ livro['titulo'] }} por {{ livro['autor'] }}
+        <div class="icon-container">
+          <a href="{{ url_for('editar_livro', livro_id=livro['id']) }}">✏️</a>
+          <a href="{{ url_for('excluir_livro', livro_id=livro['id']) }}">❌</a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
