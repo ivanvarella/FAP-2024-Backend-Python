@@ -45,6 +45,9 @@ def carregar_tarefas():
 def salvar_tarefa(descricao, prioridade, status, datain=None, datafim=None, obs=None):
     conn = conectar()
     cursor = conn.cursor()
+    if status is not None:
+        if status == 3:  # Status 3 = Concluída
+            datafim = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     if datain is None:
         datain = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute(
@@ -124,6 +127,7 @@ def mudar_status_tarefa(indice):
         novo_status = input(
             "Digite o novo status (1: Pendente, 2: Iniciado, 3: Concluído, 4: Excluído): "
         )
+
         novo_status = int(novo_status) if novo_status else status_atual
 
         nova_obs = input(f"Digite novas observações (atual: {obs_atual}): ")
