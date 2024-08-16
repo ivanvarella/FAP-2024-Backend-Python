@@ -1,0 +1,39 @@
+{
+  "Recordes": [
+    {
+      "nome": "Jogador1",
+      "tentativas": 3,
+      "tempo": "00:02:15",
+      "data": "20-06-2024",
+      "hora": "09:15"
+    },
+    {
+      "nome": "Jogador2",
+      "tentativas": 5,
+      "tempo": "00:03:45",
+      "data": "20-06-2024",
+      "hora": "14:45"
+    },
+    {
+      "nome": "Teste",
+      "tentativas": 1,
+      "tempo": "00:00:01",
+      "data": "16/08/2024",
+      "hora": "12:00"
+    },
+    {
+      "nome": "Teste Jogador 1000",
+      "tentativas": 1,
+      "tempo": "1.7 segundos",
+      "data": "16/08/2024",
+      "hora": "10:06"
+    },
+    {
+      "nome": "Jogador 10",
+      "tentativas": 4,
+      "tempo": "6.99 segundos",
+      "data": "16/08/2024",
+      "hora": "10:07"
+    }
+  ]
+}
