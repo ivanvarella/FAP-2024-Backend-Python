@@ -1,0 +1,18 @@
+User:
+id
+nome
+email
+password
+
+
+
+Tarefas:
+id
+descrição (obrigatório)
+status (1: Pendente, 2: Iniciado, 3: Concluído, 4: Excluído) (obrigatório)
+prioridade (1 a 3) (obrigatório)
+obs (Opcional)
+dataInicio (Data da criação) (obrigatório)
+dataFim (pode ser Null, inserida quando status = 3/concluído, muda para Null se status mudar para != de 3)
+dataLimite (opcional)
+User FK (obrigatório)
