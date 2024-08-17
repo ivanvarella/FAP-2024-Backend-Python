@@ -91,7 +91,7 @@ def atualizar_tarefa(id, descricao, status, obs=None, datafim=None):
     # Adicionar a cláusula WHERE
     sql += " WHERE id = ?"
     params.append(id)
-    print(sql, params)
+    # print(sql, params)
     input("Pressione Enter para continuar...")
 
     # Executar o comando SQL
