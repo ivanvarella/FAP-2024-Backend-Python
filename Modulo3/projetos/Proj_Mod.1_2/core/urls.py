@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 # Imports para o funcionamento das imagens (MEDIA)
 from django.conf import (
@@ -28,4 +28,5 @@ from django.conf.urls.static import (
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("usuarios/", include("usuarios.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
