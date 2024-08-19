@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Tarefas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" href="{% static 'tarefas/css/tarefas.css' %}">
 </head>
 <body>
@@ -29,8 +30,9 @@
                     <th>Observações</th>
                     <th>Progresso</th>
                     <th>Data Início</th>
-                    <th>Data Fim</th>
+                    <th>Data de Fim</th>
                     <th>Data Limite</th>
+                    <th>Ação</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,20 +50,41 @@
                             Excluído
                         {% endif %}
                     </td>
-                    <td>{{ tarefa.prioridade }}</td>
+                    <td>
+                        {% if tarefa.prioridade == 1 %}
+                            Baixa
+                        {% elif tarefa.prioridade == 2 %}
+                            Média
+                        {% elif tarefa.prioridade == 3 %}
+                            Alta
+                        {% endif %}
+                    </td>
                     <td>{{ tarefa.obs }}</td>
                     <td>
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" style="width: {{ tarefa.progresso_conclusao }}%;" aria-valuenow="{{ tarefa.progresso_conclusao }}" aria-valuemin="0" aria-valuemax="100">{{ tarefa.progresso_conclusao }}%</div>
                         </div>
                     </td>
-                    <td>{{ tarefa.dataInicio }}</td>
-                    <td>{{ tarefa.dataFim }}</td>
-                    <td>{{ tarefa.dataLimite }}</td>
-                </tr>
+                    <td>{{ tarefa.dataInicio|date:"d/m/Y" }}</td>
+
+                    {% if tarefa.dataFim %}
+                      <td>{{ tarefa.dataFim|date:"d/m/Y" }}</td>
+                      {% else %}
+                          <td> Não inserida </td>
+                      {% endif %}
+                      <td>{{ tarefa.dataLimite|date:"d/m/Y" }}</td>
+                      <td>
+                        <a href="#" class="material-icons">visibility</a>
+                        <a href="{% url 'editar_tarefa' tarefa.id %}" class="material-icons">edit</a>
+                        <a href="#" class="material-icons my-icon-color_delete" onclick="return confirm('Tem certeza que deseja excluir a tarefa?');">delete</a>
+                    </td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <br><br>
+        <a href="{% url 'cadastrar_tarefa' %}"  class="btn btn-dark">Cadastrar Tarefas</a>
     </div>
+    
 </body>
 </html>

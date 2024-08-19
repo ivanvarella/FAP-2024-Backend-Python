@@ -7,11 +7,42 @@
     background-color: #f0f0f0;
 }
 
-.progress {
-    height: 10px;
-    margin-bottom: 0;
+.container {
+    margin-top: 50px;
 }
 
-.progress-bar {
-    background-color: #28a745; /* Verde para progresso concluído */
+h2 {
+  color: #007bff;
+}
+
+h1 {
+  color: #007bff;
+}
+
+h3 {
+  color: #007bff;
+}
+
+.form-range {
+  width: 100%; /* Ajusta a largura do slider */
+}
+
+#progresso_valor {
+  margin-left: 10px; /* Adiciona espaçamento à esquerda */
+}
+
+.my-icon-color_lupa {
+  color: #ff0000; /* Altere para a cor desejada */
+}
+
+.my-icon-color_edit {
+  color: #ff0000; /* Altere para a cor desejada */
+}
+
+.my-icon-color_delete {
+  color: red; /* Altere para a cor desejada */
+}
+
+a {
+  text-decoration: none; 
 }
