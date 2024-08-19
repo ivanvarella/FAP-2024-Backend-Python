@@ -135,9 +135,9 @@ def logar(request):
                 request, user
             )  # Verifica o usuário atrelado ao ip e o login (Sessão?)
             # Depois de criar o App tarefas, redireciona para a página de tarefas do usuario
-            # return redirect("/tarefas/listar_tarefas")
+            return redirect("/tarefas/listar_tarefas")
             # Por enquanto, só mostrar qualquer coisa se o login der certo!
-            return HttpResponse("Logou corretamente!!!!")
+            # return HttpResponse("Logou corretamente!!!!")
 
         messages.add_message(request, constants.ERROR, "Usuário ou senha inválidos")
         return redirect("/usuarios/logar")

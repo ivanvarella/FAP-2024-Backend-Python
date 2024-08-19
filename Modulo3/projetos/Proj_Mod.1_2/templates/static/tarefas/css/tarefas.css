@@ -1,0 +1,17 @@
+/* Estilos para a lista de tarefas */
+.table {
+    width: 100%;
+}
+
+.table th {
+    background-color: #f0f0f0;
+}
+
+.progress {
+    height: 10px;
+    margin-bottom: 0;
+}
+
+.progress-bar {
+    background-color: #28a745; /* Verde para progresso concluído */
+}
