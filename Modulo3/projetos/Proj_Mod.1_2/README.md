@@ -1,6 +1,24 @@
-# Projeto Tarefas - Django
+<div align="center" style="padding-top: 20px;">
+  
+# Projeto Django Avant
 
-Este projeto é um exemplo de aplicação web construída com Django para gerenciar tarefas.
+## Este projeto é um exemplo de aplicação web construída com Django para gerenciar tarefas.
+
+</div>
+
+
+<div align="center" style="padding-bottom: 40px; padding-top: 20px">
+        <img src="templates/static/geral/img/LogoAvant1.jpg" alt="Logo do Projeto" width="250" />
+</div>
+
+## Índice
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Como Executar o Projeto](#como-executar-o-projeto)
+- [Observações](#observações)
+- [Dependências](#dependências)
+- [Estrutura do Repositório](#estrutura-do-repositório)
+- [Telas de exemplo do projeto](#telas-de-exemplo-do-projeto)
 
 ## Funcionalidades
 
@@ -15,11 +33,12 @@ Este projeto é um exemplo de aplicação web construída com Django para gerenc
 
 ## Tecnologias Utilizadas
 
-- **Python**
-- **Django**
+- **Python 3.x**
+- **Django 5.x**
 - **SQLite**
 - **Bootstrap 5**
-- **Material UI** (Ícones)
+- **Material UI (Ícones)**
+- **Git & GitHub**
 
 ## Como Executar o Projeto
 
@@ -64,3 +83,47 @@ Este projeto é um exemplo de aplicação web construída com Django para gerenc
 - `django-dump-die==0.1.7`: Ferramenta para debugging.
 - `sqlparse==0.5.1`: Ferramenta para formatação e análise de SQL.
 - `typing_extensions==4.12.2`: Extensões para o módulo typing.
+
+## Estrutura do Repositório
+```plaintext
+Proj_Mod.1_2/
+├── README.md
+├── db.sqlite3
+├── requirements.txt
+├── manage.py
+├── Info
+├── core/
+├── usuarios/
+├── tarefas/
+├── media/
+├── templates/
+└── venv/
+```
+
+## Telas de exemplo do projeto
+<table align="center">
+  <tr>
+    <td>
+      <a href="Info/imgSys/Login.jpg" target="_blank">
+        <img src="Info/imgSys/Login.jpg" alt="Imagem 1" width="200"/>
+      </a>
+    </td>
+    <td>
+      <a href="Info/imgSys/Editar_user.jpg" target="_blank">
+        <img src="Info/imgSys/Editar_user.jpg" alt="Imagem 2" width="200"/>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="Info/imgSys/listar_tarefas.jpg" target="_blank">
+        <img src="Info/imgSys/listar_tarefas.jpg" alt="Imagem 3" width="200"/>
+      </a>
+    </td>
+    <td>
+      <a href="Info/imgSys/Cadastrar_tarefa.jpg" target="_blank">
+        <img src="Info/imgSys/Cadastrar_tarefa.jpg" alt="Imagem 4" width="200"/>
+      </a>
+    </td>
+  </tr>
+</table>
