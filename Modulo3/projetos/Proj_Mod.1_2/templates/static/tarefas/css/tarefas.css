@@ -46,3 +46,18 @@ h3 {
 a {
   text-decoration: none; 
 }
+
+.alerta {
+  background-color: #fffacd; /* Amarelo para alerta */
+}
+.atraso {
+  background-color: #f08080; /* Vermelho para atraso */
+}
+
+.concluida {
+  background-color: #90EE90; /* Verde claro para tarefa concluída */
+}
+
+.normal {
+  background-color: white; /* Branco para a tarefa normal */
+}

@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -37,7 +38,8 @@
             </thead>
             <tbody>
                 {% for tarefa in tarefas %}
-                <tr>
+
+                <tr class="{% if tarefa.status == 3 %}concluida{% elif tarefa.dataLimite and tarefa.dataLimite|date:'Y-m-d' < hoje|date:'Y-m-d' %}atraso{% elif tarefa.dataLimite and tarefa.dataLimite|date:'Y-m-d' < data_alerta|date:'Y-m-d' %}alerta{% else %}normal{% endif %}">
                     <td>{{ tarefa.descricao }}</td>
                     <td>
                         {% if tarefa.status == 1 %}
@@ -74,9 +76,9 @@
                       {% endif %}
                       <td>{{ tarefa.dataLimite|date:"d/m/Y" }}</td>
                       <td>
-                        <a href="#" class="material-icons">visibility</a>
+                        {% comment %} <a href="#" class="material-icons">visibility</a> {% endcomment %}
                         <a href="{% url 'editar_tarefa' tarefa.id %}" class="material-icons">edit</a>
-                        <a href="#" class="material-icons my-icon-color_delete" onclick="return confirm('Tem certeza que deseja excluir a tarefa?');">delete</a>
+                        <a href="{% url 'excluir_tarefa' tarefa.id %}" class="material-icons my-icon-color_delete" onclick="return confirm('Tem certeza que deseja excluir a tarefa?');">delete</a>
                     </td>
                     </tr>
                 {% endfor %}

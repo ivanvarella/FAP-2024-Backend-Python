@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.messages import constants
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 # Create your views here.
 
@@ -55,27 +55,6 @@ def cadastrar_tarefa(request):
         else:
             dataFim = None
             progresso_conclusao = int(request.POST.get("progresso_conclusao"))
-
-        # return HttpResponse(
-        #     """
-        #     Todos os requests:
-        #     descricao: {}
-        #     status: {}
-        #     prioridade: {}
-        #     obs: {}
-        #     prograsso_conclusao: {}
-        #     data_limite: {}
-        #     dataFim: {}
-        #     """.format(
-        #         descricao,
-        #         status,
-        #         prioridade,
-        #         obs,
-        #         progresso_conclusao,
-        #         dataLimite,
-        #         dataFim,
-        #     )
-        # )
 
         try:
             dataLimite = datetime.strptime(
@@ -186,6 +165,17 @@ def editar_tarefa(request, tarefa_id):
         )
         return redirect("listar_tarefas")
 
+def excluir_tarefa(request, tarefa_id):
+    tarefa = get_object_or_404(Tarefas, id=tarefa_id)
+    
+    # Verifica se a tarefa pertence ao usuário atual:
+    if tarefa.user == request.user:
+        tarefa.delete()
+        messages.add_message(request, constants.SUCCESS, 'Tarefa excluída com sucesso!')
+    else:
+        messages.add_message(request, constants.ERROR, 'Você não tem permissão para excluir esta tarefa.')
+    return redirect('listar_tarefas')
+
 
 def listar_tarefas(request):
     # Se o usuário não estiver autenticado -> Redirect para logar
@@ -195,4 +185,6 @@ def listar_tarefas(request):
     tarefas = Tarefas.objects.filter(user=request.user).order_by(
         "dataInicio"
     )  # Filtra as tarefas do usuário logado
-    return render(request, "listar_tarefas.html", {"tarefas": tarefas})
+    hoje = date.today()
+    data_alerta = hoje + timedelta(days=3)  # Calcula a data com 3 dias a mais
+    return render(request, "listar_tarefas.html", {"tarefas": tarefas, "hoje": hoje, "data_alerta": data_alerta})
