@@ -165,16 +165,35 @@ def editar_tarefa(request, tarefa_id):
         )
         return redirect("listar_tarefas")
 
+
+# def excluir_tarefa(request, tarefa_id):
+#     tarefa = get_object_or_404(Tarefas, id=tarefa_id)
+
+#     # Verifica se a tarefa pertence ao usuário atual:
+#     if tarefa.user == request.user:
+#         tarefa.delete()
+#         messages.add_message(request, constants.SUCCESS, "Tarefa excluída com sucesso!")
+#     else:
+#         messages.add_message(
+#             request, constants.ERROR, "Você não tem permissão para excluir esta tarefa."
+#         )
+#     return redirect("listar_tarefas")
+
+
 def excluir_tarefa(request, tarefa_id):
     tarefa = get_object_or_404(Tarefas, id=tarefa_id)
-    
+
     # Verifica se a tarefa pertence ao usuário atual:
     if tarefa.user == request.user:
-        tarefa.delete()
-        messages.add_message(request, constants.SUCCESS, 'Tarefa excluída com sucesso!')
+        # Altera o status da tarefa para 4 (Excluído)
+        tarefa.status = 4
+        tarefa.save()  # Salva as alterações
+        messages.add_message(request, constants.SUCCESS, "Tarefa excluída com sucesso!")
     else:
-        messages.add_message(request, constants.ERROR, 'Você não tem permissão para excluir esta tarefa.')
-    return redirect('listar_tarefas')
+        messages.add_message(
+            request, constants.ERROR, "Você não tem permissão para excluir esta tarefa."
+        )
+    return redirect("listar_tarefas")
 
 
 def listar_tarefas(request):
@@ -182,9 +201,15 @@ def listar_tarefas(request):
     if not request.user.is_authenticated:
         return redirect("/usuarios/logar")
 
-    tarefas = Tarefas.objects.filter(user=request.user).order_by(
-        "dataInicio"
+    tarefas = (
+        Tarefas.objects.filter(user=request.user)
+        .exclude(status=4)
+        .order_by("dataInicio")
     )  # Filtra as tarefas do usuário logado
     hoje = date.today()
     data_alerta = hoje + timedelta(days=3)  # Calcula a data com 3 dias a mais
-    return render(request, "listar_tarefas.html", {"tarefas": tarefas, "hoje": hoje, "data_alerta": data_alerta})
+    return render(
+        request,
+        "listar_tarefas.html",
+        {"tarefas": tarefas, "hoje": hoje, "data_alerta": data_alerta},
+    )

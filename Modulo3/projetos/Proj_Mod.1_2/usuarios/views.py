@@ -121,53 +121,58 @@ def editar_usuario(request):
 
         # Validações
         senha = request.POST.get("senha")  # Obtém o valor do campo senha do formulário
-        confirmar_senha = request.POST.get(
-            "confirmar_senha"
-        )  # Obtém o valor do campo confirmar_senha do formulário
+        # Se senha for vazio, ou seja, não quer mudar a senha, pula!
+        if senha != "":
 
-        # Se a senha for !=  da confirmação
-        if senha != confirmar_senha:
-            messages.add_message(request, constants.ERROR, "As senhas não coincidem")
-            # Renderiza o template de cadastro com os dados do usuário preenchidos
-            dados_usuario = {
-                "username": user.username,
-                "nome": user.first_name,
-                "sobrenome": user.last_name,
-                "email": user.email,
-            }
-            return render(
-                request, "cadastro.html", {"dados_usuario": dados_usuario}
-            )  # Use o mesmo template de cadastro
+            confirmar_senha = request.POST.get(
+                "confirmar_senha"
+            )  # Obtém o valor do campo confirmar_senha do formulário
 
-        # Se a senha tiver menos de 6 caracteres
-        if len(senha) < 6:
+            # Se a senha for !=  da confirmação
+            if senha != confirmar_senha:
+                messages.add_message(
+                    request, constants.ERROR, "As senhas não coincidem"
+                )
+                # Renderiza o template de cadastro com os dados do usuário preenchidos
+                dados_usuario = {
+                    "username": user.username,
+                    "nome": user.first_name,
+                    "sobrenome": user.last_name,
+                    "email": user.email,
+                }
+                return render(
+                    request, "cadastro.html", {"dados_usuario": dados_usuario}
+                )  # Use o mesmo template de cadastro
+
+            # Se a senha tiver menos de 6 caracteres
+            if len(senha) < 6:
+                messages.add_message(
+                    request, constants.ERROR, "A senha precisa ter pelo menos 6 digitos"
+                )
+                # Renderiza o template de cadastro com os dados do usuário preenchidos
+                dados_usuario = {
+                    "username": user.username,
+                    "nome": user.first_name,
+                    "sobrenome": user.last_name,
+                    "email": user.email,
+                }
+                return render(
+                    request, "cadastro.html", {"dados_usuario": dados_usuario}
+                )  # Use o mesmo template de cadastro
+
+            # Atualiza a senha do usuário
+            if senha:
+                user.set_password(request.POST.get("senha"))
+                update_session_auth_hash(
+                    request, user
+                )  # Atualiza a sessão de autenticação com a nova senha
+        else:
+            user.save()
+
             messages.add_message(
-                request, constants.ERROR, "A senha precisa ter pelo menos 6 digitos"
+                request, constants.SUCCESS, "Usuário atualizado com sucesso!"
             )
-            # Renderiza o template de cadastro com os dados do usuário preenchidos
-            dados_usuario = {
-                "username": user.username,
-                "nome": user.first_name,
-                "sobrenome": user.last_name,
-                "email": user.email,
-            }
-            return render(
-                request, "cadastro.html", {"dados_usuario": dados_usuario}
-            )  # Use o mesmo template de cadastro
-
-        # Atualiza a senha do usuário
-        if senha:
-            user.set_password(request.POST.get("senha"))
-            update_session_auth_hash(
-                request, user
-            )  # Atualiza a sessão de autenticação com a nova senha
-
-        user.save()
-
-        messages.add_message(
-            request, constants.SUCCESS, "Usuário atualizado com sucesso!"
-        )
-        return redirect("home")
+            return redirect("home")
 
 
 def logar(request):

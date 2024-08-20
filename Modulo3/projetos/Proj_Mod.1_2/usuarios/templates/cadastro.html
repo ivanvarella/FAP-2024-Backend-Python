@@ -58,7 +58,7 @@
             </div>
             <div class="mb-3">
               <label for="senha" class="form-label">Senha</label>
-              <input type="password" class="form-control" id="senha" name="senha" required />
+              <input type="password" class="form-control" id="senha" name="senha" {% if not dados_usuario %} required  {% endif %}/>
             </div>
             <div class="mb-3">
               <label for="senha" class="form-label">Confirmar senha</label>
@@ -67,7 +67,7 @@
                 class="form-control" 
                 id="confirmar_senha" 
                 name="confirmar_senha" 
-                required
+                {% if not dados_usuario %} required  {% endif %}
               />
             </div>
             {% if dados_usuario %}

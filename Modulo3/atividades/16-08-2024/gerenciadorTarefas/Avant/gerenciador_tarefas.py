@@ -1,7 +1,6 @@
 import sqlite3
-import os
 from datetime import datetime
-
+import os
 
 # Obtém o caminho completo do diretório onde o arquivo atual está localizado
 caminho_diretorio = os.path.dirname(os.path.abspath(__file__))
@@ -208,7 +207,7 @@ def excluir_tarefa(id):
 def sobre():
     limpar_terminal()
     print("Gerenciador de Tarefas - Avant")
-    print("Desenvolvido por: Ivan Varella e Luiz Fernandes")
+    print("Desenvolvido por: Ivan Varella")
     print("Versão: 1.0")
     print("Data: 2023-06-01")
     print("Licença: MIT License\n")
