@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.http import HttpResponse
 
@@ -37,27 +37,6 @@ def cadastro(request):
     if request.method == "GET":  # Verifica se a requisição é do tipo GET
         return render(request, "cadastro.html")  # Renderiza um template HTML
     elif request.method == "POST":
-        # debug:
-        # username = request.POST.get("username")
-        # senha = request.POST.get("senha")
-        # confirmar_senha = request.POST.get("confirmar_senha")
-        # email = request.POST.get("email")
-        # nome = request.POST.get("nome")
-        # sobrenome = request.POST.get("sobrenome")
-
-        # return HttpResponse(
-        #     """
-        #     Todos os requests:
-        #     username: {}
-        #     senha: {}
-        #     confirmar_senha: {}
-        #     email: {}
-        #     nome: {}
-        #     sobrenome: {}
-        #     """.format(
-        #         username, senha, confirmar_senha, email, nome, sobrenome
-        #     )
-        # )
 
         # Verifica se a requisição é do tipo POST - do form cadastro.html
         username = request.POST.get(
@@ -107,6 +86,27 @@ def cadastro(request):
             username=username, password=senha, first_name=nome, last_name=sobrenome
         )
         return redirect("/usuarios/logar")
+
+def editar_cadastro(request):
+    data_user = request.user
+    username = data_user.username
+    email = data_user.email
+    nome = data_user.first_name
+    sobrenome = data_user.last_name
+    print(data_user)
+    return HttpResponse(
+            """
+            Todos os requests:
+            username: {}
+            email: {}
+            nome: {}
+            sobrenome: {}
+            """.format(
+                username, email, nome, sobrenome
+            )
+        )
+        
+    return render(request, "cadastro.html")
 
 
 def logar(request):
