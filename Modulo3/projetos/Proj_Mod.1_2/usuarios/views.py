@@ -14,6 +14,9 @@ from django.contrib.messages import constants
 # Importar o Auth
 from django.contrib import auth
 
+# Para deslogar
+from django.contrib.auth import logout
+
 # Para editar o usuario:
 from django.contrib.auth import update_session_auth_hash
 
@@ -177,17 +180,6 @@ def logar(request):
 
         user = auth.authenticate(request, username=username, password=senha)
 
-        # return HttpResponse(
-        #     """
-        #     Todos os requests:
-        #     username: {}
-        #     senha: {}
-        #     user: {}
-        #     """.format(
-        #         username, senha, user
-        #     )
-        # )
-
         if user:
             auth.login(
                 request, user
@@ -199,3 +191,9 @@ def logar(request):
 
         messages.add_message(request, constants.ERROR, "Usuário ou senha inválidos")
         return redirect("/usuarios/logar")
+
+
+def deslogar(request):
+    logout(request)
+    messages.add_message(request, constants.SUCCESS, "Logout realizado com sucesso!")
+    return redirect("home")  # Redirecione para a página home após o logout

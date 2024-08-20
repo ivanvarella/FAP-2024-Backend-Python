@@ -61,3 +61,16 @@ a {
 .normal {
   background-color: white; /* Branco para a tarefa normal */
 }
+
+.navbar-nav .nav-item {
+  margin-right: 1rem;
+}
+
+.icon-menu {
+  vertical-align: middle; /* Centraliza verticalmente o ícone */
+  font-size: 1.2rem;    /* Ajuste o tamanho do ícone */
+}
+
+.mx-3 {
+  width: 1.2rem; /* Ajuste a largura do separador */
+}
