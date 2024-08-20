@@ -14,6 +14,9 @@ from django.contrib.messages import constants
 # Importar o Auth
 from django.contrib import auth
 
+# Para editar o usuario:
+from django.contrib.auth import update_session_auth_hash
+
 # Para verificação do email:
 import re
 
@@ -87,26 +90,81 @@ def cadastro(request):
         )
         return redirect("/usuarios/logar")
 
-def editar_cadastro(request):
-    data_user = request.user
-    username = data_user.username
-    email = data_user.email
-    nome = data_user.first_name
-    sobrenome = data_user.last_name
-    print(data_user)
-    return HttpResponse(
-            """
-            Todos os requests:
-            username: {}
-            email: {}
-            nome: {}
-            sobrenome: {}
-            """.format(
-                username, email, nome, sobrenome
+
+def editar_usuario(request):
+    if request.method == "GET":
+        # Obtém os dados do usuário logado
+        user = request.user
+
+        # Renderiza o template de cadastro com os dados do usuário preenchidos
+        dados_usuario = {
+            "username": user.username,
+            "nome": user.first_name,
+            "sobrenome": user.last_name,
+            "email": user.email,
+        }
+        return render(
+            request, "cadastro.html", {"dados_usuario": dados_usuario}
+        )  # Use o mesmo template de cadastro
+    elif request.method == "POST":
+        # Validação dos dados (opcional)
+
+        # Atualiza os dados do usuário no banco de dados
+        user = request.user
+        user.username = request.POST.get("username")
+        user.first_name = request.POST.get("nome")
+        user.last_name = request.POST.get("sobrenome")
+        user.email = request.POST.get("email")
+
+        # Validações
+        senha = request.POST.get("senha")  # Obtém o valor do campo senha do formulário
+        confirmar_senha = request.POST.get(
+            "confirmar_senha"
+        )  # Obtém o valor do campo confirmar_senha do formulário
+
+        # Se a senha for !=  da confirmação
+        if senha != confirmar_senha:
+            messages.add_message(request, constants.ERROR, "As senhas não coincidem")
+            # Renderiza o template de cadastro com os dados do usuário preenchidos
+            dados_usuario = {
+                "username": user.username,
+                "nome": user.first_name,
+                "sobrenome": user.last_name,
+                "email": user.email,
+            }
+            return render(
+                request, "cadastro.html", {"dados_usuario": dados_usuario}
+            )  # Use o mesmo template de cadastro
+
+        # Se a senha tiver menos de 6 caracteres
+        if len(senha) < 6:
+            messages.add_message(
+                request, constants.ERROR, "A senha precisa ter pelo menos 6 digitos"
             )
+            # Renderiza o template de cadastro com os dados do usuário preenchidos
+            dados_usuario = {
+                "username": user.username,
+                "nome": user.first_name,
+                "sobrenome": user.last_name,
+                "email": user.email,
+            }
+            return render(
+                request, "cadastro.html", {"dados_usuario": dados_usuario}
+            )  # Use o mesmo template de cadastro
+
+        # Atualiza a senha do usuário
+        if senha:
+            user.set_password(request.POST.get("senha"))
+            update_session_auth_hash(
+                request, user
+            )  # Atualiza a sessão de autenticação com a nova senha
+
+        user.save()
+
+        messages.add_message(
+            request, constants.SUCCESS, "Usuário atualizado com sucesso!"
         )
-        
-    return render(request, "cadastro.html")
+        return redirect("home")
 
 
 def logar(request):

@@ -15,8 +15,12 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <h2 class="text-center mb-4">Cadastro de Usuário</h2>
-
+          {% if dados_usuario %}
+            <h2 class="text-center mb-4">Editar Usuário</h2>
+          {% else %}
+            <h2 class="text-center mb-4">Cadastro de Usuário</h2>
+          {% endif %}
+ 
           {% if messages %}
               {% for message in messages %}
                   <section class="alert {{message.tags}}">
@@ -24,23 +28,29 @@
                   </section>
               {% endfor %}
           {% endif %}
+          
+          {% if dados_usuario %}
+            <form action="{% url 'editar_usuario' %}" method="POST"> {% csrf_token %}
+          {% else %}
+            <form action="{% url 'cadastro' %}" method="POST"> {% csrf_token %}
+          {% endif %}
 
-          <form action="{% url 'cadastro' %}" method="POST"> {% csrf_token %}
+          {% comment %} <form action="{% url 'cadastro' %}" method="POST"> {% csrf_token %} {% endcomment %}
             <div class="mb-3">
               <label for="nome" class="form-label">Username</label>
-              <input type="text" class="form-control" id="username" name="username" required />
+              <input type="text" class="form-control" id="username" name="username" {% if dados_usuario %} value="{{dados_usuario.username}}" {% endif %} required />
             </div>
             <div class="mb-3">
               <label for="nome" class="form-label">Nome</label>
-              <input type="text" class="form-control" id="nome" name="nome" required />
+              <input type="text" class="form-control" id="nome" name="nome" {% if dados_usuario %} value="{{dados_usuario.nome}}" {% endif %} required />
             </div>
             <div class="mb-3">
               <label for="nome" class="form-label">Sobrenome</label>
-              <input type="text" class="form-control" id="sobrenome" name="sobrenome" required />
+              <input type="text" class="form-control" id="sobrenome" name="sobrenome" {% if dados_usuario %} value="{{dados_usuario.sobrenome}}" {% endif %} required />
             </div>
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" name="email" required />
+              <input type="email" class="form-control" id="email" name="email" {% if dados_usuario %} value="{{dados_usuario.email}}" {% endif %} required />
             </div>
             <div class="mb-3">
               <label for="senha" class="form-label">Senha</label>
@@ -56,11 +66,22 @@
                 required
               />
             </div>
-            <button type="submit" class="btn btn-primary w-100">
-              Cadastrar
-            </button>
-            <br> <br> <br>
-            <a href="{% url 'logar' %}" class="btn btn-light">Já possuo uma conta</a>
+            {% if dados_usuario %}
+              <button type="submit" class="btn btn-primary w-100">
+                Editar
+              </button>
+            {% else %}
+              <button type="submit" class="btn btn-primary w-100">
+                Cadastrar
+              </button>
+            {% endif %}
+            
+            {% if not dados_usuario %} 
+              <br><br>
+              <a href="{% url 'logar' %}" class="btn btn-light">Já possuo uma conta</a>
+            {% endif %}
+              <br><br>
+              <a href="{% url 'listar_tarefas' %}"  class="btn btn-dark">Listar Tarefas</a>
           </form>
 
         </div>
