@@ -54,7 +54,7 @@ def calcular_idade_completa(data_nascimento):
         return anos, meses, dias
 
     except ValueError as e:
-        return f"Erro ao processar a data de nascimento: {e}"
+        return f"Erro ao processar a data de nascimento: {e} - A data deve ser no formato dd/mm/aaaa."
 
 
 anos, meses, dias = calcular_idade_completa("12/01/1983")

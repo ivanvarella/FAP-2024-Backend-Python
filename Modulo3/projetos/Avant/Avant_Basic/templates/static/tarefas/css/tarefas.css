@@ -1,0 +1,76 @@
+/* Estilos para a lista de tarefas */
+.table {
+    width: 100%;
+}
+
+.table th {
+    background-color: #f0f0f0;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+h2 {
+  color: #007bff;
+}
+
+h1 {
+  color: #007bff;
+}
+
+h3 {
+  color: #007bff;
+}
+
+.form-range {
+  width: 100%; /* Ajusta a largura do slider */
+}
+
+#progresso_valor {
+  margin-left: 10px; /* Adiciona espaçamento à esquerda */
+}
+
+.my-icon-color_lupa {
+  color: #ff0000; /* Altere para a cor desejada */
+}
+
+.my-icon-color_edit {
+  color: #ff0000; /* Altere para a cor desejada */
+}
+
+.my-icon-color_delete {
+  color: red; /* Altere para a cor desejada */
+}
+
+a {
+  text-decoration: none; 
+}
+
+.alerta {
+  background-color: #fffacd; /* Amarelo para alerta */
+}
+.atraso {
+  background-color: #f08080; /* Vermelho para atraso */
+}
+
+.concluida {
+  background-color: #90EE90; /* Verde claro para tarefa concluída */
+}
+
+.normal {
+  background-color: white; /* Branco para a tarefa normal */
+}
+
+.navbar-nav .nav-item {
+  margin-right: 1rem;
+}
+
+.icon-menu {
+  vertical-align: middle; /* Centraliza verticalmente o ícone */
+  font-size: 1.2rem;    /* Ajuste o tamanho do ícone */
+}
+
+.mx-3 {
+  width: 1.2rem; /* Ajuste a largura do separador */
+}

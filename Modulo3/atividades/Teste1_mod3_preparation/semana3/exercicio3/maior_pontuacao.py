@@ -2,7 +2,7 @@ def encontrar_maior_pontuacao(lista_tuplas):
     # Usa a função max() com um lambda para obter a tupla com a maior pontuação
     tupla_max = max(lista_tuplas, key=lambda x: x[1])
     # Retorna o primeiro nome encontrado da pessoa com a maior pontuação
-    # Se existir duas pessoas com a mesma potuação, irá retornar a primeira
+    # Se existir duas ou mais pessoas com a mesma potuação, irá retornar a primeira
     return tupla_max[0]
 
 
