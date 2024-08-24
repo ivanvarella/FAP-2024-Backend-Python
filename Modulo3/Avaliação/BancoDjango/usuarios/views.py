@@ -109,9 +109,8 @@ def editar_usuario(request):
         return render(
             request, "cadastro.html", {"dados_usuario": dados_usuario}
         )  # Use o mesmo template de cadastro
-    elif request.method == "POST":
-        # Validação dos dados (opcional)
 
+    elif request.method == "POST":
         # Atualiza os dados do usuário no banco de dados
         user = request.user
         user.username = request.POST.get("username")
@@ -119,21 +118,17 @@ def editar_usuario(request):
         user.last_name = request.POST.get("sobrenome")
         user.email = request.POST.get("email")
 
-        # Validações
         senha = request.POST.get("senha")  # Obtém o valor do campo senha do formulário
-        # Se senha for vazio, ou seja, não quer mudar a senha, pula!
-        if senha != "":
+        confirmar_senha = request.POST.get("confirmar_senha")
 
-            confirmar_senha = request.POST.get(
-                "confirmar_senha"
-            )  # Obtém o valor do campo confirmar_senha do formulário
-
-            # Se a senha for !=  da confirmação
+        # Se a senha não for vazia, faça as validações
+        if senha:
+            # Se erro: redireciona para a mesma página com os dados que foram inseridos e msg de erro
             if senha != confirmar_senha:
                 messages.add_message(
                     request, constants.ERROR, "As senhas não coincidem"
                 )
-                # Renderiza o template de cadastro com os dados do usuário preenchidos
+                # Retorna à página de edição com mensagens de erro
                 dados_usuario = {
                     "username": user.username,
                     "nome": user.first_name,
@@ -142,14 +137,14 @@ def editar_usuario(request):
                 }
                 return render(
                     request, "cadastro.html", {"dados_usuario": dados_usuario}
-                )  # Use o mesmo template de cadastro
-
-            # Se a senha tiver menos de 6 caracteres
-            if len(senha) < 6:
-                messages.add_message(
-                    request, constants.ERROR, "A senha precisa ter pelo menos 6 digitos"
                 )
-                # Renderiza o template de cadastro com os dados do usuário preenchidos
+
+            # Se erro: redireciona para a mesma página com os dados que foram inseridos e msg de erro
+            elif len(senha) < 6:
+                messages.add_message(
+                    request, constants.ERROR, "A senha precisa ter pelo menos 6 dígitos"
+                )
+                # Retorna à página de edição com mensagens de erro
                 dados_usuario = {
                     "username": user.username,
                     "nome": user.first_name,
@@ -158,21 +153,26 @@ def editar_usuario(request):
                 }
                 return render(
                     request, "cadastro.html", {"dados_usuario": dados_usuario}
-                )  # Use o mesmo template de cadastro
+                )
 
-            # Atualiza a senha do usuário
-            if senha:
-                user.set_password(request.POST.get("senha"))
+            else:
+                # Atualiza a senha do usuário
+                user.set_password(senha)
                 update_session_auth_hash(
                     request, user
                 )  # Atualiza a sessão de autenticação com a nova senha
-        else:
-            user.save()
+                messages.add_message(
+                    request, constants.SUCCESS, "Senha atualizada com sucesso!"
+                )
 
-            messages.add_message(
-                request, constants.SUCCESS, "Usuário atualizado com sucesso!"
-            )
-            return redirect("home")
+        # Salva as outras alterações no banco
+        user.save()
+
+        # Caso tudo certo, redireciona para cadastrar_conta com a msg de sucesso
+        messages.add_message(
+            request, constants.SUCCESS, "Usuário atualizado com sucesso!"
+        )
+        return redirect("cadastrar_conta")
 
 
 def logar(request):
