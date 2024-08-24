@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% if dados_usuario %}
+      <title>Editar Usuário</title>
+    {% else %}
+      <title>Cadastro de Usuário</title>
+    {% endif %}
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          {% if dados_usuario %}
+            <h2 class="text-center mb-4">Editar Usuário</h2>
+          {% else %}
+            <h2 class="text-center mb-4">Cadastro de Usuário</h2>
+          {% endif %}
+ 
+          {% if messages %}
+              {% for message in messages %}
+                  <section class="alert {{message.tags}}">
+                      {{message}}
+                  </section>
+              {% endfor %}
+          {% endif %}
+          
+          {% if dados_usuario %}
+            <form action="{% url 'editar_usuario' %}" method="POST"> {% csrf_token %}
+          {% else %}
+            <form action="{% url 'cadastro' %}" method="POST"> {% csrf_token %}
+          {% endif %}
+
+          {% comment %} <form action="{% url 'cadastro' %}" method="POST"> {% csrf_token %} {% endcomment %}
+            <div class="mb-3">
+              <label for="nome" class="form-label">Username</label>
+              <input type="text" class="form-control" id="username" name="username" {% if dados_usuario %} value="{{dados_usuario.username}}" {% endif %} required />
+            </div>
+            <div class="mb-3">
+              <label for="nome" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="nome" name="nome" {% if dados_usuario %} value="{{dados_usuario.nome}}" {% endif %} required />
+            </div>
+            <div class="mb-3">
+              <label for="nome" class="form-label">Sobrenome</label>
+              <input type="text" class="form-control" id="sobrenome" name="sobrenome" {% if dados_usuario %} value="{{dados_usuario.sobrenome}}" {% endif %} required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" {% if dados_usuario %} value="{{dados_usuario.email}}" {% endif %} required />
+            </div>
+            <div class="mb-3">
+              <label for="senha" class="form-label">Senha</label>
+              <input type="password" class="form-control" id="senha" name="senha" {% if not dados_usuario %} required  {% endif %}/>
+            </div>
+            <div class="mb-3">
+              <label for="senha" class="form-label">Confirmar senha</label>
+              <input
+                type="password"
+                class="form-control" 
+                id="confirmar_senha" 
+                name="confirmar_senha" 
+                {% if not dados_usuario %} required  {% endif %}
+              />
+            </div>
+            {% if dados_usuario %}
+              <button type="submit" class="btn btn-primary w-100">
+                Editar
+              </button>
+            {% else %}
+              <button type="submit" class="btn btn-primary w-100">
+                Cadastrar
+              </button>
+            {% endif %}
+            
+            {% if not dados_usuario %} 
+              <br><br>
+              <a href="{% url 'logar' %}" class="btn btn-light">Já possuo uma conta</a>
+            {% endif %}
+              <br><br>
+              {% comment %} <a href="{% url 'listar_tarefas' %}"  class="btn btn-dark">Listar Tarefas</a> {% endcomment %}
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

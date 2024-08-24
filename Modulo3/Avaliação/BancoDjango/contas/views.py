@@ -14,7 +14,7 @@ from datetime import datetime, date, timedelta
 # Create your views here.
 
 
-# @login_required(login_url="/usuarios/logar")
+@login_required(login_url="/usuarios/logar")
 def cadastrar_conta(request):
 
     # Via link ou direto no navegador
