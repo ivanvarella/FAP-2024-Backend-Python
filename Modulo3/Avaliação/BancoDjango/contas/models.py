@@ -28,38 +28,31 @@ class Conta(models.Model):
             numero = random.randint(100000, 999999)
         return numero
 
-    # Alterando o comportamente do método save() do Django
+    def _criar_movimentacao(self, tipo, valor):
+        # Importação atrasada para evitar importações circulares
+        from movimentacoes.models import Movimentacao
+
+        # Cria uma movimentação associada à conta
+        Movimentacao.objects.create(
+            tipo_movimentacao=tipo,
+            conta=self,
+            valor=valor,
+        )
+
     def save(self, *args, **kwargs):
         # Verifica se a instância é nova (não tem ID ainda)
         is_new = not self.pk
 
-        # Se for uma conta nova, gera o numero_conta e salva na tabela do App conta
         if is_new:
+            # Gera um número de conta único para novas contas
             self.numero_conta = self.gerar_numero_conta_unico()
 
-            super().save(*args, **kwargs)  # Salva a conta no banco de dados
+        # Salva a conta no banco de dados
+        super().save(*args, **kwargs)
 
-            # Cria a movimentação correspondente
-            # Se for conta nova, cria movimantacao de abertura de conta
-            # Importação atrasada, corrige o problema de importações circulares, onde dois módulos importam um ao outro
-            from movimentacoes.models import Movimentacao
-
-            Movimentacao.objects.create(
-                tipo_movimentacao=1,  # "Abertura de Conta"
-                conta=self,  # Passa os dados de conta para pegar o pk daqui como fk lá
-                valor=self.saldo,
-            )
-
-        # Se a conta já existir e estiver sendo encerrada, cria movimentacao de encerramento de conta
+        # Cria uma movimentação de "Abertura de Conta" para novas contas
+        if is_new:
+            self._criar_movimentacao(tipo=1, valor=self.saldo)
+        # Cria uma movimentação de "Encerramento de Conta" se a conta for encerrada
         elif not self.ativa:
-
-            # Importação atrasada
-            from movimentacoes.models import Movimentacao
-
-            Movimentacao.objects.create(
-                tipo_movimentacao=5,  # "Encerramento de Conta"
-                conta=self,
-                # Fazer uma verificação na views para caso exista saldo na conta, não permitir encerrar a conta
-                # Se chegou aqui é pq essa verificação já foi feita, então encerre a conta
-                valor=0,
-            )
+            self._criar_movimentacao(tipo=5, valor=0)
