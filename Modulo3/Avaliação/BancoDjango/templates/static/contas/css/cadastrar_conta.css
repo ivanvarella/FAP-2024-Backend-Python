@@ -1,0 +1,14 @@
+/* Seu arquivo cadastrar_conta.css */
+.container {
+  background-color: #f0f0f0;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}

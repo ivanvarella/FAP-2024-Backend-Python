@@ -2,7 +2,6 @@ import sqlite3
 import os
 from datetime import datetime
 
-
 # Obtém o caminho completo do diretório onde o arquivo atual está localizado
 caminho_diretorio = os.path.dirname(os.path.abspath(__file__))
 # Caminho para o banco de dados SQLite
@@ -15,23 +14,40 @@ def conectar():
 
 
 def criar_tabela():
-    conn = conectar()
-    cursor = conn.cursor()
-    cursor.execute(
+    """Cria as tabelas de contas e operações no banco de dados, se elas não existirem."""
+    with conectar() as conn:
+        cursor = conn.cursor()
+
+        # Cria a tabela de contas
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS contas (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                numero_conta INTEGER UNIQUE NOT NULL,
+                data_abertura DATETIME DEFAULT CURRENT_TIMESTAMP,
+                nome TEXT NOT NULL,
+                tipo_conta INTEGER NOT NULL,
+                saldo REAL NOT NULL DEFAULT 0.0,
+                ativa BOOLEAN DEFAULT 1
+            )
         """
-        CREATE TABLE IF NOT EXISTS contas (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            numero_conta INTEGER UNIQUE NOT NULL,
-            data_abertura DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-            nome TEXT NOT NULL,
-            tipo_conta BOOLEAN NOT NULL,
-            saldo DECIMAL(12, 2) NOT NULL,
-            ativa BOOLEAN NOT NULL DEFAULT (1)
         )
+
+        # Cria a tabela de operações
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS operacoes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                data_movimentacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+                tipo_movimentacao TEXT NOT NULL,
+                valor REAL NOT NULL,
+                id_conta INTEGER NOT NULL,
+                FOREIGN KEY(id_conta) REFERENCES contas(id)
+            )
         """
-    )
-    conn.commit()
-    conn.close()
+        )
+
+        conn.commit()
 
 
 class BancoHandler:
@@ -41,7 +57,7 @@ class BancoHandler:
         self.saldo = saldo
         self.limite_especial = limite_especial
 
-    def inserir_conta(nome, saldo, tipo_conta):
+    def inserir_conta(nome, saldo, limite_especial, tipo_conta):
         conn = conectar()
         cursor = conn.cursor()
 
@@ -52,10 +68,10 @@ class BancoHandler:
         # Insere a nova conta na tabela
         cursor.execute(
             """
-            INSERT INTO contas (numero_conta, nome, saldo, tipo_conta)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO contas (numero_conta, nome, saldo, limite_especial, tipo_conta)
+            VALUES (?, ?, ?, ?, ?)
             """,
-            (numero_conta, nome, saldo, tipo_conta),
+            (numero_conta, nome, saldo, limite_especial, tipo_conta),
         )
 
         conn.commit()

@@ -1,105 +1,163 @@
+import sqlite3
+import os
 from datetime import datetime
 
+# Obtém o caminho completo do diretório onde o arquivo atual está localizado
+caminho_diretorio = os.path.dirname(os.path.abspath(__file__))
+# Caminho para o banco de dados SQLite
+CAMINHO_BANCO = os.path.join(caminho_diretorio, "Banco.db")
 
-global contas
-contas = []
+
+def conectar():
+    """Estabelece uma conexão com o banco de dados SQLite."""
+    return sqlite3.connect(CAMINHO_BANCO)
+
+
+def criar_tabela():
+    """Cria as tabelas de contas e operações no banco de dados, se elas não existirem."""
+    with conectar() as conn:
+        cursor = conn.cursor()
+
+        # Cria a tabela de contas
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS contas (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                numero_conta INTEGER UNIQUE NOT NULL,
+                data_abertura DATETIME DEFAULT CURRENT_TIMESTAMP,
+                nome TEXT NOT NULL,
+                tipo_conta INTEGER NOT NULL,
+                saldo REAL NOT NULL DEFAULT 0.0,
+                ativa BOOLEAN DEFAULT 1
+            )
+        """
+        )
+
+        # Cria a tabela de operações
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS operacoes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                data_movimentacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+                tipo_movimentacao TEXT NOT NULL,
+                valor REAL NOT NULL,
+                id_conta INTEGER NOT NULL,
+                FOREIGN KEY(id_conta) REFERENCES contas(id)
+            )
+        """
+        )
+
+        conn.commit()
 
 
 class Conta:
-    def __init__(self, nome, saldo=0, limite_especial=0):
+    def __init__(self, nome, saldo=0, limite_especial=0, tipo_conta=1):
         """Inicializa uma conta com saldo e limite especial."""
-        self.numero_conta = self.gerar_numero_conta()
         self.nome = nome
         self.data_abertura = datetime.now().strftime("%Y-%m-%d %H:%M")
         self.saldo = saldo
         self.limite_especial = limite_especial
-        self.operações = [(self.data_abertura, "ABERTURA DE CONTA", saldo)]
+        self.tipo_conta = tipo_conta  # 1: Conta Corrente / 2: Conta Poupança
 
-        # Adiciona a conta à lista de contas
-        contas.append(self)
+    def criar_conta(self):
+        """Cria uma nova conta no banco de dados."""
 
-    @staticmethod
-    def gerar_numero_conta():
-        """Gera um número de conta único."""
-        if not contas:
-            return 1  # Se não houver contas, o primeiro número é 1
+        self.operações = [(self.data_abertura, "ABERTURA DE CONTA", self.saldo)]
 
-        numeros_existentes = {conta.numero_conta for conta in contas}
-        numero = 1
+        with conectar() as conn:
+            cursor = conn.cursor()
 
-        while numero in numeros_existentes:
-            numero += 1
+            # Encontra o próximo número de conta disponível
+            cursor.execute("SELECT COALESCE(MAX(numero_conta), 0) + 1 FROM contas")
+            numero_conta = cursor.fetchone()[0]
+            self.numero_conta = numero_conta
 
-        return numero
-
-    def depositar(self, valor):
-        """Deposita um valor na conta, deve ser positivo."""
-        if valor > 0:
-            self.saldo += valor
-            self.operações.append(
-                (datetime.now().strftime("%Y-%m-%d %H:%M"), "DEPÓSITO", valor)
-            )
-        else:
-            print("O valor do depósito deve ser positivo.")
-
-    def sacar(self, valor):
-        """Saca um valor da conta, utilizando o limite especial se necessário."""
-        if valor <= 0:
-            print("O valor do saque deve ser positivo.")
-            return
-
-        if self.saldo >= valor:
-            self.saldo -= valor
-            self.operações.append(
-                (datetime.now().strftime("%Y-%m-%d %H:%M"), "SAQUE", -valor)
-            )
-        elif self.saldo + self.limite_especial >= valor:
-            self.saldo -= valor
-            self.operações.append(
-                (datetime.now().strftime("%Y-%m-%d %H:%M"), "SAQUE LIMITE", -valor)
-            )
-            print(
-                f"Saldo insuficiente. Usando limite especial. Novo saldo: R${self.saldo:.2f}"
-            )
-        else:
-            print(
-                f"Saldo insuficiente. Seu saldo atual é de R${self.saldo:.2f} e seu limite especial é de R${self.limite_especial:.2f}."
+            # Insere a nova conta na tabela
+            cursor.execute(
+                """
+                INSERT INTO contas (numero_conta, nome, saldo, tipo_conta)
+                VALUES (?, ?, ?, ?)
+                """,
+                (self.numero_conta, self.nome, self.saldo, self.tipo_conta),
             )
 
-    def exibir_saldo(self):
-        """Exibe o saldo atual da conta."""
-        print(f"Saldo atual: R${self.saldo:.2f}")
+            conn.commit()
 
-    def extrato(self):
-        """Exibe o extrato das operações realizadas na conta."""
-        print(f"Extrato CC N° {self.numero_conta}\n")
-        for operacao in self.operações:
-            data, descricao, valor = operacao
-            print(f"{data} {descricao:<20} R${valor:10.2f}")
-        print(f"\nSaldo atual: R${self.saldo:.2f}\n")
+    # def depositar(self, valor):
+    #     """Deposita um valor na conta, deve ser positivo."""
+    #     if valor > 0:
+    #         self.saldo += valor
+    #         self.registrar_operacao("DEPÓSITO", valor)
+    #     else:
+    #         print("O valor do depósito deve ser positivo.")
+
+    # def sacar(self, valor):
+    #     """Saca um valor da conta, utilizando o limite especial se necessário."""
+    #     if valor <= 0:
+    #         print("O valor do saque deve ser positivo.")
+    #         return
+
+    #     if self.saldo >= valor:
+    #         self.saldo -= valor
+    #         self.registrar_operacao("SAQUE", -valor)
+    #     elif self.saldo + self.limite_especial >= valor:
+    #         self.saldo -= valor
+    #         self.registrar_operacao("SAQUE LIMITE", -valor)
+    #         print(
+    #             f"Saldo insuficiente. Usando limite especial. Novo saldo: R${self.saldo:.2f}"
+    #         )
+    #     else:
+    #         print(
+    #             f"Saldo insuficiente. Seu saldo atual é de R${self.saldo:.2f} e seu limite especial é de R${self.limite_especial:.2f}."
+    #         )
+
+    # def registrar_operacao(self, tipo, valor):
+    #     """Registra uma operação na tabela de operações."""
+    #     with conectar() as conn:
+    #         cursor = conn.cursor()
+    #         cursor.execute(
+    #             """
+    #             INSERT INTO operacoes (tipo_movimentacao, valor, id_conta)
+    #             VALUES (?, ?, (SELECT id FROM contas WHERE numero_conta = ?))
+    #             """,
+    #             (tipo, valor, self.numero_conta),
+    #         )
+    #         conn.commit()
+
+    # def exibir_saldo(self):
+    #     """Exibe o saldo atual da conta."""
+    #     print(f"Saldo atual: R${self.saldo:.2f}")
+
+    # def extrato(self):
+    #     """Exibe o extrato das operações realizadas na conta."""
+    #     with conectar() as conn:
+    #         cursor = conn.cursor()
+    #         cursor.execute(
+    #             """
+    #             SELECT data_movimentacao, tipo_movimentacao, valor
+    #             FROM operacoes
+    #             WHERE id_conta = (SELECT id FROM contas WHERE numero_conta = ?)
+    #             """,
+    #             (self.numero_conta,),
+    #         )
+    #         operacoes = cursor.fetchall()
+
+    #     print(f"Extrato CC N° {self.numero_conta}\n")
+    #     for operacao in operacoes:
+    #         data, descricao, valor = operacao
+    #         print(f"{data} {descricao:<20} R${valor:10.2f}")
+    #     print(f"\nSaldo atual: R${self.saldo:.2f}\n")
 
 
-# Exemplo de uso:
-conta1 = Conta(nome="João", saldo=100, limite_especial=200)
-conta2 = Conta(nome="Ricardo", saldo=1000, limite_especial=500)
-conta3 = Conta(nome="Luiz", saldo=800, limite_especial=300)
-conta1 = Conta(nome="Ivan", saldo=300, limite_especial=50)
-# for conta in contas:
-#     print(conta.nome)
-#     print(conta.numero_conta)
-#     print(conta.data_abertura)
-#     print(conta.saldo)
-#     print(conta.limite_especial)
-#     print("\n")
+# Testes:
+criar_tabela()  # Cria as tabelas no banco de dados se não existirem
 
+# Criando uma nova conta
+objConta = Conta(nome="João Silva", saldo=1000, limite_especial=500, tipo_conta=1)
 
-# conta1.sacar(150)
-# conta1.exibir_saldo()
-
-# # Excluir a conta para testar a geração de número único
-# contas.remove(conta1)
-
-# conta2 = Conta(
-#     nome="Maria", data_abertura=datetime.now(), saldo=50, limite_especial=100
-# )
-# print(f"Número da nova conta: {conta2.numero_conta}")
+# Criando uma instância da conta e realizando operações
+# conta = Conta(nome="João Silva", saldo=1000, tipo_conta=1)
+# conta.depositar(500)
+# conta.sacar(200)
+# conta.exibir_saldo()
+# conta.extrato()
