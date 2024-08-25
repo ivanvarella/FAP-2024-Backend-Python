@@ -50,16 +50,24 @@ def cadastrar_conta(request):
 
         # Pega do models os tipos de contas para preencher no select, caso alterado já altera no form automaticamente
         TIPO_CONTA_CHOICES = Conta.TIPO_CONTA_CHOICES
+        usuarios_banco = User.objects.values(
+            "id", "first_name", "last_name", "username"
+        )
 
         return render(
-            request, "cadastrar_conta.html", {"tipo_conta_choices": TIPO_CONTA_CHOICES}
+            request,
+            "cadastrar_conta.html",
+            {
+                "tipo_conta_choices": TIPO_CONTA_CHOICES,
+                "usuarios_banco": usuarios_banco,
+            },
         )
 
     # Se for via form (retorno do cadastro para processar)
     elif request.method == "POST":
 
         # Dados para a tabela Conta no DB
-        nome = request.POST.get("nome")
+        cliente_id = request.POST.get("cliente")
         tipo_conta = request.POST.get("tipo_conta")
         saldo = formatar_valor(request.POST.get("saldo"))
         limite_especial = formatar_valor(request.POST.get("limite_especial"))
@@ -70,10 +78,6 @@ def cadastrar_conta(request):
         #     f"Nome: {nome} - Tipo_conta: {tipo_conta} - Saldo: {saldo} - Limite_especial: {limite_especial} - Ativa: {ativa}"
         # )
         # return redirect("cadastrar_conta")
-        # Validação dos dados
-        if nome is None:
-            messages.error(request, "O Campo nome é obrigatório.")
-            return redirect("cadastrar_conta")
 
         try:
             tipo_conta = int(tipo_conta)
@@ -85,8 +89,12 @@ def cadastrar_conta(request):
 
         # Cria a nova conta no banco de dados
         try:
+
+            # Obtém a instância do User usando o ID do cliente
+            usuario = User.objects.get(id=cliente_id)
+
             nova_conta = Conta.objects.create(
-                nome=nome,
+                id_user=usuario,
                 tipo_conta=tipo_conta,
                 saldo=saldo,
                 limite_especial=limite_especial,
@@ -100,3 +108,30 @@ def cadastrar_conta(request):
             return redirect("cadastrar_conta")
 
     return render(request, "cadastro_conta.html")
+
+
+@login_required(login_url="/usuarios/logar")
+def conta_cliente(request):
+    return render(request, "conta_cliente.html")
+
+
+@login_required(login_url="/usuarios/logar")
+def listar_contas(request):
+    # Via link ou direto no navegador
+    if request.method == "GET":
+
+        # Pega do models os tipos de contas para preencher no select, caso alterado já altera no form automaticamente
+
+        dados_contas = Conta.objects.all()
+        TIPO_CONTA_CHOICES = Conta.TIPO_CONTA_CHOICES
+
+        return render(
+            request,
+            "listar_contas.html",
+            {
+                "dados_contas": dados_contas,
+                "tipo_conta_choices": TIPO_CONTA_CHOICES,
+            },
+        )
+
+    return render(request, "listar_contas.html")

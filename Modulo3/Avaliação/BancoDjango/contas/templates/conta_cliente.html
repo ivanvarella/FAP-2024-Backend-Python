@@ -1,0 +1,123 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extrato Bancário</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="{% static 'contas/css/conta_cliente.css' %}" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#" aria-current="page">
+              <span class="material-icons icon-menu">edit</span> Editar Perfil
+            </a>
+          </li>
+          <li class="nav-item">
+            <span class="mx-3">|</span>  
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="return confirm('Deseja realmente sair?');">
+              <span class="material-icons icon-menu">logout</span> Sair
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h2 class="text-center mb-4">Extrato Bancário</h2>
+        
+        <div class="card">
+          <div class="card-body">
+            <h3 class="text-center">Bem-vindo, João da Silva!</h3>
+            <p class="text-center mb-3">Data e hora atual: <span id="dataHora"></span></p>
+            <h4 class="text-center mb-4">Saldo Atual: R$ <span id="saldo">0,00</span></h4>
+            
+            <ul class="list-group mt-4">
+              <!-- Adicione aqui os itens da lista -->
+              <li class="list-group-item">Nenhuma transação registrada</li>
+            </ul>
+            
+            <form class="mt-4">
+              <div class="mb-3">
+                <label for="operacao" class="form-label">Selecione uma operação:</label>
+                <select class="form-select" id="operacao">
+                  <option value="deposito">Depósito</option>
+                  <option value="saque">Saque</option>
+                  <option value="transferencia">Transferência</option>
+                </select>
+              </div>
+              <div id="form-operacao"></div>
+              <button type="submit" class="btn btn-primary w-100">Confirmar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('dataHora').textContent = new Date().toLocaleString();
+
+        document.getElementById('operacao').addEventListener('change', atualizarFormulario);
+    });
+
+    function atualizarFormulario() {
+      const operacao = document.getElementById('operacao').value;
+      const formOperacao = document.getElementById('form-operacao');
+      formOperacao.innerHTML = '';
+
+      switch (operacao) {
+        case 'deposito':
+          formOperacao.innerHTML = `
+            <div class="mb-3">
+              <label for="valorDeposito" class="form-label">Valor a depositar:</label>
+              <input type="number" class="form-control" id="valorDeposito" required>
+            </div>
+          `;
+          break;
+        case 'saque':
+          formOperacao.innerHTML = `
+            <div class="mb-3">
+              <label for="valorSaque" class="form-label">Valor a sacar:</label>
+              <input type="number" class="form-control" id="valorSaque" required>
+            </div>
+          `;
+          break;
+        case 'transferencia':
+          formOperacao.innerHTML = `
+            <div class="mb-3">
+              <label for="contaDestino" class="form-label">Conta destino:</label>
+              <select class="form-select" id="contaDestino" required>
+                <option value="">Selecione</option>
+                <option value="123456">Conta Corrente - João da Silva</option>
+                <option value="654321">Poupança - Maria Souza</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="valorTransferencia" class="form-label">Valor a transferir:</label>
+              <input type="number" class="form-control" id="valorTransferencia" required>
+            </div>
+          `;
+          break;
+      }
+    }
+  </script>
+</body>
+</html>

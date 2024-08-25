@@ -50,8 +50,19 @@
 
         <form action="{% url 'cadastrar_conta' %}" method="POST"> {% csrf_token %}
           <div class="mb-3">
-            <label for="nome" class="form-label">Nome do Titular</label>
-            <input type="text" class="form-control" id="nome" name="nome" required>
+
+
+            <label for="tipo_conta" class="form-label">Selecione o cliente</label>
+            <select class="form-select" id="cliente" name="cliente" required>
+              {% for user in usuarios_banco %}
+                <option value="{{ user.id }}">Nome: {{ user.first_name }} {{ user.last_name }} - Username: {{ user.username }}</option>
+              {% endfor %}
+            </select>
+
+            {% comment %} <label for="nome" class="form-label">Nome do Titular</label>
+            <input type="text" class="form-control" id="nome" name="nome" required> {% endcomment %}
+
+
           </div>
           <div class="mb-3">
             <label for="tipo_conta" class="form-label">Tipo de Conta</label>
