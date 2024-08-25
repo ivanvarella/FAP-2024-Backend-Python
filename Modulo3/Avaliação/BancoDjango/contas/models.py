@@ -1,5 +1,6 @@
 from django.db import models
 import random
+from django.contrib.auth.models import User
 
 
 class Conta(models.Model):
@@ -7,17 +8,16 @@ class Conta(models.Model):
         (1, "Conta Corrente"),
         (2, "Conta Poupança"),
     ]
-
     numero_conta = models.IntegerField(unique=True)
     data_abertura = models.DateTimeField(auto_now_add=True)
-    nome = models.CharField(max_length=255)
     tipo_conta = models.IntegerField(choices=TIPO_CONTA_CHOICES)
     saldo = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     limite_especial = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     ativa = models.BooleanField(default=True)
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Nome: {self.nome} - Número da conta: {self.numero_conta} - Saldo: {self.saldo}"
+        return f"Id do usuário: {self.id_user} - Número da conta: {self.numero_conta} - Saldo: {self.saldo}"
 
     @staticmethod
     def gerar_numero_conta_unico():
