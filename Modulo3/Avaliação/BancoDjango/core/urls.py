@@ -26,8 +26,12 @@ from django.conf.urls.static import (
     static,
 )  # Esse é aquele static lá que eu ainda não entendi muito - pesquisar mais...
 
+from django.shortcuts import redirect
+
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("contas/", include("contas.urls")),
     path("usuarios/", include("usuarios.urls")),
+    # path("", lambda request: redirect("usuarios/logar/")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

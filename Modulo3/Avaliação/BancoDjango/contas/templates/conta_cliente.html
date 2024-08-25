@@ -5,54 +5,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Extrato Bancário</title>
+  <title>Conta Cliente</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <link rel="stylesheet" href="{% static 'contas/css/conta_cliente.css' %}" />
 </head>
 <body>
-  <nav class="navbar navbar-expand-sm navbar-light bg-light">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#" aria-current="page">
-              <span class="material-icons icon-menu">edit</span> Editar Perfil
-            </a>
-          </li>
-          <li class="nav-item">
-            <span class="mx-3">|</span>  
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" onclick="return confirm('Deseja realmente sair?');">
-              <span class="material-icons icon-menu">logout</span> Sair
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Old and Traditional Bank</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url "logar" %}">Home</a>
+                    </li>
+                    {% comment %} <li class="nav-item">
+                        <a class="nav-link" href="#">Contas</a>
+                    </li> {% endcomment %}
+                    {% comment %} <li class="nav-item">
+                        <a class="nav-link" href="#">Usuários</a>
+                    </li> {% endcomment %}
+                    {% comment %} <li class="nav-item">
+                        <a class="nav-link" href="{% url "cadastro" %}">Cadastro Usuário</a>
+                    </li> {% endcomment %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "editar_usuario" %}">Editar Cadastro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'deslogar' %}" onclick="return confirm('Deseja realmente sair?');">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
 
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <h2 class="text-center mb-4">Extrato Bancário</h2>
+      <div class="col-md-12">
+        <h2 class="text-center mb-4">Dados Bancários</h2>
         
         <div class="card">
           <div class="card-body">
-            <h3 class="text-center">Bem-vindo, João da Silva!</h3>
-            <p class="text-center mb-3">Data e hora atual: <span id="dataHora"></span></p>
-            <h4 class="text-center mb-4">Saldo Atual: R$ <span id="saldo">0,00</span></h4>
+            <p class="text-end mb-4"><span id="dataHora"></span></p>
+            <h3 class="text-center">Bem-vindo, {{ dados_cliente.first_name }} {{ dados_cliente.last_name }}</h3> <br><br>
             
-            <ul class="list-group mt-4">
-              <!-- Adicione aqui os itens da lista -->
-              <li class="list-group-item">Nenhuma transação registrada</li>
-            </ul>
+            <h4 class="text-left mb-4">Número da conta: <span id="saldo">{{ dados_conta_cliente.numero_conta }}</span></h4>
+            <h4 class="text-left mb-4">Saldo Atual: R$ <span id="saldo">{{ dados_conta_cliente.saldo }}</span></h4>
+
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-md-12">
+                  <!-- Título para a seção de movimentações -->
+                  <h4 class="text-center mb-4 mt-5 font-weight-bold">Últimas movimentações</h4>
             
-            <form class="mt-4">
+                  <table class="table table-striped mt-4">
+                    <thead>
+                      <tr>
+                        <th>Data da Movimentação</th>
+                        <th>Tipo</th>
+                        <th>Valor</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if dados_movimentacoes %}
+                        {% for movimentacao in dados_movimentacoes %}
+                          {% for tipo_movimentacao_id, tipo_movimentacao_nome in tipo_movimentacao_choices %}
+                            {% if tipo_movimentacao_id == movimentacao.tipo_movimentacao %}
+                              <tr>
+                                <td>{{ movimentacao.data_movimentacao }}</td>
+                                <td>{{ tipo_movimentacao_nome }}</td>
+                                <td>R$ {{ movimentacao.valor }}</td>
+                              </tr>
+                            {% endif %}
+                          {% endfor %}
+                        {% endfor %}
+                      {% else %}
+                        <tr>
+                          <td colspan="3" class="text-center">Não há movimentações registradas para esta conta.</td>
+                        </tr>
+                      {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+            <form class="mt-5 pt-5">
               <div class="mb-3">
                 <label for="operacao" class="form-label">Selecione uma operação:</label>
                 <select class="form-select" id="operacao">
@@ -73,10 +117,13 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('dataHora').textContent = new Date().toLocaleString();
+      const now = new Date();
+      const dataFormatada = now.toLocaleDateString();
+      const horaFormatada = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('dataHora').textContent = `${dataFormatada} ${horaFormatada}`;
 
-        document.getElementById('operacao').addEventListener('change', atualizarFormulario);
-    });
+      document.getElementById('operacao').addEventListener('change', atualizarFormulario);
+  });
 
     function atualizarFormulario() {
       const operacao = document.getElementById('operacao').value;

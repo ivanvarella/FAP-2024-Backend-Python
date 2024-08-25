@@ -112,6 +112,24 @@ def cadastrar_conta(request):
 
 @login_required(login_url="/usuarios/logar")
 def conta_cliente(request):
+    # Via link ou direto no navegador
+    if request.method == "GET":
+        dados_conta_cliente = Conta.objects.get(id_user=request.user.id)
+        dados_cliente = User.objects.get(id=request.user.id)
+        dados_movimentacoes = Movimentacao.objects.filter(conta=dados_conta_cliente)
+        tipo_movimentacao_choices = Movimentacao.TIPO_MOVIMENTACAO_CHOICES
+
+        return render(
+            request,
+            "conta_cliente.html",
+            {
+                "dados_conta_cliente": dados_conta_cliente,
+                "dados_cliente": dados_cliente,
+                "dados_movimentacoes": dados_movimentacoes,
+                "tipo_movimentacao_choices": tipo_movimentacao_choices,
+            },
+        )
+
     return render(request, "conta_cliente.html")
 
 
