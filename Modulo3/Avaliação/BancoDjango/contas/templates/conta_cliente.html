@@ -96,10 +96,10 @@
               </div>
             </div>
             
-            <form class="mt-5 pt-5">
+            <form action="{% url 'conta_cliente' %}" method="POST" class="mt-5 pt-5">
               <div class="mb-3">
                 <label for="operacao" class="form-label">Selecione uma operação:</label>
-                <select class="form-select" id="operacao">
+                <select class="form-select" id="operacao" name="operacao">
                   <option value="deposito">Depósito</option>
                   <option value="saque">Saque</option>
                   <option value="transferencia">Transferência</option>
@@ -115,15 +115,35 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const now = new Date();
-      const dataFormatada = now.toLocaleDateString();
-      const horaFormatada = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      document.getElementById('dataHora').textContent = `${dataFormatada} ${horaFormatada}`;
+  
+<!-- Renderizar os dados de contas_users passados via context como JSON -->
+<script id="contasUsersData" type="application/json">
+  {{ contas_users|json_script:"contasUsersData" }}
+</script>
 
-      document.getElementById('operacao').addEventListener('change', atualizarFormulario);
-  });
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Código para obter a data e hora mostrada na página
+    const now = new Date();
+    const dataFormatada = now.toLocaleDateString();
+    const horaFormatada = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('dataHora').textContent = `${dataFormatada} ${horaFormatada}`;
+
+    // Carregar dados das contas e usuários
+    let contasUsersData = [];
+    try {
+      const contasUsersScript = document.getElementById('contasUsersData');
+      //console.log(contasUsersScript).textContent
+      contasUsersData = JSON.parse(contasUsersScript.textContent);
+    } catch (error) {
+      console.error('Erro ao parsear JSON de contasUsersData:', error);
+    }
+
+    // Adiciona o evento para mudar o formulário ao selecionar uma operação
+    document.getElementById('operacao').addEventListener('change', atualizarFormulario);
+
+    // Chama a função para atualizar o formulário com base na opção inicial selecionada
+    atualizarFormulario();
 
     function atualizarFormulario() {
       const operacao = document.getElementById('operacao').value;
@@ -134,37 +154,36 @@
         case 'deposito':
           formOperacao.innerHTML = `
             <div class="mb-3">
-              <label for="valorDeposito" class="form-label">Valor a depositar:</label>
-              <input type="number" class="form-control" id="valorDeposito" required>
+              <label for="valor_deposito" class="form-label">Valor a depositar:</label>
+              <input type="number" class="form-control" id="valor_deposito" name="valor_deposito" required>
             </div>
           `;
           break;
         case 'saque':
           formOperacao.innerHTML = `
             <div class="mb-3">
-              <label for="valorSaque" class="form-label">Valor a sacar:</label>
-              <input type="number" class="form-control" id="valorSaque" required>
+              <label for="valor_saque" class="form-label">Valor a sacar:</label>
+              <input type="number" class="form-control" id="valor_saque" name="valor_saque" required>
             </div>
           `;
           break;
         case 'transferencia':
           formOperacao.innerHTML = `
             <div class="mb-3">
-              <label for="contaDestino" class="form-label">Conta destino:</label>
-              <select class="form-select" id="contaDestino" required>
-                <option value="">Selecione</option>
-                <option value="123456">Conta Corrente - João da Silva</option>
-                <option value="654321">Poupança - Maria Souza</option>
+              <label for="conta_destino_transferencia" class="form-label">Conta destino:</label>
+              <select class="form-select" id="conta_destino_transferencia" name="conta_destino_transferencia" required>
+                ${contasUsersData.map(conta => `<option value="${conta.numero_conta}">${conta.numero_conta} - ${conta.id_user__first_name} ${conta.id_user__last_name} - ${conta.tipo_conta}</option>`).join('')}
               </select>
             </div>
             <div class="mb-3">
-              <label for="valorTransferencia" class="form-label">Valor a transferir:</label>
-              <input type="number" class="form-control" id="valorTransferencia" required>
+              <label for="valor_transferencia" class="form-label">Valor a transferir:</label>
+              <input type="number" class="form-control" id="valor_transferencia" name="valor_transferencia" required>
             </div>
           `;
           break;
       }
     }
-  </script>
+  });
+</script>
 </body>
 </html>

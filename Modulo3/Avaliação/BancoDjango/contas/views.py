@@ -14,6 +14,13 @@ from django.contrib import messages
 from django.contrib.messages import constants
 from datetime import datetime, date, timedelta
 
+# Para conseguir tratar e enviar via contexto os dados das contas + user
+# para o template de conta_cliente como Json e assim ser utilizado para
+# alteração do DOM dinamicamente com Js
+from django.utils.safestring import mark_safe
+import json
+
+
 # Create your views here.
 
 
@@ -74,11 +81,6 @@ def cadastrar_conta(request):
         # Verifica se o checkbox foi marcado:retorna True ou False para salvar no DB
         ativa = request.POST.get("ativa") == "on"
 
-        # print(
-        #     f"Nome: {nome} - Tipo_conta: {tipo_conta} - Saldo: {saldo} - Limite_especial: {limite_especial} - Ativa: {ativa}"
-        # )
-        # return redirect("cadastrar_conta")
-
         try:
             tipo_conta = int(tipo_conta)
             saldo = float(saldo)
@@ -119,6 +121,25 @@ def conta_cliente(request):
         dados_movimentacoes = Movimentacao.objects.filter(conta=dados_conta_cliente)
         tipo_movimentacao_choices = Movimentacao.TIPO_MOVIMENTACAO_CHOICES
 
+        # Obter os dados para popular o select das contas para transferencia
+        # select_related('id_user'): Isso faz um INNER JOIN implícito entre Conta e User,
+        # garantindo que se obtenha apenas as contas que têm um usuário associado e
+        # trazendo os dados desses usuários em uma única consulta ao banco de dados.
+        # contas_users = Conta.objects.select_related("id_user").all()
+        contas_users = (
+            Conta.objects.select_related("id_user")
+            .values(
+                "numero_conta",
+                "tipo_conta",
+                "id_user__first_name",
+                "id_user__last_name",
+            )
+            .filter(ativa=True)
+        )
+
+        for conta in contas_users:
+            print(conta)
+
         return render(
             request,
             "conta_cliente.html",
@@ -127,8 +148,75 @@ def conta_cliente(request):
                 "dados_cliente": dados_cliente,
                 "dados_movimentacoes": dados_movimentacoes,
                 "tipo_movimentacao_choices": tipo_movimentacao_choices,
+                "contas_users": mark_safe(
+                    list(contas_users)
+                ),  # Converter QuerySet para lista de dicionários
             },
         )
+        # "contas_users": list(contas_users),  # Converter QuerySet para lista de dicionários
+        # "contas_users": mark_safe(
+        #             json.dumps(list(contas_users))
+        #         ),
+    elif request.method == "POST":
+        # Obter os dados atualizados
+        dados_conta_cliente = Conta.objects.get(id_user=request.user.id)
+        dados_cliente = User.objects.get(id=request.user.id)
+        dados_movimentacoes = Movimentacao.objects.filter(conta=dados_conta_cliente)
+        tipo_movimentacao_choices = Movimentacao.TIPO_MOVIMENTACAO_CHOICES
+
+        contas_users = (
+            Conta.objects.select_related("id_user")
+            .values(
+                "numero_conta",
+                "tipo_conta",
+                "id_user__first_name",
+                "id_user__last_name",
+            )
+            .filter(ativa=True)
+        )
+
+        # Add a movimentacao (saque, deposito ou transferencia - Não funcionando ainda)
+        operacao = request.POST.get("operacao")
+
+        if operacao == "deposito":
+            pass
+        elif operacao == "saque":
+            pass
+        elif operacao == "transferencia":
+            pass
+
+            return render(
+                request,
+                "conta_cliente.html",
+                {
+                    "dados_conta_cliente": dados_conta_cliente,
+                    "dados_cliente": dados_cliente,
+                    "dados_movimentacoes": dados_movimentacoes,
+                    "tipo_movimentacao_choices": tipo_movimentacao_choices,
+                    "contas_users": mark_safe(
+                        list(contas_users)
+                    ),  # Converter QuerySet para lista de dicionários
+                },
+            )
+
+        # try:
+
+        #     # Obtém a instância do User usando o ID do cliente
+        #     usuario = User.objects.get(id=cliente_id)
+
+        #     nova_conta = Conta.objects.create(
+        #         id_user=usuario,
+        #         tipo_conta=tipo_conta,
+        #         saldo=saldo,
+        #         limite_especial=limite_especial,
+        #         ativa=ativa,
+        #     )
+        #     messages.success(request, "Conta criada com sucesso!")
+        #     # Fazer o redirecionar para a página de listagem de contas ou outra página
+        #     return redirect("cadastrar_conta")  # Temporario
+        # except Exception as e:
+        #     messages.error(request, f"Erro ao criar conta: {e}")
+        #     return redirect("cadastrar_conta")
 
     return render(request, "conta_cliente.html")
 
@@ -138,8 +226,7 @@ def listar_contas(request):
     # Via link ou direto no navegador
     if request.method == "GET":
 
-        # Pega do models os tipos de contas para preencher no select, caso alterado já altera no form automaticamente
-
+        # Pega do models os tipos de contas e os dados para preencher no select, caso alterado já altera no form automaticamente
         dados_contas = Conta.objects.all()
         TIPO_CONTA_CHOICES = Conta.TIPO_CONTA_CHOICES
 
