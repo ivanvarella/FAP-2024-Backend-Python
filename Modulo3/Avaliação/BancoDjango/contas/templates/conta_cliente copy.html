@@ -22,7 +22,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'logar' %}">Home</a>
+                        <a class="nav-link active" aria-current="page" href="{% url "logar" %}">Home</a>
                     </li>
                     {% comment %} <li class="nav-item">
                         <a class="nav-link" href="#">Contas</a>
@@ -31,10 +31,10 @@
                         <a class="nav-link" href="#">Usuários</a>
                     </li> {% endcomment %}
                     {% comment %} <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cadastro' %}">Cadastro Usuário</a>
+                        <a class="nav-link" href="{% url "cadastro" %}">Cadastro Usuário</a>
                     </li> {% endcomment %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'editar_usuario' %}">Editar Cadastro</a>
+                        <a class="nav-link" href="{% url "editar_usuario" %}">Editar Cadastro</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'deslogar' %}" onclick="return confirm('Deseja realmente sair?');">Sair</a>
@@ -98,19 +98,19 @@
                       </tr>
                     </thead>
                     <tbody>
-                        {% if dados_movimentacoes %}
-                          {% for movimentacao in dados_movimentacoes %}
-                            {% for tipo_movimentacao_id, tipo_movimentacao_nome in tipo_movimentacao_choices %}
-                              {% if tipo_movimentacao_id == movimentacao.tipo_movimentacao %}
-                                <tr>
-                                  <td>{{ movimentacao.data_movimentacao|date:"d/m/Y H:i:s" }}</td>
-                                  <td>{{ tipo_movimentacao_nome }}</td>
-                                  <td>R$ {{ movimentacao.valor }}</td>
-                                </tr>
-                              {% endif %}
-                            {% endfor %}
+                      {% if dados_movimentacoes %}
+                        {% for movimentacao in dados_movimentacoes %}
+                          {% for tipo_movimentacao_id, tipo_movimentacao_nome in tipo_movimentacao_choices %}
+                            {% if tipo_movimentacao_id == movimentacao.tipo_movimentacao %}
+                              <tr>
+                                <td>{{ movimentacao.data_movimentacao|date:"d/m/Y H:i:s" }}</td>
+                                <td>{{ tipo_movimentacao_nome }}</td>
+                                <td>R$ {{ movimentacao.valor }}</td>
+                              </tr>
+                            {% endif %}
                           {% endfor %}
-                        {% else %}
+                        {% endfor %}
+                      {% else %}
                         <tr>
                           <td colspan="3" class="text-center">Não há movimentações registradas para esta conta.</td>
                         </tr>
@@ -134,19 +134,23 @@
               <hr>
               
               <!-- Campos para Depósito -->
-              <div id="campo_deposito" class="mb-3">
+              <div class="mb-3">
                 <label for="valor_deposito" class="form-label">Valor a depositar:</label>
                 <input type="text" class="form-control" id="valor_deposito" name="valor_deposito" value="R$ 0,00">
               </div>
 
+              <hr>
+
               <!-- Campos para Saque -->
-              <div id="campo_saque" class="mb-3">
+              <div class="mb-3">
                 <label for="valor_saque" class="form-label">Valor a sacar:</label>
                 <input type="text" class="form-control" id="valor_saque" name="valor_saque" value="R$ 0,00">
               </div>
 
+              <hr>
+
               <!-- Campos para Transferência -->
-              <div id="campo_transferencia" class="mb-3">
+              <div class="mb-3">
                 <label for="conta_destino_transferencia" class="form-label">Conta destino:</label>
                 <select class="form-select" id="conta_destino_transferencia" name="conta_destino_transferencia">
                   {% for conta_transferencia in contas_users %}
@@ -157,12 +161,13 @@
                     {% endfor %}
                   {% endfor %}
                 </select>
-                <div class="mb-3">
-                  <label for="valor_transferencia" class="form-label">Valor a transferir:</label>
-                  <input type="text" class="form-control" id="valor_transferencia" name="valor_transferencia" value="R$ 0,00">
-                </div>
+              </div>
+              <div class="mb-3">
+                <label for="valor_transferencia" class="form-label">Valor a transferir:</label>
+                <input type="text" class="form-control" id="valor_transferencia" name="valor_transferencia" value="R$ 0,00">
               </div>
 
+              {% comment %} <div id="form-operacao"></div> {% endcomment %}
               <button type="submit" class="btn btn-primary w-100">Confirmar</button>
             </form>
           </div>
@@ -171,9 +176,109 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+M3lPb5Bj8tIJe51opG4McLGTI4DX" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   
-  <!-- Carrega todas as funções Js -->
-  <script src="{% static 'contas/js/conta_cliente.js' %}"></script>
+  <script>
+    // Função para formatar os campos como moeda brasileira
+    function formatarMoeda(elemento) {
+      let valor = elemento.value;
+      
+      // Remove qualquer caractere que não seja dígito ou vírgula
+      valor = valor.replace(/\D/g, "");
+      
+      // Formata como R$ XX.XXX,XX
+      valor = (valor / 100).toFixed(2) + "";
+      valor = valor.replace(".", ",");
+      valor = valor.replace(/(\d)(?=(\d{3})+\,)/g, "$1.");
+      
+      // Adiciona o símbolo de moeda
+      elemento.value = "R$ " + valor;
+    }
+
+    // Adiciona o evento de input aos campos saldo e limite_especial
+    document.getElementById('valor_deposito').addEventListener('input', function() {
+      formatarMoeda(this);
+    });
+
+    document.getElementById('valor_saque').addEventListener('input', function() {
+      formatarMoeda(this);
+    });
+
+    document.getElementById('valor_transferencia').addEventListener('input', function() {
+      formatarMoeda(this);
+    });
+  </script>
+
+
+  <!-- Renderizar os dados de contas_users passados via context como JSON -->
+  {% comment %} <script id="contasUsersData" type="application/json">
+    {{ contas_users|json_script:"contasUsersData" }}
+  </script> {% endcomment %}
+
+  {% comment %} <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Código para obter a data e hora mostrada na página
+      const now = new Date();
+      const dataFormatada = now.toLocaleDateString();
+      const horaFormatada = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('dataHora').textContent = `${dataFormatada} ${horaFormatada}`;
+    });
+  </script> {% endcomment %}
+  {% comment %} <script>
+    // Carregar dados das contas e usuários
+    let contasUsersData = [];
+    try {
+      const contasUsersScript = document.getElementById('contasUsersData');
+      //console.log(contasUsersScript).textContent
+      contasUsersData = JSON.parse(contasUsersScript.textContent);
+    } catch (error) {
+      console.error('Erro ao parsear JSON de contasUsersData:', error);
+    }
+
+    // Adiciona o evento para mudar o formulário ao selecionar uma operação
+    document.getElementById('operacao').addEventListener('change', atualizarFormulario);
+
+    // Chama a função para atualizar o formulário com base na opção inicial selecionada
+    atualizarFormulario();
+
+    function atualizarFormulario() {
+      const operacao = document.getElementById('operacao').value;
+      const formOperacao = document.getElementById('form-operacao');
+      formOperacao.innerHTML = '';
+
+      switch (operacao) {
+        case 'deposito':
+          formOperacao.innerHTML = `
+            <div class="mb-3">
+              <label for="valor_deposito" class="form-label">Valor a depositar:</label>
+              <input type="number" class="form-control" id="valor_deposito" name="valor_deposito" value="R$ 0,00" required>
+            </div>
+          `;
+          break;
+        case 'saque':
+          formOperacao.innerHTML = `
+            <div class="mb-3">
+              <label for="valor_saque" class="form-label">Valor a sacar:</label>
+              <input type="number" class="form-control" id="valor_saque" name="valor_saque" value="R$ 0,00" required>
+            </div>
+          `;
+          break;
+        case 'transferencia':
+          formOperacao.innerHTML = `
+            <div class="mb-3">
+              <label for="conta_destino_transferencia" class="form-label">Conta destino:</label>
+              <select class="form-select" id="conta_destino_transferencia" name="conta_destino_transferencia" required>
+                ${contasUsersData.map(conta => `<option value="${conta.numero_conta}">${conta.numero_conta} - ${conta.id_user__first_name} ${conta.id_user__last_name} - ${conta.tipo_conta}</option>`).join('')}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="valor_transferencia" class="form-label">Valor a transferir:</label>
+              <input type="number" class="form-control" id="valor_transferencia" name="valor_transferencia" value="R$ 0,00" required>
+            </div>
+          `;
+          break;
+      }
+    }
+  </script> {% endcomment %}
 </body>
 </html>
