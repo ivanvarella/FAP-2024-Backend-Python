@@ -83,6 +83,8 @@
               <h4 class="text-left mb-4">Limite Especial: <span id="limite_especial" class="text-primary">R$ {{dados_conta_cliente.limite_especial}}</span></h4>
             {% endif %}
 
+            <a href="{% url 'extrato' dados_conta_cliente.numero_conta %}" class="btn btn-secondary" style="width: 180px; font-size: 20px; font-weight: bold;">Extrato</a>
+
             <div class="container">
               <div class="row justify-content-center">
                 <div class="col-md-12">

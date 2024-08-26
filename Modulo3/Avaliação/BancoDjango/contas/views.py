@@ -295,6 +295,42 @@ def conta_cliente(request):
         )
 
 
+def extrato(request, numero_conta):
+    # Via link ou direto no navegador
+    if request.method == "GET":
+        # Recupera a conta com base no número da conta
+        dados_conta_cliente = get_object_or_404(Conta, numero_conta=numero_conta)
+
+        # Busca todas as movimentações associadas à conta
+        # dados_movimentacoes = Movimentacao.objects.filter(conta=dados_conta_cliente)
+        dados_movimentacoes = Movimentacao.objects.filter(
+            conta=dados_conta_cliente
+        ).order_by("-data_movimentacao")
+
+        tipo_movimentacao_choices = Movimentacao.TIPO_MOVIMENTACAO_CHOICES
+
+        # Conta o número de movimentações
+        numero_de_movimentacoes = dados_movimentacoes.count()
+
+        print(f"\n\nNúmero de movimentações: {numero_de_movimentacoes}\n\n")
+
+        # Recupera o usuário associado à conta
+        dados_cliente = dados_conta_cliente.id_user
+
+        # Passa os dados para o template
+        return render(
+            request,
+            "extrato.html",
+            {
+                "dados_conta_cliente": dados_conta_cliente,
+                "dados_movimentacoes": dados_movimentacoes,
+                "dados_cliente": dados_cliente,
+                "tipo_movimentacao_choices": tipo_movimentacao_choices,
+                "numero_de_movimentacoes": numero_de_movimentacoes,
+            },
+        )
+
+
 @login_required(login_url="/usuarios/logar")
 def listar_contas(request):
     # Via link ou direto no navegador
