@@ -118,7 +118,8 @@ def conta_cliente(request):
     if request.method == "GET":
         dados_conta_cliente = Conta.objects.get(id_user=request.user.id)
         dados_cliente = User.objects.get(id=request.user.id)
-        dados_movimentacoes = Movimentacao.objects.filter(conta=dados_conta_cliente)
+        # Apesar as últimas 3 movimentações da conta
+        dados_movimentacoes = Movimentacao.objects.filter(conta=dados_conta_cliente).order_by('-data_movimentacao')[:3]
         tipo_movimentacao_choices = Movimentacao.TIPO_MOVIMENTACAO_CHOICES
 
         # Obter os dados para popular o select das contas para transferencia
@@ -190,7 +191,8 @@ def conta_cliente(request):
             # Obter os dados atualizados para envio para o template
             dados_conta_cliente = Conta.objects.get(id_user=request.user.id)
             dados_cliente = User.objects.get(id=request.user.id)
-            dados_movimentacoes = Movimentacao.objects.filter(conta=dados_conta_cliente).order_by('-data_movimentacao')
+            # Apesar as últimas 3 movimentações da conta
+            dados_movimentacoes = Movimentacao.objects.filter(conta=dados_conta_cliente).order_by('-data_movimentacao')[:3]
             tipo_movimentacao_choices = Movimentacao.TIPO_MOVIMENTACAO_CHOICES
             tipo_conta_choices = Conta.TIPO_CONTA_CHOICES
 
@@ -219,11 +221,6 @@ def conta_cliente(request):
                 },
             )
             
-            
-            
-            
-            
-
         elif operacao == "saque":
             pass
         elif operacao == "transferencia":

@@ -77,10 +77,6 @@
                 <div class="col-md-12">
                   <!-- Título para a seção de movimentações -->
                   <h4 class="text-center mb-4 mt-5 font-weight-bold">Últimas movimentações</h4>
-            
-                  {% for movimentacao in dados_movimentacoes %}
-                    <p>{{ movimentacao.data_movimentacao|date:"d/m/Y H:i:s" }} - {{ movimentacao.valor }}</p>
-                  {% endfor %}
 
                   <table class="table table-striped mt-4">
                     <thead>
