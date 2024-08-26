@@ -137,8 +137,7 @@ def conta_cliente(request):
             .filter(ativa=True)
         )
 
-        for conta in contas_users:
-            print(conta)
+        tipo_conta_choices = Conta.TIPO_CONTA_CHOICES
 
         return render(
             request,
@@ -148,38 +147,83 @@ def conta_cliente(request):
                 "dados_cliente": dados_cliente,
                 "dados_movimentacoes": dados_movimentacoes,
                 "tipo_movimentacao_choices": tipo_movimentacao_choices,
-                "contas_users": mark_safe(
-                    list(contas_users)
-                ),  # Converter QuerySet para lista de dicionários
+                "contas_users": contas_users,
+                "tipo_conta_choices": tipo_conta_choices,
             },
         )
-        # "contas_users": list(contas_users),  # Converter QuerySet para lista de dicionários
-        # "contas_users": mark_safe(
-        #             json.dumps(list(contas_users))
-        #         ),
     elif request.method == "POST":
-        # Obter os dados atualizados
-        dados_conta_cliente = Conta.objects.get(id_user=request.user.id)
-        dados_cliente = User.objects.get(id=request.user.id)
-        dados_movimentacoes = Movimentacao.objects.filter(conta=dados_conta_cliente)
-        tipo_movimentacao_choices = Movimentacao.TIPO_MOVIMENTACAO_CHOICES
-
-        contas_users = (
-            Conta.objects.select_related("id_user")
-            .values(
-                "numero_conta",
-                "tipo_conta",
-                "id_user__first_name",
-                "id_user__last_name",
-            )
-            .filter(ativa=True)
-        )
-
+        
         # Add a movimentacao (saque, deposito ou transferencia - Não funcionando ainda)
         operacao = request.POST.get("operacao")
 
         if operacao == "deposito":
-            pass
+            dados_conta_cliente = Conta.objects.get(id_user=request.user.id)
+            valor_deposito = float(formatar_valor(request.POST.get("valor_deposito")))
+            saldo = float(dados_conta_cliente.saldo)
+            
+            # Calcula novo saldo após operação de depósito
+            saldo_atualizado = saldo + valor_deposito
+            data_atual = datetime.now()
+            
+            print(f"Data mov: {data_atual} - Saldo atualizado: {saldo_atualizado}")
+            
+            # Salva a movimentação no banco
+            try:
+                nova_movimentacao = Movimentacao.objects.create(
+                    conta=dados_conta_cliente,
+                    tipo_movimentacao=2, # Depósito
+                    valor=valor_deposito,
+                    data_movimentacao=data_atual,
+                )
+                
+                # Atualiza o saldo da conta no banco
+                dados_conta_cliente.saldo = saldo_atualizado
+                dados_conta_cliente.save()
+                
+                messages.success(request, "Depósto realizado com sucesso!")
+                
+            except Exception as e:
+                messages.error(request, f"Erro ao tentar realizar o depósito: {e}")
+                return redirect("conta_cliente")
+            
+            # Após salvar (success) ou não (fail), recarrega a página com a mensagem:
+            # Obter os dados atualizados para envio para o template
+            dados_conta_cliente = Conta.objects.get(id_user=request.user.id)
+            dados_cliente = User.objects.get(id=request.user.id)
+            dados_movimentacoes = Movimentacao.objects.filter(conta=dados_conta_cliente).order_by('-data_movimentacao')
+            tipo_movimentacao_choices = Movimentacao.TIPO_MOVIMENTACAO_CHOICES
+            tipo_conta_choices = Conta.TIPO_CONTA_CHOICES
+
+            contas_users = (
+                Conta.objects.select_related("id_user")
+                .values(
+                    "numero_conta",
+                    "tipo_conta",
+                    "id_user__first_name",
+                    "id_user__last_name",
+                )
+                .filter(ativa=True)
+            )
+            
+            # Redirecionar para o conta_cliente com os dados de contexto atualizados
+            return render(
+                request,
+                "conta_cliente.html",
+                {
+                    "dados_conta_cliente": dados_conta_cliente,
+                    "dados_cliente": dados_cliente,
+                    "dados_movimentacoes": dados_movimentacoes,
+                    "tipo_movimentacao_choices": tipo_movimentacao_choices,
+                    "contas_users": contas_users,
+                    "tipo_conta_choices": tipo_conta_choices,
+                },
+            )
+            
+            
+            
+            
+            
+
         elif operacao == "saque":
             pass
         elif operacao == "transferencia":

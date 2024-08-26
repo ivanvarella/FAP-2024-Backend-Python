@@ -20,4 +20,4 @@ class Movimentacao(models.Model):
 
     def __str__(self):
         tipo_movimentacao_display = self.get_tipo_movimentacao_display()
-        return f"{tipo_movimentacao_display} de R${self.valor} em {self.data_movimentacao.strftime('%d/%m/%Y %H:%M')}"
+        return f"{tipo_movimentacao_display} de R${self.valor} em {self.data_movimentacao.strftime('%d/%m/%Y %H:%M:%S')}"
