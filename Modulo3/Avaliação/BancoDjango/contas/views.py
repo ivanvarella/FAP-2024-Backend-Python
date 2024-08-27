@@ -74,6 +74,7 @@ def calcular_saldo_medio(movimentacoes):
 
 @login_required(login_url="/usuarios/logar")
 def cadastrar_conta(request):
+
     if not request.user.is_superuser:
         messages.warning(
             request, "Acesso negado, somente Gerentes podem editar contas."
@@ -213,8 +214,11 @@ def conta_cliente(request):
     try:
         dados_conta_cliente_verificacao = Conta.objects.get(id_user=request.user.id)
     except Conta.DoesNotExist:
-        messages.warning(request, "Conta não encontrada.")
-        return redirect("cadastrar_conta")
+        messages.warning(request, "Usuário ainda não possui Contas Bancárias.")
+        if not request.user.is_superuser:
+            return redirect("editar_usuario")
+        else:
+            return redirect("cadastrar_conta")
 
     # Via link ou direto no navegador
     if request.method == "GET":

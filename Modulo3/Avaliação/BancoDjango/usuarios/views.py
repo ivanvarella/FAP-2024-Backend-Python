@@ -42,9 +42,9 @@ def is_valid_email(email):
 
 # @login_required(login_url="/usuarios/logar")
 def cadastro(request):
-    # print(f"Tipo de requisição: {request.method}")  # Imprime o tipo de requisição: GET, POST
+
     if request.method == "GET":  # Verifica se a requisição é do tipo GET
-        return render(request, "cadastro.html")  # Renderiza um template HTML
+        return render(request, "cadastro.html")
     elif request.method == "POST":
 
         # Verifica se a requisição é do tipo POST - do form cadastro.html
