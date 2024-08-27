@@ -57,7 +57,6 @@ def formatar_valor(valor):
 
 
 # TODO Implementar os cáculos via triggers no banco
-@login_required(login_url="/usuarios/logar")
 def calcular_saldo_medio(movimentacoes):
 
     # Calcula a média dos saldos_antes e saldo_apos
@@ -75,6 +74,11 @@ def calcular_saldo_medio(movimentacoes):
 
 @login_required(login_url="/usuarios/logar")
 def cadastrar_conta(request):
+    if not request.user.is_superuser:
+        messages.warning(
+            request, "Acesso negado, somente Gerentes podem editar contas."
+        )
+        return redirect("conta_cliente")
 
     # Via link ou direto no navegador
     if request.method == "GET":
@@ -143,6 +147,12 @@ def editar_conta(request, numero_conta):
 
     # Resgata os dados do cliente da Conta
     dados_cliente = User.objects.get(id=dados_conta_cliente.id_user.id)
+
+    if not request.user.is_superuser:
+        messages.warning(
+            request, "Acesso negado, somente Gerentes podem editar contas."
+        )
+        return redirect("conta_cliente")
 
     # Resgata os dados CHOICES da models
     TIPO_CONTA_CHOICES = Conta.TIPO_CONTA_CHOICES
@@ -400,6 +410,7 @@ def conta_cliente(request):
 
 @login_required(login_url="/usuarios/logar")
 def extrato(request, numero_conta):
+
     # Via link ou direto no navegador
     # Recupera a conta com base no número da conta
     dados_conta_cliente = get_object_or_404(Conta, numero_conta=numero_conta)
@@ -504,6 +515,13 @@ def extrato(request, numero_conta):
 
 @login_required(login_url="/usuarios/logar")
 def listar_contas(request):
+
+    if not request.user.is_superuser:
+        messages.warning(
+            request, "Acesso negado, somente Gerentes podem editar contas."
+        )
+        return redirect("conta_cliente")
+
     # Via link ou direto no navegador
     if request.method == "GET":
 
@@ -528,7 +546,21 @@ def encerrar_conta(request, numero_conta):
     """
     Desativa a conta especificada pelo número, se estiver ativa.
     """
+
+    if not request.user.is_superuser:
+        messages.warning(
+            request, "Acesso negado, somente Gerentes podem editar contas."
+        )
+        return redirect("conta_cliente")
+
     conta = get_object_or_404(Conta, numero_conta=numero_conta)
+
+    if conta.saldo != 0:
+        messages.error(
+            request,
+            "Não é possível encerrar a conta pois o saldo não está zerado.",
+        )
+        return redirect("listar_contas")
 
     if conta.ativa:
         conta.ativa = False
@@ -545,6 +577,13 @@ def ativar_conta(request, numero_conta):
     """
     Ativa a conta especificada pelo número, se estiver desativada.
     """
+
+    if not request.user.is_superuser:
+        messages.warning(
+            request, "Acesso negado, somente Gerentes podem editar contas."
+        )
+        return redirect("conta_cliente")
+
     conta = get_object_or_404(Conta, numero_conta=numero_conta)
 
     if not conta.ativa:

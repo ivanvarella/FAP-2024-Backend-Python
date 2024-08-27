@@ -29,20 +29,14 @@
                       <li class="nav-item">
                           <a class="nav-link active" aria-current="page" href="{% url "logar" %}">Home</a>
                       </li>
-                      {% comment %} <li class="nav-item">
-                          <a class="nav-link" href="#">Contas</a>
-                      </li> {% endcomment %}
-                      {% comment %} <li class="nav-item">
-                          <a class="nav-link" href="#">Usuários</a>
-                      </li> {% endcomment %}
-                      {% comment %} <li class="nav-item">
-                          <a class="nav-link" href="{% url "cadastro" %}">Cadastro Usuário</a>
-                      </li> {% endcomment %}
                       <li class="nav-item">
-                          <a class="nav-link" href="{% url "conta_cliente" %}">Conta</a>
+                        <a class="nav-link" href="{% url "listar_contas" %}"> | Listar contas</a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link" href="{% url 'deslogar' %}" onclick="return confirm('Deseja realmente sair?');">Sair</a>
+                          <a class="nav-link" href="{% url "conta_cliente" %}"> | Conta</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'deslogar' %}" onclick="return confirm('Deseja realmente sair?');"> | Sair</a>
                       </li>
                   </ul>
               </div>

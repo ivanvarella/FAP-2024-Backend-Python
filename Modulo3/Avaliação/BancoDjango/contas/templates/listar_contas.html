@@ -26,15 +26,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'conta_cliente' %}"> | Conta</a>
                     </li>
-                    {% comment %} <li class="nav-item">
-                        <a class="nav-link" href="#">Usuários</a>
-                    </li> {% endcomment %}
-                    {% comment %} <li class="nav-item">
-                        <a class="nav-link" href="#">Relatórios</a>
-                    </li> {% endcomment %}
-                    {% comment %} <li class="nav-item">
-                        <a class="nav-link" href="#">Configurações</a>
-                    </li> {% endcomment %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'editar_usuario' %}"> | Editar Usuário</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'deslogar' %}" onclick="return confirm('Deseja realmente sair?');">Sair</a>
                     </li>
@@ -43,29 +37,6 @@
         </div>
     </nav>
 </header>
-  {% comment %} <nav class="navbar navbar-expand-sm navbar-light bg-light">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#" aria-current="page">
-              <span class="material-icons icon-menu">edit</span> Editar Perfil
-            </a>
-          </li>
-          <li class="nav-item">
-            <span class="mx-3">|</span>  
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'deslogar' %}" onclick="return confirm('Deseja realmente sair?');">
-              <span class="material-icons icon-menu">logout</span> Sair
-            </a>
-        </ul>
-      </div>
-    </div>
-  </nav> {% endcomment %}
 
   <div class="container">
     <div class="row justify-content-center">
@@ -85,49 +56,6 @@
         <div class="card">
           <div class="card-body">
             <div class="table-responsive">
-              {% comment %} <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Número da Conta</th>
-                    <th>Titular</th>
-                    <th>Tipo de Conta</th>
-                    <th>Saldo</th>
-                    <th>Limite Especial</th>
-                    <th>Situação</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                    {% for conta in dados_contas %}
-                      <tr>
-                        <td>{{ conta.numero_conta }}</td>
-                        <td>{{ conta.id_user }}</td>
-
-                        {% for tipo_id, tipo_nome in tipo_conta_choices %}
-                          {% if tipo_id == conta.tipo_conta %}
-                            <td>{{ tipo_nome }}</td> 
-                          {% endif %}
-                        {% endfor %}
-
-                        <td>R$ {{ conta.saldo }}</td>
-                        <td>R$ {{ conta.limite_especial }}</td>
-                        {% if conta.ativa == 1 %}
-                          <td><span class="badge bg-success">Ativa</span></td>
-                        {% else %}
-                          <td><span class="badge bg-danger">Encerrada</span></td>
-                        {% endif %}
-                        <td>
-                          <a href="#" class="btn btn-sm btn-primary"><span class="material-icons">edit</span></a>
-                          <a href="#" class="btn btn-sm btn-danger"><span class="material-icons">delete</span></a>
-                        </td>
-                      </tr>
-                    {% endfor %}
-
-                </tbody>
-              </table> {% endcomment %}
-
-
 
               <table class="table table-hover">
                 <thead>

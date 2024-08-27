@@ -17,6 +17,7 @@ class AuthGroup(models.Model):
 
 
 class AuthGroupPermissions(models.Model):
+    id = models.BigAutoField(primary_key=True)
     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
     permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
 
@@ -27,9 +28,9 @@ class AuthGroupPermissions(models.Model):
 
 
 class AuthPermission(models.Model):
+    name = models.CharField(max_length=255)
     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
     codename = models.CharField(max_length=100)
-    name = models.CharField(max_length=255)
 
     class Meta:
         managed = False
@@ -40,14 +41,14 @@ class AuthPermission(models.Model):
 class AuthUser(models.Model):
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.BooleanField()
+    is_superuser = models.IntegerField()
     username = models.CharField(unique=True, max_length=150)
+    first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email = models.CharField(max_length=254)
-    is_staff = models.BooleanField()
-    is_active = models.BooleanField()
+    is_staff = models.IntegerField()
+    is_active = models.IntegerField()
     date_joined = models.DateTimeField()
-    first_name = models.CharField(max_length=150)
 
     class Meta:
         managed = False
@@ -55,6 +56,7 @@ class AuthUser(models.Model):
 
 
 class AuthUserGroups(models.Model):
+    id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
 
@@ -65,6 +67,7 @@ class AuthUserGroups(models.Model):
 
 
 class AuthUserUserPermissions(models.Model):
+    id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
     permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
 
@@ -75,12 +78,13 @@ class AuthUserUserPermissions(models.Model):
 
 
 class ContasConta(models.Model):
+    id = models.BigAutoField(primary_key=True)
     numero_conta = models.IntegerField(unique=True)
     data_abertura = models.DateTimeField()
     tipo_conta = models.IntegerField()
-    saldo = models.DecimalField(max_digits=10, decimal_places=5)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
-    ativa = models.BooleanField()
-    limite_especial = models.DecimalField(max_digits=10, decimal_places=5)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
+    saldo = models.DecimalField(max_digits=10, decimal_places=2)
+    ativa = models.IntegerField()
+    limite_especial = models.DecimalField(max_digits=10, decimal_places=2)
     id_user = models.ForeignKey(AuthUser, models.DO_NOTHING)
 
     class Meta:
@@ -89,13 +93,13 @@ class ContasConta(models.Model):
 
 
 class DjangoAdminLog(models.Model):
+    action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
     object_repr = models.CharField(max_length=200)
     action_flag = models.PositiveSmallIntegerField()
     change_message = models.TextField()
     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    action_time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -113,6 +117,7 @@ class DjangoContentType(models.Model):
 
 
 class DjangoMigrations(models.Model):
+    id = models.BigAutoField(primary_key=True)
     app = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     applied = models.DateTimeField()
@@ -133,12 +138,14 @@ class DjangoSession(models.Model):
 
 
 class MovimentacoesMovimentacao(models.Model):
+    id = models.BigAutoField(primary_key=True)
     data_movimentacao = models.DateTimeField()
     tipo_movimentacao = models.IntegerField()
-    valor = models.DecimalField(max_digits=10, decimal_places=5)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
     conta = models.ForeignKey(ContasConta, models.DO_NOTHING)
-    saldo_antes = models.DecimalField(max_digits=10, decimal_places=5)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
-    saldo_apos = models.DecimalField(max_digits=10, decimal_places=5)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
+    saldo_antes = models.DecimalField(max_digits=10, decimal_places=2)
+    saldo_apos = models.DecimalField(max_digits=10, decimal_places=2)
+    saldo_media = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
         managed = False

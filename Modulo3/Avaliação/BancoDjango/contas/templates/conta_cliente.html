@@ -24,12 +24,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'logar' %}">Home</a>
                     </li>
-                    {% comment %} <li class="nav-item">
-                        <a class="nav-link" href="#">Contas</a>
-                    </li> {% endcomment %}
-                    {% comment %} <li class="nav-item">
-                        <a class="nav-link" href="#">Usuários</a>
-                    </li> {% endcomment %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url "listar_contas" %}"> | Listar contas</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'editar_conta' dados_conta_cliente.numero_conta %}"> | Editar Conta </a>
                     </li>
@@ -122,51 +119,56 @@
                 </div>
               </div>
             </div>
+
+            {% if dados_conta_cliente.ativa %}
             
-            <form action="{% url 'conta_cliente' %}" method="POST" class="mt-5 pt-5"> {% csrf_token %}
-              <div class="mb-3">
-                <label for="operacao" class="form-label">Selecione uma operação:</label>
-                <select class="form-select" id="operacao" name="operacao">
-                  <option value="deposito">Depósito</option>
-                  <option value="saque">Saque</option>
-                  <option value="transferencia">Transferência</option>
-                </select>
-              </div>
-
-              <hr>
-              
-              <!-- Campos para Depósito -->
-              <div id="campo_deposito" class="mb-3">
-                <label for="valor_deposito" class="form-label">Valor a depositar:</label>
-                <input type="text" class="form-control" id="valor_deposito" name="valor_deposito" value="R$ 0,00">
-              </div>
-
-              <!-- Campos para Saque -->
-              <div id="campo_saque" class="mb-3">
-                <label for="valor_saque" class="form-label">Valor a sacar:</label>
-                <input type="text" class="form-control" id="valor_saque" name="valor_saque" value="R$ 0,00">
-              </div>
-
-              <!-- Campos para Transferência -->
-              <div id="campo_transferencia" class="mb-3">
-                <label for="conta_destino_transferencia" class="form-label">Conta destino:</label>
-                <select class="form-select" id="conta_destino_transferencia" name="conta_destino_transferencia">
-                  {% for conta_transferencia in contas_users %}
-                    {% for tipo_conta_id, tipo_conta_nome in tipo_conta_choices %}
-                      {% if tipo_conta_id == conta_transferencia.tipo_conta %}
-                        <option value="{{conta_transferencia.numero_conta}}">Número da Conta: {{conta_transferencia.numero_conta}} - {{conta_transferencia.id_user__first_name}} {{conta_transferencia.id_user__last_name}} - {{tipo_conta_nome}}</option>
-                      {% endif %}
-                    {% endfor %}
-                  {% endfor %}
-                </select>
+              <form action="{% url 'conta_cliente' %}" method="POST" class="mt-5 pt-5"> {% csrf_token %}
                 <div class="mb-3">
-                  <label for="valor_transferencia" class="form-label">Valor a transferir:</label>
-                  <input type="text" class="form-control" id="valor_transferencia" name="valor_transferencia" value="R$ 0,00">
+                  <label for="operacao" class="form-label">Selecione uma operação:</label>
+                  <select class="form-select" id="operacao" name="operacao">
+                    <option value="deposito">Depósito</option>
+                    <option value="saque">Saque</option>
+                    <option value="transferencia">Transferência</option>
+                  </select>
                 </div>
-              </div>
 
-              <button type="submit" class="btn btn-primary w-100">Confirmar</button>
-            </form>
+                <hr>
+                
+                <!-- Campos para Depósito -->
+                <div id="campo_deposito" class="mb-3">
+                  <label for="valor_deposito" class="form-label">Valor a depositar:</label>
+                  <input type="text" class="form-control" id="valor_deposito" name="valor_deposito" value="R$ 0,00">
+                </div>
+
+                <!-- Campos para Saque -->
+                <div id="campo_saque" class="mb-3">
+                  <label for="valor_saque" class="form-label">Valor a sacar:</label>
+                  <input type="text" class="form-control" id="valor_saque" name="valor_saque" value="R$ 0,00">
+                </div>
+
+                <!-- Campos para Transferência -->
+                <div id="campo_transferencia" class="mb-3">
+                  <label for="conta_destino_transferencia" class="form-label">Conta destino:</label>
+                  <select class="form-select" id="conta_destino_transferencia" name="conta_destino_transferencia">
+                    {% for conta_transferencia in contas_users %}
+                      {% for tipo_conta_id, tipo_conta_nome in tipo_conta_choices %}
+                        {% if tipo_conta_id == conta_transferencia.tipo_conta %}
+                          <option value="{{conta_transferencia.numero_conta}}">Número da Conta: {{conta_transferencia.numero_conta}} - {{conta_transferencia.id_user__first_name}} {{conta_transferencia.id_user__last_name}} - {{tipo_conta_nome}}</option>
+                        {% endif %}
+                      {% endfor %}
+                    {% endfor %}
+                  </select>
+                  <div class="mb-3">
+                    <label for="valor_transferencia" class="form-label">Valor a transferir:</label>
+                    <input type="text" class="form-control" id="valor_transferencia" name="valor_transferencia" value="R$ 0,00">
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Confirmar</button>
+              </form>
+            {% else %}
+              <h3> Esta conta está encerrada <h3>
+            {% endif %}
           </div>
         </div>
       </div>

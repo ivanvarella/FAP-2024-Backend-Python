@@ -18,6 +18,7 @@ class Movimentacao(models.Model):
     conta = models.ForeignKey(Conta, on_delete=models.CASCADE)
     saldo_antes = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     saldo_apos = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    saldo_media = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         tipo_movimentacao_display = self.get_tipo_movimentacao_display()

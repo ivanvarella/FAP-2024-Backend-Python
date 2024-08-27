@@ -14,6 +14,7 @@ from django.contrib.messages import constants
 # Importar o Auth
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
 
 # Para deslogar
 from django.contrib.auth import logout
@@ -39,7 +40,7 @@ def is_valid_email(email):
 # Create your views here.
 
 
-@login_required(login_url="/usuarios/logar")
+# @login_required(login_url="/usuarios/logar")
 def cadastro(request):
     # print(f"Tipo de requisição: {request.method}")  # Imprime o tipo de requisição: GET, POST
     if request.method == "GET":  # Verifica se a requisição é do tipo GET
@@ -93,7 +94,13 @@ def cadastro(request):
         user = User.objects.create_user(
             username=username, password=senha, first_name=nome, last_name=sobrenome
         )
-        return redirect("/usuarios/logar")
+
+        messages.add_message(request, constants.SUCCESS, "Usuário criado com sucesso!")
+
+        # Login automático
+        login(request, user)
+
+        return redirect("listar_contas")
 
 
 @login_required(login_url="/usuarios/logar")

@@ -132,10 +132,10 @@
           {% endif %}
 
           <!-- Conta Ativa ou Encerrada -->
-          {% if editar_conta %}
+          {% comment %} {% if editar_conta %}
             <div class="form-check mb-3">
               {% if dados_conta_cliente.ativa == 1%}
-                <input type="checkbox" class="form-check-input" id="ativa" name="ativa" checked>
+                  <input type="checkbox" class="form-check-input" id="ativa" name="ativa" checked>
               {% else %}
                 <input type="checkbox" class="form-check-input" id="ativa" name="ativa">
               {% endif %}
@@ -146,7 +146,34 @@
               <input type="checkbox" class="form-check-input" id="ativa" name="ativa" checked>
               <label class="form-check-label" for="ativa">Ativa</label>
             </div>
-          {% endif %}
+          {% endif %} {% endcomment %}
+
+          <!-- Conta Ativa ou Encerrada -->
+          <div class="form-check mb-3">
+            {% if editar_conta %}
+              <!-- Caso de edição -->
+              {% if dados_conta_cliente.ativa %}
+                <!-- Conta está ativa -->
+                {% if dados_conta_cliente.saldo == 0 %}
+                  <!-- Saldo é 0, pode alterar o estado do checkbox -->
+                  <input type="checkbox" class="form-check-input" id="ativa" name="ativa" checked>
+                {% else %}
+                  <!-- Saldo não é 0, checkbox desmarcado e desativado -->
+                  <input type="checkbox" class="form-check-input" id="ativa" name="ativa" disabled>
+                  <label class="form-check-label" for="ativa">Ativa (A conta só pode ser encerrada caso o saldo seja R$ 0,00)</label>
+                {% endif %}
+              {% else %}
+                <!-- Conta está desativada -->
+                <input type="checkbox" class="form-check-input" id="ativa" name="ativa">
+                <label class="form-check-label" for="ativa">Ativa</label>
+              {% endif %}
+            {% else %}
+              <!-- Caso de criação de nova conta -->
+              <input type="checkbox" class="form-check-input" id="ativa" name="ativa" checked>
+              <label class="form-check-label" for="ativa">Ativa</label>
+            {% endif %}
+            
+          </div>
           
           <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
