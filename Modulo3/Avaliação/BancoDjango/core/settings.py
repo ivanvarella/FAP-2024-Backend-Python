@@ -84,13 +84,53 @@ WSGI_APPLICATION = "core.wsgi.application"
 #     }
 # }
 
+
+# TODO: Apagar a função de obter o ip do Windows - Particularidade do WSL
+####################################################################################
+# Obter o IP do Windows dentro do WSL usando PowerShell
+import subprocess
+
+
+# Obter o IP do Windows dentro do WSL usando PowerShell
+def get_windows_ip():
+    try:
+        # Executa o comando PowerShell para obter o IP do Windows
+        result = subprocess.run(
+            [
+                "powershell.exe",
+                "-Command",
+                'Get-NetIPAddress | Where-Object { $_.InterfaceAlias -eq "Ethernet" -and $_.AddressFamily -eq "IPv4" } | Select-Object -ExpandProperty IPAddress',
+            ],
+            capture_output=True,
+            text=True,
+        )
+
+        # Verifica se o comando foi executado com sucesso
+        if result.returncode != 0:
+            raise Exception("Erro ao executar o comando PowerShell")
+
+        # Extrai o endereço IP da saída do comando
+        ip_address = result.stdout.strip()
+        if not ip_address:
+            raise Exception("Não foi possível obter o endereço IP")
+
+        return ip_address
+
+    except Exception as e:
+        print(f"Erro: {e}")
+        return None
+
+
+host_windows = get_windows_ip()
+
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "old_bank",
         "USER": "root",
         "PASSWORD": "123321",
-        "HOST": "192.168.50.250",  # ou o IP do servidor MySQL
+        "HOST": host_windows,  # ou o IP do servidor MySQL - "192.168.50.250"
         "PORT": "3307",  # Porta padrão do MySQL
         "OPTIONS": {
             "sql_mode": "STRICT_TRANS_TABLES",
