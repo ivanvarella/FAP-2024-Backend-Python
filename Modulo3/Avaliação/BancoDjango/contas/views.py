@@ -57,6 +57,7 @@ def formatar_valor(valor):
 
 
 # TODO Implementar os cáculos via triggers no banco
+@login_required(login_url="/usuarios/logar")
 def calcular_saldo_medio(movimentacoes):
 
     # Calcula a média dos saldos_antes e saldo_apos
@@ -133,6 +134,66 @@ def cadastrar_conta(request):
             return redirect("cadastrar_conta")
 
     return render(request, "cadastro_conta.html")
+
+
+@login_required(login_url="/usuarios/logar")
+def editar_conta(request, numero_conta):
+    # Regata os dados da Conta para preencher os inputs de acordo com os dados do Banco
+    dados_conta_cliente = Conta.objects.get(numero_conta=numero_conta)
+
+    # Resgata os dados do cliente da Conta
+    dados_cliente = User.objects.get(id=dados_conta_cliente.id_user.id)
+
+    # Resgata os dados CHOICES da models
+    TIPO_CONTA_CHOICES = Conta.TIPO_CONTA_CHOICES
+
+    # Flag para edição de conta
+    editar_conta = True
+
+    # Via link ou direto no navegador
+    if request.method == "GET":
+
+        return render(
+            request,
+            "cadastrar_conta.html",
+            {
+                "tipo_conta_choices": TIPO_CONTA_CHOICES,
+                "dados_conta_cliente": dados_conta_cliente,
+                "dados_cliente": dados_cliente,
+                "editar_conta": editar_conta,
+            },
+        )
+
+    elif request.method == "POST":
+        conta = get_object_or_404(Conta, numero_conta=numero_conta)
+
+        # Resgatando os dados do formulário de edição de conta
+        limite_especial = formatar_valor(request.POST.get("limite_especial"))
+        ativa = request.POST.get("ativa") == "on"
+
+        try:
+            # Atualizando os campos específicos
+            conta.limite_especial = Decimal(limite_especial)
+            conta.ativa = ativa
+
+            conta.save()
+            messages.success(request, "Conta atualizada com sucesso.")
+        except ValueError:
+            messages.error(
+                request, "Erro ao atualizar a conta. Verifique os valores inseridos."
+            )
+            return render(
+                request,
+                "cadastrar_conta.html",
+                {
+                    "tipo_conta_choices": TIPO_CONTA_CHOICES,
+                    "dados_conta_cliente": dados_conta_cliente,
+                    "dados_cliente": dados_cliente,
+                    "editar_conta": editar_conta,
+                },
+            )
+
+        return redirect("listar_contas")
 
 
 @login_required(login_url="/usuarios/logar")
@@ -337,6 +398,7 @@ def conta_cliente(request):
         )
 
 
+@login_required(login_url="/usuarios/logar")
 def extrato(request, numero_conta):
     # Via link ou direto no navegador
     # Recupera a conta com base no número da conta

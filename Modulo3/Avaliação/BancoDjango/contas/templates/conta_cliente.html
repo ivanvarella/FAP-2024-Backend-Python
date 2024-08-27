@@ -30,11 +30,11 @@
                     {% comment %} <li class="nav-item">
                         <a class="nav-link" href="#">Usuários</a>
                     </li> {% endcomment %}
-                    {% comment %} <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cadastro' %}">Cadastro Usuário</a>
-                    </li> {% endcomment %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'editar_usuario' %}">Editar Cadastro</a>
+                        <a class="nav-link" href="{% url 'editar_conta' dados_conta_cliente.numero_conta %}"> | Editar Conta </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'editar_usuario' %}"> | Editar Usuário | </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'deslogar' %}" onclick="return confirm('Deseja realmente sair?');">Sair</a>

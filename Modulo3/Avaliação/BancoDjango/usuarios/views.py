@@ -13,6 +13,7 @@ from django.contrib.messages import constants
 
 # Importar o Auth
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 # Para deslogar
 from django.contrib.auth import logout
@@ -38,6 +39,7 @@ def is_valid_email(email):
 # Create your views here.
 
 
+@login_required(login_url="/usuarios/logar")
 def cadastro(request):
     # print(f"Tipo de requisição: {request.method}")  # Imprime o tipo de requisição: GET, POST
     if request.method == "GET":  # Verifica se a requisição é do tipo GET
@@ -94,6 +96,7 @@ def cadastro(request):
         return redirect("/usuarios/logar")
 
 
+@login_required(login_url="/usuarios/logar")
 def editar_usuario(request):
     if request.method == "GET":
         # Obtém os dados do usuário logado
@@ -204,6 +207,7 @@ def logar(request):
         return redirect("/usuarios/logar")
 
 
+@login_required(login_url="/usuarios/logar")
 def deslogar(request):
     logout(request)
     messages.add_message(request, constants.SUCCESS, "Logout realizado com sucesso!")
