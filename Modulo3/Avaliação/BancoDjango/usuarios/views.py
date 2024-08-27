@@ -177,6 +177,14 @@ def editar_usuario(request):
 
 def logar(request):
 
+    if request.user.is_authenticated:
+        messages.add_message(
+            request,
+            constants.SUCCESS,
+            f"{request.user.first_name}, você já está logado. Caso queira alternar a conta, faça logout primeiro.",
+        )
+        return redirect("conta_cliente")
+
     if request.method == "GET":
         return render(request, "logar.html")
     elif request.method == "POST":
@@ -189,7 +197,7 @@ def logar(request):
             auth.login(
                 request, user
             )  # Verifica o usuário atrelado ao ip e o login (Sessão?)
-            return redirect("/contas/cadastrar_conta")
+            return redirect("/contas/conta_cliente")
             # return HttpResponse("Logou corretamente!!!!")
 
         messages.add_message(request, constants.ERROR, "Usuário ou senha inválidos")

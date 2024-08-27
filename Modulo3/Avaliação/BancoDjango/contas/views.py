@@ -20,6 +20,9 @@ from datetime import datetime, date, timedelta
 from django.utils.safestring import mark_safe
 import json
 
+# Para formatar_valor()
+from decimal import Decimal
+
 
 # Create your views here.
 
@@ -42,11 +45,12 @@ def formatar_valor(valor):
 
     # Converte a string para float
     try:
-        valor_float = float(valor)
+        # valor_float = float(valor)
+        valor_decimal = Decimal(valor)
     except ValueError:
         raise ValueError("O valor fornecido não é um formato numérico válido")
 
-    return valor_float
+    return valor_decimal
 
 
 @login_required(login_url="/usuarios/logar")
@@ -114,6 +118,14 @@ def cadastrar_conta(request):
 
 @login_required(login_url="/usuarios/logar")
 def conta_cliente(request):
+
+    # Verifia se o user tem contas cadastradas
+    try:
+        dados_conta_cliente_verificacao = Conta.objects.get(id_user=request.user.id)
+    except Conta.DoesNotExist:
+        messages.warning(request, "Conta não encontrada.")
+        return redirect("cadastrar_conta")
+
     # Via link ou direto no navegador
     if request.method == "GET":
         dados_conta_cliente = Conta.objects.get(id_user=request.user.id)
@@ -162,14 +174,19 @@ def conta_cliente(request):
         if operacao == "deposito":
             valor_deposito = formatar_valor(request.POST.get("valor_deposito"))
 
-            if valor_deposito <= 0:
+            # print(f"\n\n\nO valor_deposito: {valor_deposito}\n\n\n")
+            # input("Pressione Enter para continuar...")
+
+            # if valor_deposito <= 0:
+            if valor_deposito <= Decimal("0.00"):
                 messages.error(
                     request,
                     "Valor de depósito inválido.\nNão é possível realizar o depósito de R$ 0,00 reais.",
                 )
             else:
                 dados_conta_cliente = Conta.objects.get(id_user=request.user.id)
-                saldo = float(dados_conta_cliente.saldo)
+                saldo = Decimal(dados_conta_cliente.saldo)
+                # saldo = float(dados_conta_cliente.saldo)
 
                 # Calcula novo saldo após operação de depósito
                 saldo_atualizado = saldo + valor_deposito
@@ -195,8 +212,10 @@ def conta_cliente(request):
                     messages.error(request, f"Erro ao tentar realizar o depósito: {e}")
 
         elif operacao == "saque":
-            valor_saque = float(formatar_valor(request.POST.get("valor_saque")))
-            if valor_saque <= 0:
+            valor_saque = formatar_valor(request.POST.get("valor_saque"))
+            # valor_saque = float(formatar_valor(request.POST.get("valor_saque")))
+            # if valor_saque <= 0:
+            if valor_saque <= Decimal("0.00"):
                 messages.error(
                     request,
                     "Valor de saque inválido.\nNão é possível realizar o saque de R$ 0,00 reais.",
@@ -204,14 +223,16 @@ def conta_cliente(request):
             else:
                 sacou = False
                 dados_conta_cliente = Conta.objects.get(id_user=request.user.id)
-                saldo = float(dados_conta_cliente.saldo)
-                limite_especial = float(dados_conta_cliente.limite_especial)
+                saldo = Decimal(dados_conta_cliente.saldo)
+                limite_especial = Decimal(dados_conta_cliente.limite_especial)
+                # saldo = float(dados_conta_cliente.saldo)
+                # limite_especial = float(dados_conta_cliente.limite_especial)
 
-                print(f"\n\nValor de saque do input formatado: {valor_saque}\n\n")
-                novo_valor_input = request.POST.get("valor_saque")
-                print(
-                    f"\n\nValor de saque do input antes de formatar: {novo_valor_input}\n\n"
-                )
+                # print(f"\n\nValor de saque do input formatado: {valor_saque}\n\n")
+                # novo_valor_input = request.POST.get("valor_saque")
+                # print(
+                #     f"\n\nValor de saque do input antes de formatar: {novo_valor_input}\n\n"
+                # )
 
                 # Possui saldo suficiente
                 if saldo >= valor_saque:
@@ -221,7 +242,9 @@ def conta_cliente(request):
                     sacou = True
                 # O saldo é insuficiente mas possui limite no limite_especial
                 elif saldo + limite_especial >= valor_saque:
-                    saldo_atualizado = saldo - valor_saque  # Fica negativo o valor
+                    saldo_atualizado = (
+                        saldo - valor_saque
+                    )  # Fica negativo no limite do saldo+limite_especial
                     data_atual = datetime.now()
                     messages.warning(
                         request,
