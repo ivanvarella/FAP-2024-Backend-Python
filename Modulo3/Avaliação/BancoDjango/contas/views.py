@@ -56,8 +56,8 @@ def formatar_valor(valor):
     return valor_decimal
 
 
+# TODO Implementar os cáculos via triggers no banco
 def calcular_saldo_medio(movimentacoes):
-    # Filtra todas as movimentações para a conta especificada
 
     # Calcula a média dos saldos_antes e saldo_apos
     saldo_medio = movimentacoes.aggregate(

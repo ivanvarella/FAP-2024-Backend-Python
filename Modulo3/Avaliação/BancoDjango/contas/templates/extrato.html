@@ -58,7 +58,7 @@
           <h4 class="text-left mb-4">Número da Conta: <span class="text-primary">{{ dados_conta_cliente.numero_conta }}</span></h4>
           <h4 class="text-left mb-4">Saldo Atual: <span class="text-success">R$ {{ dados_conta_cliente.saldo }}</span></h4>
   
-          <p>Saldo Médio da Conta: R$ {{ saldo_medio|floatformat:2 }}</p>
+          <h5 class="text-left mb-4">Saldo Médio da Conta: R$ {{ saldo_medio|floatformat:2 }}</h5>
 
           <div class="mb-4">
             <a href="#" class="btn btn-secondary me-2" onclick="window.print()">Imprimir</a>
