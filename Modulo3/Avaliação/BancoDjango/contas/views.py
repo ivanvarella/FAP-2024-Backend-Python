@@ -521,3 +521,37 @@ def listar_contas(request):
         )
 
     return render(request, "listar_contas.html")
+
+
+@login_required(login_url="/usuarios/logar")
+def encerrar_conta(request, numero_conta):
+    """
+    Desativa a conta especificada pelo número, se estiver ativa.
+    """
+    conta = get_object_or_404(Conta, numero_conta=numero_conta)
+
+    if conta.ativa:
+        conta.ativa = False
+        conta.save()
+        messages.success(request, "Conta desativada com sucesso.")
+    else:
+        messages.info(request, "A conta já está desativada.")
+
+    return redirect("listar_contas")
+
+
+@login_required(login_url="/usuarios/logar")
+def ativar_conta(request, numero_conta):
+    """
+    Ativa a conta especificada pelo número, se estiver desativada.
+    """
+    conta = get_object_or_404(Conta, numero_conta=numero_conta)
+
+    if not conta.ativa:
+        conta.ativa = True
+        conta.save()
+        messages.success(request, "Conta ativada com sucesso.")
+    else:
+        messages.info(request, "A conta já está ativa.")
+
+    return redirect("listar_contas")

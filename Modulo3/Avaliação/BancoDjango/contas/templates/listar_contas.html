@@ -85,7 +85,7 @@
         <div class="card">
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-hover">
+              {% comment %} <table class="table table-hover">
                 <thead>
                   <tr>
                     <th>Número da Conta</th>
@@ -99,7 +99,6 @@
                 </thead>
                 <tbody>
                   
-
                     {% for conta in dados_contas %}
                       <tr>
                         <td>{{ conta.numero_conta }}</td>
@@ -125,9 +124,57 @@
                       </tr>
                     {% endfor %}
 
-                  
                 </tbody>
-              </table>
+              </table> {% endcomment %}
+
+
+
+              <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Número da Conta</th>
+                        <th>Titular</th>
+                        <th>Tipo de Conta</th>
+                        <th>Saldo</th>
+                        <th>Limite Especial</th>
+                        <th>Situação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for conta in dados_contas %}
+                        <tr onclick="window.location.href='{% url 'editar_conta' conta.numero_conta %}'" style="cursor: pointer;">
+                            <td>{{ conta.numero_conta }}</td>
+                            <td>{{ conta.id_user }}</td>
+            
+                            {% for tipo_id, tipo_nome in tipo_conta_choices %}
+                                {% if tipo_id == conta.tipo_conta %}
+                                    <td>{{ tipo_nome }}</td>
+                                {% endif %}
+                            {% endfor %}
+            
+                            <td>R$ {{ conta.saldo }}</td>
+                            <td>R$ {{ conta.limite_especial }}</td>
+                            {% if conta.ativa == 1 %}
+                                <td><span class="badge bg-success">Ativa</span></td>
+                            {% else %}
+                                <td><span class="badge bg-danger">Encerrada</span></td>
+                            {% endif %}
+                            <td>
+                                <a href="{% url 'editar_conta' conta.numero_conta %}" class="btn btn-sm btn-primary"><span class="material-icons">edit</span></a>
+                                {% if conta.ativa == True %}
+                                  <a href="{% url 'encerrar_conta' conta.numero_conta %}" class="btn btn-sm btn-danger"><span class="material-icons">delete</span></a>
+                                {% else %}
+                                  <a href="{% url 'ativar_conta' conta.numero_conta %}" class="btn btn-sm btn-primary"><span class="material-icons">check_circle</span></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+
             </div>
             <div class="text-center mt-3">
               <a href="{% url "cadastrar_conta" %}" class="btn btn-primary">
