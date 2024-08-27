@@ -54,42 +54,58 @@
 
       <div class="card">
         <div class="card-body">
-          <h3 class="text-center">Nome do Cliente: {{ dados_cliente.first_name }} {{ dados_cliente.last_name }}</h3>
+          <h3 class="text-center">{{ dados_cliente.first_name }} {{ dados_cliente.last_name }}</h3>
           <h4 class="text-left mb-4">Número da Conta: <span class="text-primary">{{ dados_conta_cliente.numero_conta }}</span></h4>
           <h4 class="text-left mb-4">Saldo Atual: <span class="text-success">R$ {{ dados_conta_cliente.saldo }}</span></h4>
-
-          <div class="mb-4">
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <label for="periodo" class="form-label">Período:</label>
-                <select class="form-select" id="periodo">
-                  <option value="total">Todo o período</option>
-                  <option value="5min">Últimos 5 minutos</option>
-                  <option value="30min">Últimos 30 minutos</option>
-                  <option value="2h">Últimas 2 horas</option>
-                  <option value="5h">Últimas 5 horas</option>
-                  <option value="24h">Últimas 24 horas</option>
-                  <option value="2d">Últimos 2 dias</option>
-                  <option value="5d">Últimos 5 dias</option>
-                </select>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label for="tipo" class="form-label">Tipo de Movimentação:</label>
-                <select class="form-select" id="tipo">
-                  <option value="depositos">Depósitos</option>
-                  <option value="saques">Saques</option>
-                  <option value="transferencias">Transferências</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
           <div class="mb-4">
             <a href="#" class="btn btn-secondary me-2" onclick="window.print()">Imprimir</a>
-            <a href="#" class="btn btn-primary">Baixar Extrato em PDF</a>
+            {% comment %} <a href="#" class="btn btn-primary">Baixar Extrato em PDF</a> {% endcomment %}
           </div>
 
-          <h4 class="text-center mb-4">Movimentações ({{numero_de_movimentacoes}})</h4>
+          <hr>
+
+          <form action="{% url 'extrato' dados_conta_cliente.numero_conta %}" method="POST"> {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="periodo" class="form-label">Período:</label>
+                    <select name="periodo" class="form-select" id="periodo">
+                        <option value="total">Todo o período</option>
+                        <option value="5min">Últimos 5 minutos</option>
+                        <option value="30min">Últimos 30 minutos</option>
+                        <option value="2h">Últimas 2 horas</option>
+                        <option value="5h">Últimas 5 horas</option>
+                        <option value="24h">Últimas 24 horas</option>
+                        <option value="2d">Últimos 2 dias</option>
+                        <option value="5d">Últimos 5 dias</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3 d-flex align-items-end">
+                    <div class="w-100">
+                        <label for="tipo" class="form-label">Tipo de Movimentação:</label>
+                        <div class="input-group">
+                            <select name="tipo" class="form-select" id="tipo">
+                                <option value="todos">Todos</option>
+                                <option value="2">Depósitos</option>
+                                <option value="3">Saques</option>
+                                <option value="4">Transferências</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary ms-4">Gerar</button>
+                </div>
+            </div>
+        </form>
+
+          
+
+          {% comment %} <h4 class="text-center mb-4">Movimentações ({{numero_de_movimentacoes}})</h4> {% endcomment %}
+          <h4 class="text-center mb-4">
+            Movimentações ({{ numero_de_movimentacoes }}) 
+          </h4>
+
+          {% if periodo_aplicado or tipo_aplicado %}
+              Filtros Aplicados: <br> Período: {{ periodo_aplicado }} <br> Tipo: {{ tipo_aplicado }}
+          {% endif %}
 
           <table class="table table-striped">
             <thead>
@@ -114,7 +130,7 @@
                 {% endfor %}
               {% else %}
                 <tr>
-                  <td colspan="3" class="text-center">Não há movimentações registradas para esta conta.</td>
+                  <td colspan="3" class="text-center">Não há movimentações registradas para esta conta com esse filtro.</td>
                 </tr>
               {% endif %}
             </tbody>

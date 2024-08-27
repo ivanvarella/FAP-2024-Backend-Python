@@ -297,38 +297,98 @@ def conta_cliente(request):
 
 def extrato(request, numero_conta):
     # Via link ou direto no navegador
-    if request.method == "GET":
-        # Recupera a conta com base no número da conta
-        dados_conta_cliente = get_object_or_404(Conta, numero_conta=numero_conta)
+    # Recupera a conta com base no número da conta
+    dados_conta_cliente = get_object_or_404(Conta, numero_conta=numero_conta)
+    # Recupera o usuário associado à conta
+    dados_cliente = dados_conta_cliente.id_user
+    tipo_movimentacao_choices = Movimentacao.TIPO_MOVIMENTACAO_CHOICES
 
+    # Para vizualização dos filtros aplicados no momento
+    periodo_aplicado = "Todo o período"
+    tipo_aplicado = "Todos"
+
+    # Via link ou direto no navegador
+    if request.method == "GET":
         # Busca todas as movimentações associadas à conta
         # dados_movimentacoes = Movimentacao.objects.filter(conta=dados_conta_cliente)
         dados_movimentacoes = Movimentacao.objects.filter(
             conta=dados_conta_cliente
         ).order_by("-data_movimentacao")
 
-        tipo_movimentacao_choices = Movimentacao.TIPO_MOVIMENTACAO_CHOICES
-
         # Conta o número de movimentações
         numero_de_movimentacoes = dados_movimentacoes.count()
 
-        print(f"\n\nNúmero de movimentações: {numero_de_movimentacoes}\n\n")
+    elif request.method == "POST":
+        # Recupera os valores do formulário
+        periodo = request.POST.get("periodo")
+        tipo_movimentacao = request.POST.get("tipo")
 
-        # Recupera o usuário associado à conta
-        dados_cliente = dados_conta_cliente.id_user
+        # Filtra as movimentações com base no período selecionado
+        if periodo == "5min":
+            tempo_inicio = datetime.now() - timedelta(minutes=5)
+            periodo_aplicado = "Últimos 5 minutos"
+        elif periodo == "30min":
+            tempo_inicio = datetime.now() - timedelta(minutes=30)
+            periodo_aplicado = "Últimos 30 minutos"
+        elif periodo == "2h":
+            tempo_inicio = datetime.now() - timedelta(hours=2)
+            periodo_aplicado = "Últimas 2 horas"
+        elif periodo == "5h":
+            tempo_inicio = datetime.now() - timedelta(hours=5)
+            periodo_aplicado = "Últimas 5 horas"
+        elif periodo == "24h":
+            tempo_inicio = datetime.now() - timedelta(hours=24)
+            periodo_aplicado = "Últimas 24 horas"
+        elif periodo == "2d":
+            tempo_inicio = datetime.now() - timedelta(days=2)
+            periodo_aplicado = "Últimos 2 dias"
+        elif periodo == "5d":
+            tempo_inicio = datetime.now() - timedelta(days=5)
+            periodo_aplicado = "Últimos 5 dias"
+        else:
+            # Todo o período
+            tempo_inicio = None
+            periodo_aplicado = "Todo o período"
 
-        # Passa os dados para o template
-        return render(
-            request,
-            "extrato.html",
-            {
-                "dados_conta_cliente": dados_conta_cliente,
-                "dados_movimentacoes": dados_movimentacoes,
-                "dados_cliente": dados_cliente,
-                "tipo_movimentacao_choices": tipo_movimentacao_choices,
-                "numero_de_movimentacoes": numero_de_movimentacoes,
-            },
+        # Filtro base
+        filtros = {"conta": dados_conta_cliente}
+
+        # Aplica o filtro de período
+        if tempo_inicio:
+            # Sufixo __gte no Django ORM significa "greater than or equal to"
+            filtros["data_movimentacao__gte"] = tempo_inicio
+
+        # Aplica o filtro de tipo de movimentação, se não for "todos"
+        if tipo_movimentacao and tipo_movimentacao != "todos":
+            filtros["tipo_movimentacao"] = tipo_movimentacao
+            tipo_aplicado = dict(tipo_movimentacao_choices).get(
+                int(tipo_movimentacao), "Todos"
+            )
+
+        # print(f"\n\nFiltros aplicados: {filtros}\n\n")
+        # Filtros aplicados: {'conta': <Conta: Id do usuário: admin - Número da conta: 626013 - Saldo: 1500.00>, 'tipo_movimentacao': '2'}
+
+        # Recupera as movimentações filtradas
+        dados_movimentacoes = Movimentacao.objects.filter(**filtros).order_by(
+            "-data_movimentacao"
         )
+
+        numero_de_movimentacoes = dados_movimentacoes.count()
+
+    # Renderiza a página com GET ou POST
+    return render(
+        request,
+        "extrato.html",
+        {
+            "dados_conta_cliente": dados_conta_cliente,
+            "dados_movimentacoes": dados_movimentacoes,
+            "dados_cliente": dados_cliente,
+            "tipo_movimentacao_choices": tipo_movimentacao_choices,
+            "numero_de_movimentacoes": numero_de_movimentacoes,
+            "periodo_aplicado": periodo_aplicado,
+            "tipo_aplicado": tipo_aplicado,
+        },
+    )
 
 
 @login_required(login_url="/usuarios/logar")

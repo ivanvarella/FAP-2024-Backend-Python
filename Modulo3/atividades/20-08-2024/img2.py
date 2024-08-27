@@ -22,11 +22,16 @@ def pencil_sketch(image_path, output_path):
 
     inverted_blurred_image = cv2.bitwise_not(blurred_image)
 
-    pencil_sketch_image = cv2.divide(gray_image, inverted_blurred_image, scale=256.0)
+    # Increase the scale for darker lines
+    pencil_sketch_image = cv2.divide(gray_image, inverted_blurred_image, scale=128.0)
 
-    cv2.imwrite(output_path, pencil_sketch_image)
+    # Apply a sharpening filter to enhance the edges
+    kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
+    sharpened_image = cv2.filter2D(pencil_sketch_image, -1, kernel)
 
-    cv2.imshow("Pencil Sketch", pencil_sketch_image)
+    cv2.imwrite(output_path, sharpened_image)
+
+    cv2.imshow("Pencil Sketch", sharpened_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
