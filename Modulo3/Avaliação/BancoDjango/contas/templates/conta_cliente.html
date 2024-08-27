@@ -107,7 +107,7 @@
                                 <tr>
                                   <td>{{ movimentacao.data_movimentacao|date:"d/m/Y H:i:s" }}</td>
                                   <td>{{ tipo_movimentacao_nome }}</td>
-                                  <td>R$ {{ movimentacao.valor }}</td>
+                                  <td>R$ {% if movimentacao.tipo_movimentacao == 3 or movimentacao.tipo_movimentacao == 4 %}-{% endif %}{{ movimentacao.valor }}</td>
                                 </tr>
                               {% endif %}
                             {% endfor %}

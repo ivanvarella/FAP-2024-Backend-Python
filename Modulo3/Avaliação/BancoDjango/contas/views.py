@@ -23,6 +23,9 @@ import json
 # Para formatar_valor()
 from decimal import Decimal
 
+# Para calular saldo médio da conta
+from django.db.models import Avg
+
 
 # Create your views here.
 
@@ -51,6 +54,22 @@ def formatar_valor(valor):
         raise ValueError("O valor fornecido não é um formato numérico válido")
 
     return valor_decimal
+
+
+def calcular_saldo_medio(movimentacoes):
+    # Filtra todas as movimentações para a conta especificada
+
+    # Calcula a média dos saldos_antes e saldo_apos
+    saldo_medio = movimentacoes.aggregate(
+        media_saldo_antes=Avg("saldo_antes"), media_saldo_apos=Avg("saldo_apos")
+    )
+
+    # Calcula a média geral dos saldos
+    saldo_medio_total = (
+        saldo_medio["media_saldo_antes"] + saldo_medio["media_saldo_apos"]
+    ) / 2
+
+    return saldo_medio_total
 
 
 @login_required(login_url="/usuarios/logar")
@@ -330,6 +349,12 @@ def extrato(request, numero_conta):
     periodo_aplicado = "Todo o período"
     tipo_aplicado = "Todos"
 
+    # Resgata as movimentacoes para calculo do saldo médio e calcula
+    movimentacoes_saldo_medio = Movimentacao.objects.filter(
+        conta=dados_conta_cliente
+    ).order_by("-data_movimentacao")
+    saldo_medio = calcular_saldo_medio(movimentacoes_saldo_medio)
+
     # Via link ou direto no navegador
     if request.method == "GET":
         # Busca todas as movimentações associadas à conta
@@ -410,6 +435,7 @@ def extrato(request, numero_conta):
             "numero_de_movimentacoes": numero_de_movimentacoes,
             "periodo_aplicado": periodo_aplicado,
             "tipo_aplicado": tipo_aplicado,
+            "saldo_medio": saldo_medio,
         },
     )
 
