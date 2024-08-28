@@ -1,0 +1,251 @@
+Diagrama de Usuário: Descreva as interações dos usuários
+(gerente e correntistas) com o sistema.
+flowchart LR
+    A(Gerente) --> B(Criar Contas)
+    A(Gerente) --> C(Visualizar Lista das Contas)
+    A(Gerente) --> D(Editar Contas)
+    A(Gerente) --> W(Encerrar Contas)
+    B(Criar Conta) --> E(Cliente / Gerente)
+    E(Cliente / Gerente) --> F(Depositar)
+    E(Cliente / Gerente) --> G(Sacar)
+    E(Cliente / Gerente) --> H(Transferir - Futuro)
+    E(Cliente / Gerente) --> I(Visualizar Saldo)
+    E(Cliente / Gerente) --> J(Visualizar Extrato)
+
+
+Diagrama de Tempo: Mostre a sequência temporal das
+operações dentro do sistema.
+sequenceDiagram
+    participant User
+    participant System
+
+    User->>System: Login
+    alt Gerenciamento de Contas(Gerente)
+        System->>User: Tela de Gerenciamento
+        User->>System: Criar Conta
+        User->>System: Editar Conta
+        User->>System: Encerrar Conta
+        User->>System: Visualizar Lista de Contas
+    else Acesso à Conta(Cliente ou Gerente)
+        System->>User: Tela da Conta
+        User->>System: Depositar
+        User->>System: Sacar
+        User->>System: Visualizar Saldo
+        User->>System: Visualizar Extrato
+    end
+    System-->>System: Processar Ação
+    
+    System-->>System: Atualizar Banco de Dados
+    System-->>User: Confirmação da Ação
+
+
+Ilustre a troca de mensagens entre os
+objetos ou componentes do sistema durante as operações.
+Diagrama de Sequência (Exemplo: Saque):
+sequenceDiagram
+    participant User
+    participant System
+    participant Conta (Account)
+    participant Movimentacao (Transaction)
+
+    User->>System: Sacar
+    System->>Conta: Verificar Saldo
+    Conta-->>System: Retornar Saldo
+    alt Saldo Suficiente
+        System->>Conta: Realizar Saque
+        Conta-->>System: Atualizar Saldo
+        System->>Movimentacao: Criar Movimentação
+        Movimentacao-->>System: Salvar Movimentação
+        System->>User: Saque Realizado
+    else Saldo Insuficiente
+        System-->>User: Saldo Insuficiente
+    end
+
+Diagrama de Sequência (Exemplo: Deposito):
+sequenceDiagram
+    participant User
+    participant System
+    participant Conta (Account)
+    participant Movimentacao (Transaction)
+
+    User->>System: Depositar
+    System->>Conta: Verificar Conta
+    Conta-->>System: Retornar Informação da Conta
+    System->>Conta: Atualizar Saldo
+    Conta-->>System: Confirmar Atualização
+    System->>Movimentacao: Criar Movimentação
+    Movimentacao-->>System: Salvar Movimentação
+    System-->>User: Depósito Confirmado
+
+
+
+
+
+Diagrama de Operações (Depósito): Detalhe as operações principais do
+sistema e suas interações.
+flowchart TD
+    A[Usuário] -->|Inicia Depósito| B[Formulário de Depósito]
+    B --> C[Validação de Dados]
+    C -->|Dados Válidos| D[Atualizar Saldo da Conta]
+    C -->|Dados Inválidos| E[Mostrar Mensagem de Erro]
+    D --> F[Registrar Movimentação]
+    F --> G[Atualização Bem-sucedida]
+    G --> H[Exibir Confirmação ao Usuário]
+    E --> H
+
+Operações Saque:
+flowchart TD
+    A[Usuário] -->|Inicia Saque| B[Formulário de Saque]
+    B --> C[Validação de Dados]
+    C -->|Dados Válidos| D[Verificar Saldo Disponível]
+    C -->|Dados Inválidos| E[Mostrar Mensagem de Erro]
+    E -->I
+    D -->|Saldo Suficiente| F[Atualizar Saldo da Conta]
+    D -->|Saldo Insuficiente| G[Mostrar Mensagem de Saldo Insuficiente]
+    F --> H[Registrar Movimentação]
+    H --> I[Exibir Confirmação ao Usuário]
+    G --> I
+
+
+
+Modelagem do banco de dados:
+
+Conceptual Model (ER Diagram):
+flowchart LR
+    A(Usuário) --> B(Sistema)
+    B --> C(Conta_bancária)
+    C --> D(Movimentações)
+
+Lógico:
+classDiagram
+    class User {
+        id
+        username
+        password
+        email
+    }
+
+    class Group {
+        id
+        name
+    }
+
+    class Permission {
+        id
+        name
+    }
+
+    class Account {
+        id
+        numero_conta
+        tipo_conta
+        saldo
+        limite_especial
+        user
+    }
+
+    class Transaction {
+        id
+        data_movimentacao
+        tipo_movimentacao
+        valor
+        conta
+        saldo_antes
+        saldo_apos
+        saldo_media
+    }
+
+Físico:
+erDiagram
+    auth_group {
+        int id PK
+        string name UK
+    }
+
+    auth_permission {
+        int id PK
+        string name
+        int content_type_id FK
+        string codename
+    }
+
+    auth_user {
+        int id PK
+        string password
+        datetime last_login
+        boolean is_superuser
+        string username UK
+        string first_name
+        string last_name
+        string email
+        boolean is_staff
+        boolean is_active
+        datetime date_joined
+    }
+
+    auth_user_groups {
+        int id PK
+        int user_id FK
+        int group_id FK
+    }
+
+    auth_user_user_permissions {
+        int id PK
+        int user_id FK
+        int permission_id FK
+    }
+
+    contas_conta {
+        int id PK
+        string numero_conta UK
+        datetime data_abertura
+        string tipo_conta
+        decimal saldo
+        boolean ativa
+        decimal limite_especial
+        int id_user_id FK
+    }
+
+    django_admin_log {
+        int id PK
+        datetime action_time
+        string object_id
+        string object_repr
+        int action_flag
+        string change_message
+        int content_type_id FK
+        int user_id FK
+    }
+
+    django_content_type {
+        int id PK
+        string app_label
+        string model
+    }
+
+    django_migrations {
+        int id PK
+        string app
+        string name
+        datetime applied
+    }
+
+    django_session {
+        string session_key PK
+        string session_data
+        datetime expire_date
+    }
+
+    auth_group ||--o{ auth_group_permissions : has
+    auth_permission ||--o{ auth_group_permissions : has
+    django_content_type ||--o{ auth_permission : has
+    auth_user ||--o{ auth_user_groups : has
+    auth_group ||--o{ auth_user_groups : has
+    auth_user ||--o{ auth_user_user_permissions : has
+    auth_permission ||--o{ auth_user_user_permissions : has
+    auth_user ||--o{ contas_conta : has
+    django_content_type ||--o{ django_admin_log : has
+    auth_user ||--o{ django_admin_log : has
+
+
+

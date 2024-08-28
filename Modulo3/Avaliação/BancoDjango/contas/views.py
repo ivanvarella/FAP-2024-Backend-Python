@@ -210,7 +210,7 @@ def editar_conta(request, numero_conta):
 @login_required(login_url="/usuarios/logar")
 def conta_cliente(request):
 
-    # Verifia se o user tem contas cadastradas
+    # Verifica se o user tem contas cadastradas
     try:
         dados_conta_cliente_verificacao = Conta.objects.get(id_user=request.user.id)
     except Conta.DoesNotExist:
