@@ -2,7 +2,7 @@
 from tkinter import *
 
 # import messagebox class from tkinter
-from tkinter import messagebox
+from tkinter import messagebox, Text, W
 
 # global list is declare for storing all the task
 tasks_list = []
@@ -126,10 +126,10 @@ if __name__ == "__main__":
     gui.title("ToDo App")
 
     # set the configuration of GUI window
-    gui.geometry("250x300")
+    gui.geometry("300x330")
 
     # create a label : Enter Your Task
-    enterTask = Label(gui, text="Enter Your Task", bg="light green")
+    enterTask = Label(gui, text="Adicione sua tarefa", bg="light green")
 
     # create a text entry box
     # for typing the task
@@ -138,7 +138,7 @@ if __name__ == "__main__":
     # create a Submit Button and place into the root window
     # when user press the button, the command or
     # function affiliated to that button is executed
-    Submit = Button(gui, text="Submit", fg="Black", bg="Red", command=insertTask)
+    Submit = Button(gui, text="Adicionar", fg="Black", bg="Red", command=insertTask)
 
     # create a text area for the root
     # with lunida 13 font
@@ -146,19 +146,19 @@ if __name__ == "__main__":
     TextArea = Text(gui, height=5, width=25, font="lucida 13")
 
     # create a label : Delete Task Number
-    taskNumber = Label(gui, text="Delete Task Number", bg="blue")
+    taskNumber = Label(gui, text="Detelar Tarefa Número", bg="#4a9065")
 
     taskNumberField = Text(gui, height=1, width=2, font="lucida 13")
 
     # create a Delete Button and place into the root window
     # when user press the button, the command or
     # function affiliated to that button is executed .
-    delete = Button(gui, text="Delete", fg="Black", bg="Red", command=delete)
+    delete = Button(gui, text="Deletar", fg="Black", bg="Red", command=delete)
 
     # create a Exit Button and place into the root window
     # when user press the button, the command or
     # function affiliated to that button is executed .
-    Exit = Button(gui, text="Exit", fg="Black", bg="Red", command=exit)
+    Exit = Button(gui, text="Sair", fg="Black", bg="Red", command=exit)
 
     # grid method is used for placing
     # the widgets at respective positions
