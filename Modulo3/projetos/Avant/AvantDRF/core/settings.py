@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-import os  # Para o TEMPLATES -> DIR
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -57,9 +56,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            os.path.join(BASE_DIR, "templates")
-        ],  # Alterado para os templates na raiz
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -120,27 +117,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-# STATIC_URL = "static/" # Original
-# Novos arquivos estáticos:
-STATIC_URL = "/static/"
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "templates/static"),)
-STATIC_ROOT = os.path.join("static")
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
+STATIC_URL = "static/"  # Original
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Messagens - Adicionado por mim. São "alias" para as classes do Bootstrap
-from django.contrib.messages import constants
-
-MESSAGE_TAGS = {
-    constants.DEBUG: "alert-primary",
-    constants.ERROR: "alert-danger",
-    constants.SUCCESS: "alert-success",
-    constants.INFO: "alert-info",
-    constants.WARNING: "alert-warning",
-}

@@ -26,12 +26,14 @@ class Tarefas(models.Model):
     prioridade = models.IntegerField(
         choices=prioridade_choices, default=1, verbose_name="Prioridade"
     )
-    obs = models.TextField(blank=True, null=True)
-    progresso_conclusao = models.IntegerField(default=0, blank=True, null=True)
-    dataInicio = models.DateTimeField(auto_now_add=True)
-    dataFim = models.DateTimeField(blank=True, null=True)
-    dataLimite = models.DateTimeField(blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    obs = models.TextField(blank=True, null=True, verbose_name="Observação")
+    progresso_conclusao = models.IntegerField(
+        default=0, blank=True, null=True, verbose_name="Progresso de Conclusão"
+    )
+    dataInicio = models.DateTimeField(auto_now_add=True, verbose_name="Data de Início")
+    dataFim = models.DateTimeField(blank=True, null=True, verbose_name="Data de Fim")
+    dataLimite = models.DateTimeField(blank=True, null=True, verbose_name="Data Limite")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
 
     def __str__(self):
         return self.descricao
