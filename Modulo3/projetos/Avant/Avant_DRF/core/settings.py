@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "tarefas",
     "rest_framework",
-    "django_rql",
 ]
 
 MIDDLEWARE = [
@@ -127,4 +126,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Configuração para o RQL com DRF:
-REST_FRAMEWORK = {"DEFAULT_FILTER_BACKENDS": ["dj_rql.drf.RQLFilterBackend"]}
+# REST_FRAMEWORK = {"DEFAULT_FILTER_BACKENDS": ["dj_rql.drf.RQLFilterBackend"]}
