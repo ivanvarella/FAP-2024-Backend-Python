@@ -1,5 +1,0 @@
-superuser:
-avant
-123456
-
-email: avant@avant.com
