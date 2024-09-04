@@ -1,6 +1,9 @@
 # Django DRF
 from rest_framework import viewsets
 
+# Para adicionar as permissões
+from rest_framework import permissions
+
 # Django RQL
 from dj_rql.drf import RQLFilterBackend
 from tarefas.filters import TarefaFilterClass
@@ -23,3 +26,6 @@ class TarefaModelViewSet(viewsets.ModelViewSet):
     # Configs do RQL:
     filter_backends = [RQLFilterBackend]
     rql_filter_class = TarefaFilterClass
+    # Permissões
+    # permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]  # Aqui perde todas as permissões e a API volta a ser acessada livremente
