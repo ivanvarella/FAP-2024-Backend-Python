@@ -132,16 +132,31 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Config. após install Simple JWT
 REST_FRAMEWORK = {
     # Informa que a partir deste momento, as classes para autenticação e permissões são essas abaixo
+    # Aqui configura para usar o SimpleJWT para realizar o controle autenticação, como o uso dos Tokens
+    # Substituindo os do Django e do DRF
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    # Aqui está configurando para utilizar as classes do DRF para permissões
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
         "rest_framework.permissions.DjangoModelPermissions",
     ),
+    # Aqui está configurando para realizar paginação utilizando as classes do DRF
+    # Desta forma não é possível configurar o retorno, será sempre retornado o número de páginas configurado
+    # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    # "PAGE_SIZE": 10,
+    # Desta outra forma, é possível configurar o retorno, por exemplo, o número de objetos por página,
+    # desta forma, o padrão continua sendo de 10 objetos por página, porém é possível configurar qts obj por consulta será retornado,
+    # caso não informando o padrão será de 10 obj (neste exemplo) por consulta.
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
+    # Para filtro de datas
+    # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.CursorPagination",
+    # "PAGE_SIZE": 10,
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
