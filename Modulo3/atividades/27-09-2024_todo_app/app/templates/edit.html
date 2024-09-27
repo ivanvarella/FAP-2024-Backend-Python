@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+
+{% block title %}Editar Tarefa{% endblock %}
+
+
+{% block content %}
+  <h2>Editar Tarefa</h2>
+  <form method="POST">
+    <div>
+      <label for="title">Título:</label>
+      <input type="text" id="title" name="title" value="{{ task.title }}" required>
+    </div>
+    <div>
+      <label for="description">Descrição:</label>
+      <textarea id="description" name="description">{{ task.description }}</textarea>
+    </div>
+    <div>
+      <label for="completed">Concluída:</label>
+      <input type="checkbox" id="completed" name="completed" {% if task.completed %}checked{% endif %}>
+    </div>
+    <button type="submit">Atualizar Tarefa</button>
+  </form>
+{% endblock %}

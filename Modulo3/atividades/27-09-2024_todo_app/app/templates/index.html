@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <h2>Lista de Tarefas</h2>
+  {% if tasks %}
+  <ul class="task-list">
+    {% for task in tasks %}
+    <li>
+      <h3>{{ task.title }}</h3>
+      <p>{{ task.description }}</p>
+      <p>Criada em: {{ task.created_at.strftime('%d/%m/%Y %H:%M') }}</p>
+      <p>Status: {{ 'Concluída' if task.completed else 'Pendente' }}</p>
+      <a href="{{ url_for('update', id=task.id) }}">Editar</a>
+      <a href="{{ url_for('delete', id=task.id) }}" onclick="return confirm('Tem certeza que deseja excluir esta tarefa?');">Excluir</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>Nenhuma tarefa cadastrada.</p>
+  {% endif %}
+{% endblock %}
