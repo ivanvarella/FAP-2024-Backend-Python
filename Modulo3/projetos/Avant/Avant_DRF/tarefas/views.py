@@ -4,7 +4,7 @@ from rest_framework import viewsets
 # Para adicionar as permissões
 from rest_framework import permissions
 
-# PAra permissões personalizadas
+# Para permissões personalizadas
 from tarefas.permissions import TarefaUserPermission
 
 # Django RQL
